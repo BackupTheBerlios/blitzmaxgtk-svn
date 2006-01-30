@@ -1,0 +1,16 @@
+Extern
+	Function gtk_expander_new:Byte Ptr(label:Byte Ptr)="gtk_expander_new"
+	Function gtk_expander_new_with_mnemonic:Byte Ptr(label:Byte Ptr)="gtk_expander_new_with_mnemonic"
+	Function gtk_expander_set_expanded(expander:Byte Ptr,expanded:gboolean)="gtk_expander_set_expanded"
+	Function gtk_expander_get_expanded:gboolean(expander:Byte Ptr)="gtk_expander_get_expanded"
+	Function gtk_expander_set_spacing(expander:Byte Ptr,spacing:gint)="gtk_expander_set_spacing"
+	Function gtk_expander_get_spacing:gint(expander:Byte Ptr)="gtk_expander_get_spacing"
+	Function gtk_expander_set_label(expander:Byte Ptr,label:Byte Ptr)="gtk_expander_set_label"
+	Function gchar*:const(expander:Byte Ptr)="gchar*"
+	Function gtk_expander_set_use_underline(expander:Byte Ptr,use_underline:gboolean)="gtk_expander_set_use_underline"
+	Function gtk_expander_get_use_underline:gboolean(expander:Byte Ptr)="gtk_expander_get_use_underline"
+	Function gtk_expander_set_use_markup(expander:Byte Ptr,use_markup:gboolean)="gtk_expander_set_use_markup"
+	Function gtk_expander_get_use_markup:gboolean(expander:Byte Ptr)="gtk_expander_get_use_markup"
+	Function gtk_expander_set_label_widget(expander:Byte Ptr,label_widget:Byte Ptr)="gtk_expander_set_label_widget"
+	Function gtk_expander_get_label_widget:Byte Ptr(expander:Byte Ptr)="gtk_expander_get_label_widget"
+End Extern

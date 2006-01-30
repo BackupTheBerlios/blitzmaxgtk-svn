@@ -1,0 +1,11 @@
+GtkWidget*  gtk_check_menu_item_new         (void);
+GtkWidget*  gtk_check_menu_item_new_with_label(const gchar *label);
+GtkWidget*  gtk_check_menu_item_new_with_mnemonic(const gchar *label);
+gboolean    gtk_check_menu_item_get_active  (GtkCheckMenuItem *check_menu_item);
+void        gtk_check_menu_item_set_active  (GtkCheckMenuItem *check_menu_item,gboolean is_active);
+void        gtk_check_menu_item_set_show_toggle(GtkCheckMenuItem *menu_item,gboolean always);
+void        gtk_check_menu_item_toggled     (GtkCheckMenuItem *check_menu_item);
+gboolean    gtk_check_menu_item_get_inconsistent(GtkCheckMenuItem *check_menu_item);
+void        gtk_check_menu_item_set_inconsistent(GtkCheckMenuItem *check_menu_item,gboolean setting);
+void        gtk_check_menu_item_set_draw_as_radio(GtkCheckMenuItem *check_menu_item,gboolean draw_as_radio);
+gboolean    gtk_check_menu_item_get_draw_as_radio(GtkCheckMenuItem *check_menu_item);

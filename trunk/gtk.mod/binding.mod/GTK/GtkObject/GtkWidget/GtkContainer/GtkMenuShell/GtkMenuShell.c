@@ -1,0 +1,11 @@
+void        gtk_menu_shell_append           (GtkMenuShell *menu_shell,GtkWidget *child);
+void        gtk_menu_shell_prepend          (GtkMenuShell *menu_shell,GtkWidget *child);
+void        gtk_menu_shell_insert           (GtkMenuShell *menu_shell,GtkWidget *child,gint position);
+void        gtk_menu_shell_deactivate       (GtkMenuShell *menu_shell);
+void        gtk_menu_shell_select_item      (GtkMenuShell *menu_shell,GtkWidget *menu_item);
+void        gtk_menu_shell_select_first     (GtkMenuShell *menu_shell,gboolean search_sensitive);
+void        gtk_menu_shell_deselect         (GtkMenuShell *menu_shell);
+void        gtk_menu_shell_activate_item    (GtkMenuShell *menu_shell,GtkWidget *menu_item,gboolean force_deactivate);
+void        gtk_menu_shell_cancel           (GtkMenuShell *menu_shell);
+void        gtk_menu_shell_set_take_focus   (GtkMenuShell *menu_shell,gboolean take_focus);
+gboolean    gtk_menu_shell_get_take_focus   (GtkMenuShell *menu_shell);

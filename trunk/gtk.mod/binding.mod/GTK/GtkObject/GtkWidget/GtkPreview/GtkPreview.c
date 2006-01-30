@@ -1,0 +1,16 @@
+union       GtkDitherInfo;
+void        gtk_preview_uninit              (void);
+GtkWidget*  gtk_preview_new                 (GtkPreviewType type);
+void        gtk_preview_size                (GtkPreview *preview,gint width,gint height);
+void        gtk_preview_put                 (GtkPreview *preview,GdkWindow *window,GdkGC *gc,gint srcx,gint srcy,gint destx,gint desty,gint width,gint height);
+void        gtk_preview_draw_row            (GtkPreview *preview,guchar *data,gint x,gint y,gint w);
+void        gtk_preview_set_expand          (GtkPreview *preview,gboolean expand);
+void        gtk_preview_set_gamma           (double gamma_);
+void        gtk_preview_set_color_cube      (guint nred_shades,guint ngreen_shades,guint nblue_shades,guint ngray_shades);
+void        gtk_preview_set_install_cmap    (gint install_cmap);
+void        gtk_preview_set_reserved        (gint nreserved);
+void        gtk_preview_set_dither          (GtkPreview *preview,GdkRgbDither dither);
+GdkVisual*  gtk_preview_get_visual          (void);
+GdkColormap* gtk_preview_get_cmap           (void);
+GtkPreviewInfo* gtk_preview_get_info        (void);
+void        gtk_preview_reset               (void);
