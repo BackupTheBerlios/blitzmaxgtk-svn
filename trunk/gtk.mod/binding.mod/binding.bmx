@@ -6,7 +6,7 @@ ModuleInfo "Description: GTK Binding"
 ModuleInfo "License: GNU/GPL"
 ModuleInfo "Version: 0.01"
 ModuleInfo "Author: bigmichi and phiker"
-
+'test
 
 'STARTCONFIG
 Import "-pthread"
