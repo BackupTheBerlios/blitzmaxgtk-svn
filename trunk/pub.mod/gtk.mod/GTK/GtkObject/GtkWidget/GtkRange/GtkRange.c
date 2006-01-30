@@ -1,0 +1,10 @@
+GtkAdjustment* gtk_range_get_adjustment     (GtkRange *range);
+void        gtk_range_set_update_policy     (GtkRange *range,GtkUpdateType policy);
+void        gtk_range_set_adjustment        (GtkRange *range,GtkAdjustment *adjustment);
+gboolean    gtk_range_get_inverted          (GtkRange *range);
+void        gtk_range_set_inverted          (GtkRange *range,gboolean setting);
+GtkUpdateType gtk_range_get_update_policy   (GtkRange *range);
+gdouble     gtk_range_get_value             (GtkRange *range);
+void        gtk_range_set_increments        (GtkRange *range,gdouble step,gdouble page);
+void        gtk_range_set_range             (GtkRange *range,gdouble min,gdouble max);
+void        gtk_range_set_value             (GtkRange *range,gdouble value);

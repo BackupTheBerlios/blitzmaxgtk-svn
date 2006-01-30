@@ -1,0 +1,17 @@
+GtkUIManager* gtk_ui_manager_new            (void);
+void        gtk_ui_manager_set_add_tearoffs (GtkUIManager *self,gboolean add_tearoffs);
+gboolean    gtk_ui_manager_get_add_tearoffs (GtkUIManager *self);
+void        gtk_ui_manager_insert_action_group(GtkUIManager *self,GtkActionGroup *action_group,gint pos);
+void        gtk_ui_manager_remove_action_group(GtkUIManager *self,GtkActionGroup *action_group);
+GList*      gtk_ui_manager_get_action_groups(GtkUIManager *self);
+GtkAccelGroup* gtk_ui_manager_get_accel_group(GtkUIManager *self);
+GtkWidget*  gtk_ui_manager_get_widget       (GtkUIManager *self,const gchar *path);
+GSList*     gtk_ui_manager_get_toplevels    (GtkUIManager *self,GtkUIManagerItemType types);
+GtkAction*  gtk_ui_manager_get_action       (GtkUIManager *self,const gchar *path);
+guint       gtk_ui_manager_add_ui_from_string(GtkUIManager *self,const gchar *buffer,gssize length,GError **error);
+guint       gtk_ui_manager_add_ui_from_file (GtkUIManager *self,const gchar *filename,GError **error);
+guint       gtk_ui_manager_new_merge_id     (GtkUIManager *self);
+void        gtk_ui_manager_add_ui           (GtkUIManager *self,guint merge_id,const gchar *path,const gchar *name,const gchar *action,GtkUIManagerItemType type,gboolean top);
+void        gtk_ui_manager_remove_ui        (GtkUIManager *self,guint merge_id);
+gchar*      gtk_ui_manager_get_ui           (GtkUIManager *self);
+void        gtk_ui_manager_ensure_update    (GtkUIManager *self);

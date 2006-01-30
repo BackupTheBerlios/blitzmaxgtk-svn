@@ -1,0 +1,13 @@
+gboolean    (*GtkTreeModelFilterVisibleFunc)(GtkTreeModel *model,GtkTreeIter *iter,gpointer data);
+void        (*GtkTreeModelFilterModifyFunc) (GtkTreeModel *model,GtkTreeIter *iter,GValue *value,gint column,gpointer data);
+GtkTreeModel* gtk_tree_model_filter_new     (GtkTreeModel *child_model,GtkTreePath *root);
+void        gtk_tree_model_filter_set_visible_func(GtkTreeModelFilter *filter,GtkTreeModelFilterVisibleFunc func,gpointer data,GtkDestroyNotify destroy);
+void        gtk_tree_model_filter_set_modify_func(GtkTreeModelFilter *filter,gint n_columns,GType *types,GtkTreeModelFilterModifyFunc func,gpointer data,GtkDestroyNotify destroy);
+void        gtk_tree_model_filter_set_visible_column(GtkTreeModelFilter *filter,gint column);
+GtkTreeModel* gtk_tree_model_filter_get_model(GtkTreeModelFilter *filter);
+void        gtk_tree_model_filter_convert_child_iter_to_iter(GtkTreeModelFilter *filter,GtkTreeIter *filter_iter,GtkTreeIter *child_iter);
+void        gtk_tree_model_filter_convert_iter_to_child_iter(GtkTreeModelFilter *filter,GtkTreeIter *child_iter,GtkTreeIter *filter_iter);
+GtkTreePath* gtk_tree_model_filter_convert_child_path_to_path(GtkTreeModelFilter *filter,GtkTreePath *child_path);
+GtkTreePath* gtk_tree_model_filter_convert_path_to_child_path(GtkTreeModelFilter *filter,GtkTreePath *filter_path);
+void        gtk_tree_model_filter_refilter  (GtkTreeModelFilter *filter);
+void        gtk_tree_model_filter_clear_cache(GtkTreeModelFilter *filter);

@@ -1,0 +1,15 @@
+GtkWidget*  gtk_dialog_new                  (void);
+GtkWidget*  gtk_dialog_new_with_buttons     (const gchar *title,GtkWindow *parent,GtkDialogFlags flags,const gchar *first_button_text,...);
+gint        gtk_dialog_run                  (GtkDialog *dialog);
+void        gtk_dialog_response             (GtkDialog *dialog,gint response_id);
+GtkWidget*  gtk_dialog_add_button           (GtkDialog *dialog,const gchar *button_text,gint response_id);
+void        gtk_dialog_add_buttons          (GtkDialog *dialog,const gchar *first_button_text,...);
+void        gtk_dialog_add_action_widget    (GtkDialog *dialog,GtkWidget *child,gint response_id);
+gboolean    gtk_dialog_get_has_separator    (GtkDialog *dialog);
+void        gtk_dialog_set_default_response (GtkDialog *dialog,gint response_id);
+void        gtk_dialog_set_has_separator    (GtkDialog *dialog,gboolean setting);
+void        gtk_dialog_set_response_sensitive(GtkDialog *dialog,gint response_id,gboolean setting);
+gint        gtk_dialog_get_response_for_widget(GtkDialog *dialog,GtkWidget *widget);
+gboolean    gtk_alternative_dialog_button_order(GdkScreen *screen);
+void        gtk_dialog_set_alternative_button_order(GtkDialog *dialog,gint first_response_id,...);
+void        gtk_dialog_set_alternative_button_order_from_array(GtkDialog *dialog,gint n_params,gint *new_order);
