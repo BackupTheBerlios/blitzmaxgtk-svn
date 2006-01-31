@@ -1,0 +1,57 @@
+#!/bin/bash
+echo "makerelease: Automated release maker for the BlitzMax GTK-modules"
+echo "makerelease: (c) 2006 by phiker"
+if [ $# -eq 0 ]; then
+	echo "makerelease: No output file given"
+	echo "makerelease: Using default (gtk.mod.tar.gz)"
+	output="gtk.mod.tar.gz"
+else
+	output=$1
+fi
+echo "makerelease: Making backup"
+cp -r ../gtk.mod ../gtk.mod_copy
+if [ $? -ne 0 ]; then
+	echo "makerelease: cp returned $?, aborting"
+	exit 1
+fi
+rm ../gtk.mod_copy/makerelease
+if [ $? -ne 0 ]; then
+	echo "makerelease: rm returned $?, aborting"
+	exit 1
+fi
+echo "makerelease: Cleaning up"
+rm -r --force *.mod/*.i *.mod/*.a *.mod/.bmx *.tar.gz
+if [ $? -ne 0 ]; then
+	echo "makerelease: rm returned $?, aborting"
+	exit 1
+fi
+find -name ".svn" | xargs rm -r --force
+if [ $? -ne 0 ]; then
+	echo "makerelease: find, rm or xargs returned $?, aborting"
+	exit 1
+fi
+echo "makerelease: Making tarball"
+cd ..
+tar -czf $output gtk.mod
+if [ $? -ne 0 ]; then
+	echo "makerelease: tar returned $?, aborting"
+	exit 1
+fi
+echo "makerelease: Restoring backup"
+cp -r gtk.mod_copy/* gtk.mod
+if [ $? -ne 0 ]; then
+	echo "makerelease: cp returned $?, aborting"
+	exit 1
+fi
+echo "makerelease: Deleting backup"
+rm -rf gtk.mod_copy
+if [ $? -ne 0 ]; then
+	echo "makerelease: rm returned $?, aborting"
+	exit 1
+fi
+mv $output gtk.mod
+if [ $? -ne 0 ]; then
+	echo "makerelease: mv returned $?, aborting"
+	exit 1
+fi
+echo "makerelease: Done, your file is at $output"
