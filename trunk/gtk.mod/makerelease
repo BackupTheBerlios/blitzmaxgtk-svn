@@ -57,3 +57,18 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 echo "makerelease: Done, your file is at $output"
+echo "makerelease: Uploading to ftp.berlios.de"
+cd gtk.mod
+echo "anonymous" > ftpfile
+echo "fu@mail.com" >> ftpfile
+echo "cd incoming" >> ftpfile
+echo "send" >> ftpfile
+echo "$output" >> ftpfile
+echo "$output" >> ftpfile
+echo "quit" >> ftpfile
+ftp ftp.berlios.de < ftpfile
+if [ $? -ne 0 ]; then
+	echo "makerelease: ftp returned $?, exiting"
+	exit 1
+fi
+echo "makerelease: Done"
