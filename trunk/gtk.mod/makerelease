@@ -8,17 +8,14 @@ if [ $# -eq 0 ]; then
 else
 	output=$1
 fi
+cd ..
 echo "makerelease: Making backup"
-cp -r ../gtk.mod ../gtk.mod_copy
+cp -r gtk.mod gtk.mod_copy
 if [ $? -ne 0 ]; then
 	echo "makerelease: cp returned $?, aborting"
 	exit 1
 fi
-rm ../gtk.mod_copy/makerelease
-if [ $? -ne 0 ]; then
-	echo "makerelease: rm returned $?, aborting"
-	exit 1
-fi
+cd gtk.mod
 echo "makerelease: Cleaning up"
 rm -r --force *.mod/*.i *.mod/*.a *.mod/.bmx *.tar.gz
 if [ $? -ne 0 ]; then
@@ -38,13 +35,18 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 echo "makerelease: Restoring backup"
-cp -r gtk.mod_copy/* gtk.mod
+mv gtk.mod gtk.mod_old
+if [ $? -ne 0 ]; then
+	echo "makerelease: cp returned $?, aborting"
+	exit 1
+fi
+mv gtk.mod_copy gtk.mod
 if [ $? -ne 0 ]; then
 	echo "makerelease: cp returned $?, aborting"
 	exit 1
 fi
 echo "makerelease: Deleting backup"
-rm -rf gtk.mod_copy
+rm -rf gtk.mod_old
 if [ $? -ne 0 ]; then
 	echo "makerelease: rm returned $?, aborting"
 	exit 1
