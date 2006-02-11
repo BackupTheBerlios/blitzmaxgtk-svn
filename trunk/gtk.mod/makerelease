@@ -1,13 +1,43 @@
 #!/bin/bash
 echo "makerelease: Automated release maker for the BlitzMax GTK-modules"
 echo "makerelease: (c) 2006 by phiker"
+if [ $# -eq 1 -o $# -eq 2 ]; then
+	if [ $1 == "--skip" ]; then
+		usept=1
+		echo "makerelease: Skipping \"intro\""
+	else
+		usept=0
+		echo "makerelease: THIS IS ONLY FOR DEVELOPERS!"
+		echo "makerelease: You have 10 seconds to abort this script with <Strg+C>"
+		sleep 10
+	fi
+else
+	usept=0
+	echo "makerelease: THIS IS ONLY FOR DEVELOPERS!"
+	echo "makerelease: You have 10 seconds to abort this script with <Strg+C>"
+	sleep 10
+fi
+
 if [ $# -eq 0 ]; then
 	echo "makerelease: No output file given"
 	echo "makerelease: Using default (gtk.mod.tar.gz)"
 	output="gtk.mod.tar.gz"
 else
-	output=$1
+	if [ $# -eq 1 ]; then
+		if [ $usept -eq 1 ]; then
+			echo "makerelease: No output file given"
+			echo "makerelease: Using default (gtk.mod.tar.gz)"
+			output="gtk.mod.tar.gz"
+		else
+			output=$1
+		fi
+	fi
+	if [ $# -eq 2 ]; then
+		output=$2
+	fi
 fi
+
+echo $output
 cd ..
 echo "makerelease: Making backup"
 cp -r gtk.mod gtk.mod_copy
