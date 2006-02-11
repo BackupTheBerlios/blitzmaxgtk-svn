@@ -8,15 +8,6 @@ if [ $LOGNAME = "root" ]; then
 fi
 echo "install: Configuring gtk.binding"
 cd binding.mod
-echo "install: Running in full mode"
-echo "install: Compiling Scintilla"
-echo "install: TODO: Add Scintilla-support"
-# make -Cscintilla/gtk
-# retval=$?
-# if [ $retval -ne 0 ]; then
-#        echo "install: make returned $retval, exiting"
-#        exit 1
-# fi
 echo "install: Running perl config script"
 ./genconf
 retval=$?
@@ -45,7 +36,9 @@ if [ $retval -ne 0 ]; then
         echo "install: bmk returned $retval, exiting"
         exit 1
 fi
+cd ..
 echo "install: Configuring gtk.oop"
+cd oop.mod
 echo "install: Running bmk to make module"
 ../../../bin/bmk makemods gtk.oop
 retval=$?
@@ -54,4 +47,30 @@ if [ $retval -ne 0 ]; then
 	echo "install: bmk returned $retval, exiting"
 	exit 1
 fi
+cd ..
+echo "install: Configuring gtk.scintilla"
+cd scintilla.mod
+echo "install: Compiling Scintilla"
+make -Cscintilla/gtk
+retval=$?
+if [ $retval -ne 0 ]; then
+	echo "install: make returned $retval, exiting"
+	exit 1
+fi
+echo "install: Configuring"
+echo ./scintilla/bin/scintilla.a > config.bmx
+retval=$?
+if [ $retval -ne 0 ]; then
+	echo "install: echo returned $retval, exiting"
+	exit 1
+fi
+echo "install: Running bmk to make module"
+../../../bin/bmk makemods gtk.scintilla
+retval=$?
+if [ $retval -ne 0 ]; then
+	echo
+	echo "install: bmk returned $retval, exiting"
+	exit 1
+fi
+cd ..
 echo "install: Finished"
