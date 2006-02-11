@@ -90,7 +90,7 @@ Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkHandleBox/GtkHandleBox.b
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkToolItem/GtkToolItem.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkToolItem/GtkToolButton/GtkToolButton.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkToolItem/GtkToolButton/GtkMenuToolButton/GtkMenuToolButton.bmx"
-'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkToolItem/GtkToolButton/GtkToggleToolButton/GtkToggleToolButton.bmx"
+Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkToolItem/GtkToolButton/GtkToggleToolButton/GtkToggleToolButton.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkToolItem/GtkToolButton/GtkToggleToolButton/GtkRadioToolButton/GtkRadioToolButton.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkToolItem/GtkSeparatorToolItem/GtkSeparatorToolItem.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkScrolledWindow/GtkScrolledWindow.bmx"
