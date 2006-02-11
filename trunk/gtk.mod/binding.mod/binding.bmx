@@ -87,7 +87,7 @@ Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkComboBox/GtkComboBoxEntr
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkEventBox/GtkEventBox.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkExpander/GtkExpander.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkHandleBox/GtkHandleBox.bmx"
-'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkToolItem/GtkToolItem.bmx"
+Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkToolItem/GtkToolItem.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkToolItem/GtkToolButton/GtkToolButton.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkToolItem/GtkToolButton/GtkMenuToolButton/GtkMenuToolButton.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkToolItem/GtkToolButton/GtkToggleToolButton/GtkToggleToolButton.bmx"
