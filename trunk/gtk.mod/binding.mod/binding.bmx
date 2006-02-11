@@ -96,7 +96,7 @@ Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkToolItem/GtkSeparatorToo
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkScrolledWindow/GtkScrolledWindow.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkViewport/GtkViewport.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBox/GtkBox.bmx"
-'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBox/GtkButtonBox/GtkButtonBox.bmx"
+Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBox/GtkButtonBox/GtkButtonBox.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBox/GtkButtonBox/GtkHButtonBox/GtkHButtonBox.bmx"'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBox/GtkButtonBox/GtkVButtonBox/GtkVButtonBox.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBox/GtkVBox/GtkVBox.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBox/GtkVBox/GtkColorSelection/GtkColorSelection.bmx"
