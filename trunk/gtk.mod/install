@@ -58,7 +58,7 @@ if [ $retval -ne 0 ]; then
 	exit 1
 fi
 echo "install: Configuring"
-echo ./scintilla/bin/scintilla.a > config.bmx
+echo Import \"$(pwd)/scintilla/bin/scintilla.a\" > config.bmx
 retval=$?
 if [ $retval -ne 0 ]; then
 	echo "install: echo returned $retval, exiting"

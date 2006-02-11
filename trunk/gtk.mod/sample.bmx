@@ -1,4 +1,5 @@
 Framework GTK.OOP
+Import GTK.Scintilla
 GTKUtil.Init()
 GladeUtil.Init()
 
