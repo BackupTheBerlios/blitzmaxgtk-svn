@@ -39,6 +39,7 @@ Import "-lglib-2.0"
 
 
 
+
 Public
 
 
@@ -55,8 +56,8 @@ Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkBin.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkWindow.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkDialog.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkAboutDialog/GtkAboutDialog.bmx"
-'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkColorSelectionDialog/GtkColorSelectionDialog.bmx"
-'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkFileChooserDialog/GtkFileChooserDialog.bmx"
+Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkColorSelectionDialog/GtkColorSelectionDialog.bmx"
+Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkFileChooserDialog/GtkFileChooserDialog.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkFileSelection/GtkFileSelection.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkFontSelectionDialog/GtkFontSelectionDialog.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkInputDialog/GtkInputDialog.bmx"
