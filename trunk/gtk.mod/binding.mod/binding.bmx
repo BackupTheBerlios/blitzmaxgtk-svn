@@ -75,7 +75,7 @@ Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkButton/GtkFontButton/Gtk
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkButton/GtkOptionMenu/GtkOptionMenu.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkItem/GtkItem.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkItem/GtkMenuItem/GtkMenuItem.bmx"
-'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkItem/GtkMenuItem/GtkCheckMenuItem/GtkCheckMenuItem.bmx"
+Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkItem/GtkMenuItem/GtkCheckMenuItem/GtkCheckMenuItem.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkItem/GtkMenuItem/GtkCheckMenuItem/GtkRadioMenuItem/GtkRadioMenuItem.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkItem/GtkMenuItem/GtkImageMenuItem/GtkImageMenuItem.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkItem/GtkMenuItem/GtkSeparatorMenuItem/GtkSeparatorMenuItem.bmx"
