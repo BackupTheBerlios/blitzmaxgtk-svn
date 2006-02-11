@@ -6,6 +6,6 @@ Extern
 	Function gtk_file_selection_show_fileop_buttons(filesel:Byte Ptr)="gtk_file_selection_show_fileop_buttons"
 	Function gtk_file_selection_hide_fileop_buttons(filesel:Byte Ptr)="gtk_file_selection_hide_fileop_buttons"
 	Function gtk_file_selection_get_selections:Byte Ptr(filesel:Byte Ptr)="gtk_file_selection_get_selections"
-	Function gtk_file_selection_set_select_multiple(filesel:Byte Ptr,select_multiple:boolean)="gtk_file_selection_set_select_multiple"
-	Function gtk_file_selection_get_select_multiple:boolean(filesel:Byte Ptr)="gtk_file_selection_get_select_multiple"
+	Function gtk_file_selection_set_select_multiple(filesel:Byte Ptr,select_multiple:Byte)="gtk_file_selection_set_select_multiple"
+	Function gtk_file_selection_get_select_multiple:Byte(filesel:Byte Ptr)="gtk_file_selection_get_select_multiple"
 End Extern

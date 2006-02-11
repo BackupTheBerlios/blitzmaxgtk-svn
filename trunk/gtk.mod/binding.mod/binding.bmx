@@ -59,7 +59,7 @@ Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkAbou
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkColorSelectionDialog/GtkColorSelectionDialog.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkFileChooserDialog/GtkFileChooserDialog.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkFileSelection/GtkFileSelection.bmx"
-'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkFontSelectionDialog/GtkFontSelectionDialog.bmx"
+Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkFontSelectionDialog/GtkFontSelectionDialog.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkInputDialog/GtkInputDialog.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkDialog/GtkMessageDialog/GtkMessageDialog.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBin/GtkWindow/GtkPlug/GtkPlug.bmx"
