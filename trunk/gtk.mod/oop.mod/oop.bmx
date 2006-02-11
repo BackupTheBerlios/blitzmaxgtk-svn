@@ -6,9 +6,10 @@ ModuleInfo "License: GNU/GPL"
 ModuleInfo "Version: 0.01"
 ModuleInfo "Author: bigmichi and phiker"
 
-Import Pub.GTK
+Import GTK.Binding 
 
-Include "GTK.bmx"
+'Include "GTK.bmx"
+
 
 Include "GObject.bmx"
 Include "GtkObject.bmx"

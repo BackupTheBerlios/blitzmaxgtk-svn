@@ -17,17 +17,17 @@ if (!close(IN))
 my @spliced_output = split(/ /,$pkgval);
 my $tval;
 
-print "genconf: Opening gtk.bmx\n";
-if (!open(IN,"gtk.bmx"))
+print "genconf: Opening binding.bmx\n";
+if (!open(IN,"binding.bmx"))
 {
-	print "genconf: Couldn´t open gtk.bmx: $! $?\n";
+	print "genconf: Couldn´t open binding.bmx: $! $?\n";
 	exit 1;
 }
 
-print "genconf: Opening gtk_new.bmx\n";
-if (!open(OUT,">gtk_new.bmx"))
+print "genconf: Opening binding_new.bmx\n";
+if (!open(OUT,">binding_new.bmx"))
 {
-	print "genconf: Couldn´t open gtk_new.bmx for writing: $! $?\n";
+	print "genconf: Couldn´t open binding_new.bmx for writing: $! $?\n";
 	if (!close(IN))
 	{
 		print "genconf: Couldn´t close input stream: $! $?\n";

@@ -1,6 +1,7 @@
 Extern
 	Function gtk_label_new:Byte Ptr(str:Byte Ptr)="gtk_label_new"
-	'Function gtk_label_set_text(label:Byte Ptr,str:Byte Ptr)="gtk_label_set_text"
+	Function gtk_label_set_text(label:Byte Ptr,str:Byte Ptr)="gtk_label_set_text"
+	Function gtk_label_get_text:Byte Ptr(label:Byte Ptr)="gtk_label_get_text"
 	'Function gtk_label_set_attributes(label:Byte Ptr,attrs:Byte Ptr)="gtk_label_set_attributes"
 	'Function gtk_label_set_markup(label:Byte Ptr,str:Byte Ptr)="gtk_label_set_markup"
 	'Function gtk_label_set_markup_with_mnemonic(label:Byte Ptr,str:Byte Ptr)="gtk_label_set_markup_with_mnemonic"

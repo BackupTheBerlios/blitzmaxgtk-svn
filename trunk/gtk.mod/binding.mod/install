@@ -26,20 +26,20 @@ if [ $retval -ne 0 ]; then
         exit 1
 fi
 echo "install: Renaming files"
-mv gtk.bmx gtk_old.bmx
+mv binding.bmx binding_old.bmx
 retval=$?
 if [ $retval -ne 0 ]; then
         echo "install: mv returned $retval, exiting"
         exit 1
 fi
-mv gtk_new.bmx gtk.bmx
+mv binding_new.bmx binding.bmx
 retval=$?
 if [ $retval -ne 0 ]; then
         echo "install: mv returned $retval, exiting"
         exit 1
 fi
 echo "install: Running bmk to make module"
-../../../bin/bmk makemods pub.gtk
+../../../bin/bmk makemods gtk.binding
 retval=$?
 if [ $retval -ne 0 ]; then
         echo
