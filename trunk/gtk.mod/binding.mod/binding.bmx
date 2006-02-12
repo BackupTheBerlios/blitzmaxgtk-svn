@@ -100,7 +100,7 @@ Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBox/GtkButtonBox/GtkButtonBox.b
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBox/GtkButtonBox/GtkHButtonBox/GtkHButtonBox.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBox/GtkButtonBox/GtkVButtonBox/GtkVButtonBox.bmx"
 Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBox/GtkVBox/GtkVBox.bmx"
-'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBox/GtkVBox/GtkColorSelection/GtkColorSelection.bmx"
+Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBox/GtkVBox/GtkColorSelection/GtkColorSelection.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBox/GtkVBox/GtkFileChooserWidget/GtkFileChooserWidget.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBox/GtkVBox/GtkFontSelection/GtkFontSelection.bmx"
 'Include "GTK/GtkObject/GtkWidget/GtkContainer/GtkBox/GtkVBox/GtkGammaCurve/GtkGammaCurve.bmx"
