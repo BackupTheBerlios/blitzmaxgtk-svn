@@ -210,7 +210,7 @@ Function ExtractB:Byte(Text:String)
 	Local CSPos:Int = Instr(Text,",",CPos+1)
 	If CSPos = -1 Scream "Fehler beim Lesen der Farbe"
 	Local CTPos:Int = Instr(Text,",",CSPos+1)
-	If CTPos = -1 Scream "Fehler bemi Lesen der Farbe"
+	If CTPos = -1 Scream "Fehler beim Lesen der Farbe"
 	Return Byte(Mid(Text,CSPos+1,CTPos-CSPos-1))
 End Function
 
@@ -218,4 +218,5 @@ Function CloseTab(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 	Local TWidget:GtkWidget = New GtkWidget
 	TWidget.Handle = AdditionalData
 	Notebook.RemovePage(Notebook.GetPageOfWidget(TWidget))
+	TWidget.Destroy()
 End Function

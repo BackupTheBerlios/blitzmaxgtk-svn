@@ -17,5 +17,9 @@ Type GtkWidget Extends GtkObject
 
 	Method SetSizeRequest(Width:Int,Height:Int)
 		gtk_widget_set_size_request(Handle,Width,Height)
-	End method
+	End Method
+
+	Method Destroy()
+		gtk_widget_destroy(Handle)
+	End Method
 End Type
