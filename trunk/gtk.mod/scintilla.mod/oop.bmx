@@ -81,5 +81,37 @@ Type GtkScintilla Extends GtkWidget
 		Next
 		SetFontBGColor(32,ColorR,ColorG,ColorB)
 	End Method
+
+	Method SetMarginType(Num:Int,MType:Int)
+		scintilla_send_message(ScintillaHandle,SCI_SETMARGINTYPEN,Byte Ptr(num),Byte Ptr(MType))
+	End Method
+
+	Method GetMarginType:Int(Num:Int)
+		Return scintilla_send_message(ScintillaHandle,SCI_GETMARGINTYPEN,Byte Ptr(num),Null)
+	End Method
+
+	Method SetMarginMask(Num:Int,Mask:Int)
+		scintilla_send_message(ScintillaHandle,SCI_SETMARGINMASKN,Byte Ptr(Num), Byte Ptr(mask))
+	End Method
+
+	Method GetMarginMask:Int(Num:Int)
+		Return scintilla_send_message(ScintillaHandle,SCI_GETMARGINMASKN,Byte Ptr(num),Null)
+	End Method
+
+	Method SetMarginWidth(Num:Int,Width:Int)
+		scintilla_send_message(ScintillaHandle,SCI_SETMARGINWIDTHN,Byte Ptr(num),Byte Ptr(Width))
+	End Method
+
+	Method GetMarginWidth:Int(Num:Int)
+		Return scintilla_send_message(ScintillaHandle,SCI_GETMARGINWIDHTN,Byte Ptr(Num),Null)
+	End Method
+
+	Method SetMarginSensitive(Num:Int,Sensitive:Byte)
+		scintilla_send_message(ScintillaHandle,SCI_SETMARGINSENSITIVEN,Byte Ptr(Num),Byte Ptr(Sensitive))
+	End Method
+
+	Method GetMarginSensitive:Byte(Num:Int)
+		Return scintilla_send_message(ScintillaHandle,SCI_GETMARGINSENSITIVEN,Byte Ptr(Num),Null)
+	End method
 End Type
 			
