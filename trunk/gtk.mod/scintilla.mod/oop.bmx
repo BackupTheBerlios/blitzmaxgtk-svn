@@ -75,6 +75,12 @@ Type GtkScintilla Extends GtkWidget
 		Return ColorR + (ColorG Shl 8) + (ColorB Shl 16)
 	End Method
 
+	Method DecodeColor(tmpval:Int,ColorR:Byte Ptr,ColorG:Byte Ptr,ColorB:Byte Ptr)
+		ColorR[0] = (tmpval & $0000FF)
+		ColorG[0] = (tmpval & $00FF00) Shr 8
+		ColorB[0] = (tmpval & $FF0000) Shr 16
+	End Method
+
 	Method SetBGColor(ColorR:Byte,ColorG:Byte, ColorB:Byte)
 		For Local T:Int = 0 To 19
 			SetFontBGColor(T,ColorR,ColorG,ColorB)
@@ -113,5 +119,28 @@ Type GtkScintilla Extends GtkWidget
 	Method GetMarginSensitive:Byte(Num:Int)
 		Return scintilla_send_message(ScintillaHandle,SCI_GETMARGINSENSITIVEN,Byte Ptr(Num),Null)
 	End Method
+
+	Method SetCaretColor(ColorR:Byte,ColorG:Byte,ColorB:Byte)
+		scintilla_send_message(ScintillaHandle,SCI_SETCARETFORE,Byte Ptr(EncodeColor(ColorR,ColorG,ColorB)),Null)
+	End Method
+
+	Method GetCaretColor(ColorR:Byte Ptr,ColorG:Byte Ptr,ColorB:Byte Ptr)
+		DecodeColor(scintilla_send_message(ScintillaHandle,SCI_GETCARETFORE,Null,Null),ColorR,ColorG,ColorB)
+	End Method
+
+	Method SetCaretLineVisible(Visible:Byte)
+		scintilla_send_message(ScintillaHandle,SCI_SETCARETLINEVISIBLE,Byte Ptr(Visible),Null)
+	End Method
+
+	Method GetCaretLineVisible:Byte()
+		Return scintilla_send_message(ScintillaHandle,SCI_GETCARETLINEVISIBLE,Null,Null)
+	End Method
+
+	Method SetCaretLineBack(ColorR:Byte,ColorG:Byte,ColorB:Byte)
+		scintilla_send_message(ScintillaHandle,SCI_SETCARETLINEBACK,Byte Ptr(EncodeColor(ColorR,ColorG,ColorB)),Null)
+	End Method
+
+	Method GetCaretLineBack(ColorR:Byte Ptr,ColorG:Byte Ptr,ColorB:Byte Ptr)
+		DecodeColor(scintilla_send_message(ScintillaHandle,SCI_GETCARETLINEBACK,Null,Null),ColorR,ColorG,ColorB)
+	End Method
 End Type
-			

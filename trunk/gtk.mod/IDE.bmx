@@ -2,6 +2,7 @@ Strict
 ' IDE
 Framework GTK.OOP
 Import GTK.Scintilla
+Import BRL.StandardIO
 
 ' Initialization stuff
 GTKUtil.Init()
@@ -69,4 +70,7 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 	Scintilla.SetMarginSensitive(2,False)
 	Scintilla.SetFont(STYLE_LINENUMBER,"!helvetica",8,$FF,$FF,$FF)
 	Scintilla.SetFontBGColor(STYLE_LINENUMBER,$11,$44,$77)
+	Scintilla.SetCaretColor($AA,$AA,$AA)
+	Scintilla.SetCaretLineBack($00,$33,$66)
+	Scintilla.SetCaretLineVisible(True)
 End Function
