@@ -70,9 +70,26 @@ End Function
 
 Function AddNBPage()
 	Local TempScintilla:GtkScintilla = GtkScintilla.Create()
-	TempScintilla.SetSizeRequest(500,300)
-	Local TempLabel:GtkLabel = GtkLabel.Create("fu!!!")
-	Notebook.AppendPage(TempScintilla,TempLabel)
+	TempScintilla.SetSizeRequest(700,500)
+	Local TempLabel:GtkLabel = GtkLabel.Create("Dokument1")
+
+	Local LabelHBox:GtkHBox = GtkHBox.Create()
+		TempLabel.show()
+		LabelHBox.PackStart(TempLabel)
+	
+		Local CButton:GtkButton = GtkButton.Create()
+			CButton.show()
+			gtk_button_set_relief(CButton.Handle, 2)
+				
+				Local TImage:GtkImage = GtkImage.CreateFromIconName("gtk-close",0)
+				TImage.SetPixelSize(12)
+				Timage.Show()
+				CButton.add(TImage)
+
+			LabelHBox.PackEnd(CButton)
+
+
+	Notebook.AppendPage(TempScintilla,LabelHBox)
 	'Making active
 	Notebook.ShowAll()
 	Notebook.SetCurrentPage(Notebook.GetPagesCount()-1)
