@@ -12,4 +12,5 @@ Extern
 	Function gtk_dialog_get_response_for_widget:Int(dialog:Byte Ptr,widget:Byte Ptr)="gtk_dialog_get_response_for_widget"
 	Function gtk_alternative_dialog_button_order:Byte(screen:Byte Ptr)="gtk_alternative_dialog_button_order"
 	Function gtk_dialog_set_alternative_button_order_from_array(dialog:Byte Ptr,n_params:Int,new_order:Byte Ptr)="gtk_dialog_set_alternative_button_order_from_array"
+	Function gtk_dialog_get_type:Byte Ptr()
 End Extern

@@ -49,6 +49,9 @@ Else
 	Wend
 EndIf
 
+Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD("Test",Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-cancel",GTK_RESPONSE_CANCEL)
+dialog.Run()
+
 Rem 
 Local TestString:String = MakeColorString(123,234,11)
 Print TestString
