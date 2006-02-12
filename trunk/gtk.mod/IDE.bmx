@@ -28,7 +28,7 @@ Function IDEClose()
 End Function
 
 Function Scream(What:String)
-	Local TMR:Byte Ptr= gtk_message_dialog_new(Null,0,GTK_MESSAGE_WARNING,GTK_BUTTONS_OK,"test".ToCString())
+	Local TMR:Byte Ptr= gtk_message_dialog_new(Null,0,GTK_MESSAGE_WARNING,GTK_BUTTONS_OK,"Warnung".ToCString())
 	gtk_message_dialog_format_secondary_text(TMR,What.TocString())
 	gtk_dialog_run(TMR)
 	gtk_widget_destroy(TMR)
