@@ -29,3 +29,7 @@ Scintilla_Font_OPERATOR_FontColor:255,255,255
 Scintilla_Font_ERROR_FontName:!bitstream charter
 Scintilla_Font_ERROR_FontSize:12
 Scintilla_Font_ERROR_FontColor:255,0,0
+Scintilla_Font_LINENUMBER_FontName:!helvetica
+Scintilla_Font_LINENUMBER_FontSize:8
+Scintilla_Font_LINENUMBER_FontColor:255,255,255
+Scintilla_BGColor_LINENUMBER:0,80,110

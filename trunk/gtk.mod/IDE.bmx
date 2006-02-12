@@ -24,26 +24,21 @@ Notebook.Handle = Widget.Handle
 
 ' Load the keywords
 Global KeywordList:TList = New TList
-Global KeywordFile:String
-If FileType("/home/philipp") <> 2 Then KeywordFile = Settings.GetValue("Scintilla_KeywordsFile") Else KeywordFile = "/home/philipp/Stuff/BlitzMax/doc/bmxmods/commands.txt"
-If KeywordFile="" Then
+If Settings.GetValue("Scintilla_KeywordsFile")="" Then
 	Scream("Keyword-Datei nicht festgelegt")
 Else
-	Local KeyWordsFile:TStream = ReadStream(KeywordFile)
-	If KeyWordsFile = Null Then
-		Scream("Konnte Keywords-Datei nicht oeffnen")
-	Else
-		While Not KeyWordsFile.EOF()
-			Local ALine:String = KeyWordsFile.ReadLine()
-			For Local i:Int = 1 To Len(ALine)
-				Local TempChar:String = Mid(ALine,i,1)
-				If TempChar ="(" Or TempChar=":" Or TempChar="|" Or TempChar="$" Or TempChar="[" Or TempChar="%" Or TempChar="#" Or TempChar="!" Or TempChar=" " Then
-					KeywordList.addLast(Lower(Left(ALine,i-1)))
-					i = Len(ALine)+1
-				EndIf
-			Next
-		Wend
-	EndIf
+	Local KeyWordsFile:TStream = ReadStream(Settings.GetValue("Scintilla_KeywordsFile"))
+	If KeyWordsFile = Null Then Scream("Konnte Keywords-Datei nicht öffnen")
+	While Not KeyWordsFile.EOF()
+		Local ALine:String = KeyWordsFile.ReadLine()
+		For Local i:Int = 1 To Len(ALine)
+			Local TempChar:String = Mid(ALine,i,1)
+			If TempChar ="(" Or TempChar=":" Or TempChar="|" Or TempChar="$" Or TempChar="[" Or TempChar="%" Or TempChar="#" Or TempChar="!" Or TempChar=" " Then
+				KeywordList.addLast(Lower(Left(ALine,i-1)))
+				i = Len(ALine)+1
+			EndIf
+		Next
+	Wend
 EndIf
 
 Rem 
@@ -96,29 +91,37 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 	'Settings.SetValue("Scintilla_BGColor",MakeColorString($00,$50,$6E))
 	
 	Scintilla.SetFont(SCE_B_DEFAULT,Settings.GetValue("Scintilla_Font_Default_FontName"),Int(Settings.GetValue("Scintilla_Font_Default_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_Default_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_Default_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_Default_FontColor")))
-	'Settings.SetValue("Scintilla_Font_Default_FontName","!courier")
-	'Settings.SetValue("Scintilla_Font_Default_FontSize","10")
+	'Settings.SetValue("Scintilla_Font_Default_FontName","!bitstream charter")
+	'Settings.SetValue("Scintilla_Font_Default_FontSize","12")
 	'Settings.SetValue("Scintilla_Font_Default_FontColor",MakeColorString($EE,$EE,$EE))
 	Scintilla.SetFont(SCE_B_COMMENT,Settings.GetValue("Scintilla_Font_COMMENT_FontName"),Int(Settings.GetValue("Scintilla_Font_COMMENT_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_COMMENT_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_COMMENT_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_COMMENT_FontColor")))
-	'Settings.SetValue("Scintilla_Font_COMMENT_FontName","!courier")
-	'Settings.SetValue("Scintilla_Font_COMMENT_FontSize","10")
-	'Settings.SetValue("Scintilla_Font_COMMENT_FontColor",MakeColorString($00,$FF,$66))
+	'Settings.SetValue("Scintilla_Font_COMMENT_FontName","!bitstream charter")
+	'Settings.SetValue("Scintilla_Font_COMMENT_FontSize","12")
+	'Settings.SetValue("Scintilla_Font_COMMENT_FontColor",MakeColorString($B1,$E7,$EB))
 	Scintilla.SetFont(SCE_B_NUMBER,Settings.GetValue("Scintilla_Font_NUMBER_FontName"),Int(Settings.GetValue("Scintilla_Font_NUMBER_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_NUMBER_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_NUMBER_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_NUMBER_FontColor")))
-	'Settings.SetValue("Scintilla_Font_NUMBER_FontName","!courier")
-	'Settings.SetValue("Scintilla_Font_NUMBER_FontSize","10")
+	'Settings.SetValue("Scintilla_Font_NUMBER_FontName","!bitstream charter")
+	'Settings.SetValue("Scintilla_Font_NUMBER_FontSize","12")
 	'Settings.SetValue("Scintilla_Font_NUMBER_FontColor",MakeColorString($33,$FF,$DD))
 	Scintilla.SetFont(SCE_B_KEYWORD,Settings.GetValue("Scintilla_Font_KEYWORD_FontName"),Int(Settings.GetValue("Scintilla_Font_KEYWORD_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_KEYWORD_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_KEYWORD_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_KEYWORD_FontColor")))
-	'Settings.SetValue("Scintilla_Font_KEYWORD_FontName","!Lucida")
+	'Settings.SetValue("Scintilla_Font_KEYWORD_FontName","!bitstream charter")
 	'Settings.SetValue("Scintilla_Font_KEYWORD_FontSize","12")
 	'Settings.SetValue("Scintilla_Font_KEYWORD_FontColor",MakeColorString($FF,$FF,$00))
 	Scintilla.SetFont(SCE_B_STRING,Settings.GetValue("Scintilla_Font_STRING_FontName"),Int(Settings.GetValue("Scintilla_Font_STRING_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_STRING_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_STRING_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_STRING_FontColor")))
-	Settings.SetValue("Scintilla_Font_STRING_FontName","!Lucida")
-	Settings.SetValue("Scintilla_Font_STRING_FontSize","12")
-	Settings.SetValue("Scintilla_Font_STRING_FontColor",MakeColorString($00,$FF,$66))
-	Scintilla.SetFont(SCE_B_IDENTIFIER,"!courier",10,$FF,$FF,$FF)
-	Scintilla.SetFont(SCE_B_OPERATOR,"!courier",10,$FF,$FF,$FF)
-	Scintilla.SetFont(SCE_B_ERROR,"!courier",10,$FF,$00,$00)
-
+	'Settings.SetValue("Scintilla_Font_STRING_FontName","!bitstream charter")
+	'Settings.SetValue("Scintilla_Font_STRING_FontSize","12")
+	'Settings.SetValue("Scintilla_Font_STRING_FontColor",MakeColorString($00,$FF,$66))
+	Scintilla.SetFont(SCE_B_IDENTIFIER,Settings.GetValue("Scintilla_Font_IDENTIFIER_FontName"),Int(Settings.GetValue("Scintilla_Font_IDENTIFIER_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_IDENTIFIER_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_IDENTIFIER_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_IDENTIFIER_FontColor")))
+	'Settings.SetValue("Scintilla_Font_IDENTIFIER_FontName","!bitstream charter")
+	'Settings.SetValue("Scintilla_Font_IDENTIFIER_FontSize","12")
+	'Settings.SetValue("Scintilla_Font_IDENTIFIER_FontColor",MakeColorString($FF,$FF,$FF))
+	Scintilla.SetFont(SCE_B_OPERATOR,Settings.GetValue("Scintilla_Font_OPERATOR_FontName"),Int(Settings.GetValue("Scintilla_Font_OPERATOR_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_OPERATOR_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_OPERATOR_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_OPERATOR_FontColor")))
+	'Settings.SetValue("Scintilla_Font_OPERATOR_FontName","!bitstream charter")
+	'Settings.SetValue("Scintilla_Font_OPERATOR_FontSize","12")
+	'Settings.SetValue("Scintilla_Font_OPERATOR_FontColor",MakeColorString($FF,$FF,$FF))
+	Scintilla.SetFont(SCE_B_ERROR,Settings.GetValue("Scintilla_Font_ERROR_FontName"),Int(Settings.GetValue("Scintilla_Font_ERROR_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_ERROR_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_ERROR_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_ERROR_FontColor")))
+	'Settings.SetValue("Scintilla_Font_ERROR_FontName","!bitstream charter")
+	'Settings.SetValue("Scintilla_Font_ERROR_FontSize","12")
+	'Settings.SetValue("Scintilla_Font_ERROR_FontColor",MakeColorString($FF,$00,$00))
 
 	Scintilla.SetMarginType(0,SC_MARGIN_NUMBER)
 	Scintilla.SetMarginType(1,SC_MARGIN_SYMBOL)
@@ -135,8 +138,13 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 	Scintilla.SetMarginSensitive(0,False)
 	Scintilla.SetMarginSensitive(1,True)
 	Scintilla.SetMarginSensitive(2,False)
-	Scintilla.SetFont(STYLE_LINENUMBER,"!helvetica",8,$FF,$FF,$FF)
-	Scintilla.SetFontBGColor(STYLE_LINENUMBER,$00,$50,$6E)
+
+	Scintilla.SetFont(STYLE_LINENUMBER,Settings.GetValue("Scintilla_Font_LINENUMBER_FontName"),Int(Settings.GetValue("Scintilla_Font_LINENUMBER_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_LINENUMBER_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_LINENUMBER_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_LINENUMBER_FontColor")))
+	'Settings.SetValue("Scintilla_Font_LINENUMBER_FontName","!helvetica")
+	'Settings.SetValue("Scintilla_Font_LINENUMBER_FontSize","8")
+	'Settings.SetValue("Scintilla_Font_LINENUMBER_FontColor",MakeColorString($FF,$FF,$FF))
+	Scintilla.SetFontBGColor(STYLE_LINENUMBER,ExtractR(Settings.GetValue("Scintilla_BGColor_LINENUMBER")),ExtractG(Settings.GetValue("Scintilla_BGColor_LINENUMBER")),ExtractB(Settings.GetValue("Scintilla_BGColor_LINENUMBER")))
+	'Settings.SetValue("Scintilla_BGColor_LINENUMBER",MakeColorString($00,$50,$6E))
 	Scintilla.SetCaretColor($AA,$AA,$AA)
 	Scintilla.SetCaretLineBack($00,$33,$66)
 	Scintilla.SetCaretLineVisible(True)
