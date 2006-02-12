@@ -1,0 +1,86 @@
+<html><head><title>###SITETITLE###</title>
+  
+  <style type="text/css">
+   body{
+    margin:5px;
+    padding:0;
+    background-color:#ffffff;
+    font-family:Arial,Helvetica,sans-serif;
+   }
+   #title{
+    margin:1px;
+    padding-top:2px;
+    padding-left:3px;
+    height:20px;
+    background-color:#154e6b;
+    border:2px solid #000000;
+    font-size:14px;
+    font-weight:bold;
+    letter-spacing:2px;
+    color:#ffffff;
+   }
+   #content{
+    margin:1px;
+    padding:5px;
+    background-color:#eeeeee;
+    border:2px solid #000000;
+   }
+   .topic{
+    margin:1px;
+    padding-top:1px;
+    padding-left:3px;
+    height:16px;
+    background-color:#0d6c9d;
+    font-size:13px;
+    color:#ffffff;
+   }
+   .sub{
+    margin:1px;
+    margin-left:5px;
+    padding-top:1px;
+    padding-left:3px;
+    height:16px;
+    background-color:#4faddd;
+    font-size:13px;
+    color:#ffffff;
+   }
+   .subsub{
+    margin:1px;
+    margin-left:10px;
+    padding-top:1px;
+    padding-left:3px;
+    height:16px;
+    background-color:#6fcdfd;
+    font-size:13px;
+    color:#ffffff;
+   }
+  </style></head>
+ <body>
+  <div id="title">###SITETITLE###</div>
+  <div id="content">
+   <!-- IF FUNCTIONS -->
+   <div class="topic">###LANG_FUNCTIONS###</div>
+   <!-- BEGIN FUNCTION -->
+    <a name="###FUNCTIONNAME###"></a>
+    <div class="sub">###FUNCTIONNAME###<!-- IF RETURNTYPE -->, ###LANG_RETURNTYPE###: ###RETURNTYPE###<!-- END IF --></div>
+     <!-- IF PARAMETERS -->
+     <!-- BEGIN PARAMETER -->
+     <div class="subsub">###PARAMETER###, ###LANG_TYPE###: ###PARAMTYPE###<!-- IF DEFAULTVALUE -->, ###LANG_DEFAULTVAL###: ###DEFAULTVALUE###<!-- END IF --></div>
+     <!-- END PARAMETER -->
+     <!-- END IF -->
+   <!-- END FUNCTION -->
+   <!-- END IF -->
+   <!-- IF METHODS -->
+   <div class="topic">###LANG_METHODS###</div>
+   <!-- BEGIN METHOD -->
+    <a name="###METHODNAME###"></a>
+    <div class="sub">###METHODNAME###<!-- IF RETURNTYPE -->, ###LANG_RETURNTYPE###: ###RETURNTYPE###<!-- END IF --></div>
+     <!-- IF PARAMETERS -->
+     <!-- BEGIN PARAMETER -->
+     <div class="subsub">###PARAMETER###, ###LANG_TYPE###: ###PARAMTYPE###<!-- IF DEFAULTVALUE -->, ###LANG_DEFAULTVAL###: ###DEFAULTVALUE###<!-- END IF --></div>
+     <!-- END PARAMETER -->
+     <!-- END IF -->
+   <!-- END METHOD -->
+   <!-- END IF -->
+  </div>
+ </body></html>
