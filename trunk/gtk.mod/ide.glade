@@ -58,7 +58,6 @@
 		      <property name="visible">True</property>
 		      <property name="label">gtk-open</property>
 		      <property name="use_stock">True</property>
-		      <signal name="activate" handler="on_Öffnen1_activate" last_modification_time="Mon, 30 Jan 2006 14:43:28 GMT"/>
 		    </widget>
 		  </child>
 
@@ -67,7 +66,6 @@
 		      <property name="visible">True</property>
 		      <property name="label">gtk-save</property>
 		      <property name="use_stock">True</property>
-		      <signal name="activate" handler="on_speichern1_activate" last_modification_time="Mon, 30 Jan 2006 14:43:28 GMT"/>
 		    </widget>
 		  </child>
 
@@ -76,7 +74,6 @@
 		      <property name="visible">True</property>
 		      <property name="label">gtk-save-as</property>
 		      <property name="use_stock">True</property>
-		      <signal name="activate" handler="on_speichern_unter1_activate" last_modification_time="Mon, 30 Jan 2006 14:43:28 GMT"/>
 		    </widget>
 		  </child>
 
@@ -113,7 +110,6 @@
 		      <property name="visible">True</property>
 		      <property name="label">gtk-cut</property>
 		      <property name="use_stock">True</property>
-		      <signal name="activate" handler="on_ausschneiden1_activate" last_modification_time="Mon, 30 Jan 2006 14:43:28 GMT"/>
 		    </widget>
 		  </child>
 
@@ -122,7 +118,6 @@
 		      <property name="visible">True</property>
 		      <property name="label">gtk-copy</property>
 		      <property name="use_stock">True</property>
-		      <signal name="activate" handler="on_kopieren1_activate" last_modification_time="Mon, 30 Jan 2006 14:43:28 GMT"/>
 		    </widget>
 		  </child>
 
@@ -131,7 +126,6 @@
 		      <property name="visible">True</property>
 		      <property name="label">gtk-paste</property>
 		      <property name="use_stock">True</property>
-		      <signal name="activate" handler="on_einfügen1_activate" last_modification_time="Mon, 30 Jan 2006 14:43:28 GMT"/>
 		    </widget>
 		  </child>
 
@@ -140,7 +134,6 @@
 		      <property name="visible">True</property>
 		      <property name="label">gtk-delete</property>
 		      <property name="use_stock">True</property>
-		      <signal name="activate" handler="on_löschen1_activate" last_modification_time="Mon, 30 Jan 2006 14:43:28 GMT"/>
 		    </widget>
 		  </child>
 		</widget>
@@ -175,7 +168,6 @@
 		      <property name="visible">True</property>
 		      <property name="label" translatable="yes">_Info</property>
 		      <property name="use_underline">True</property>
-		      <signal name="activate" handler="on_info1_activate" last_modification_time="Mon, 30 Jan 2006 14:43:28 GMT"/>
 		    </widget>
 		  </child>
 		</widget>
