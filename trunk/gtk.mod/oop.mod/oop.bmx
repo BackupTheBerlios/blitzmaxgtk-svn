@@ -8,8 +8,10 @@ ModuleInfo "Author: bigmichi and phiker"
 
 Import GTK.Binding 
 
-'Include "GTK.bmx"
+Include "Glade.bmx"
+Include "GladeXML.bmx"
 
+Include "GTKUtil.bmx"
 
 Include "GObject.bmx"
 Include "GtkObject.bmx"
@@ -23,6 +25,9 @@ Include "GtkContainer.bmx"
 Include "GtkBox.bmx"
 Include "GtkHBox.bmx"
 Include "GtkVBox.bmx"
+Include "GtkPaned.bmx"
+Include "GtkHPaned.bmx"
+Include "GtkVPaned.bmx"
 Include "GtkBin.bmx"
 Include "GtkWindow.bmx"
 Include "GtkFixed.bmx"
@@ -36,6 +41,3 @@ Include "GtkNotebook.bmx"
 Include "GtkMisc.bmx"
 Include "GtkLabel.bmx"
 Include "GtkImage.bmx"
-Include "GladeUtil.bmx"
-Include "GladeXML.bmx"
-Include "GTKUtil.bmx"

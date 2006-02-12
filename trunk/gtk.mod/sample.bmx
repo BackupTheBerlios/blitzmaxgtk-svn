@@ -5,8 +5,13 @@ GladeUtil.Init()
 
 Local Application:GladeXML = GladeXML.Create("sample.glade")
 Application.ConnectSignals()
-Local SWidget:Byte Ptr = scintilla_new()
-Local SObject:Byte Ptr = g_type_check_instance_cast(SWidget,scintilla_get_type())
+
+Local Scintilla:GtkScintilla = GtkScintilla.Create()
+Scintilla.Show()
+Local Widget:GtkWidget = Application.GetWidget("main_vbox")
+Local VBox:GtkVBox = New GtkVBox
+VBox.Handle = Widget.Handle
+VBox.PackEnd(Scintilla)
 
 GTKUtil.Main()
 
@@ -17,10 +22,3 @@ End Function
 Function on_main_window_destroy_event()
 	GTKUtil.Quit()
 End Function
-
-Extern
-	Function scintilla_new:Byte Ptr()
-	Function scintilla_get_type:Byte Ptr()
-	Function scintilla_send_message(Scintilla:Byte Ptr,uno:Int,due:Byte Ptr,tre:Byte Ptr)
-	Function g_type_check_instance_cast:Byte Ptr(instance:Byte Ptr,gtype:Byte Ptr)
-End Extern
