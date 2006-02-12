@@ -1,0 +1,15 @@
+DocTitle = Documentation
+Types = Types
+Methods = Methods
+Functions = Functions
+ReturnType = Returntype
+DefaultValue = Default value
+Type = Type
+Infos = Infos
+Value = Value
+ModuleInfoDescription = Description
+ModuleInfoVersion = Version
+ModuleInfoAuthor = Author
+ModuleInfoName = Name
+ModuleInfoLicense = License
+Description = Description
