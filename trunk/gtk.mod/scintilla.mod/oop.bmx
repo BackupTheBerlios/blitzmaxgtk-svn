@@ -39,12 +39,12 @@ Type GtkScintilla Extends GtkWidget
 	Method SetKeywordList(KeywordSet:Int,KeywordList:TList)
 		Local KString:String
 		For Local TempString:String = EachIn KeywordList
-			KString :+ TempString
+			KString :+ TempString + " "
 		Next
 		SetKeywords(KeywordSet,KString)
 	End Method
 
-	Method SetFont(ForWhat:Int,Name:String="",Size:Int=-1,ColorR:Int=-1,ColorB:Int=-1,ColorG:Int=-1,Bold:Byte=2,Underlined:Byte=2,Italic:Byte=2)
+	Method SetFont(ForWhat:Int,Name:String="",Size:Int=-1,ColorR:Int=-1,ColorG:Int=-1,ColorB:Int=-1,Bold:Byte=2,Underlined:Byte=2,Italic:Byte=2)
 		If Name<>""  Then
 			scintilla_send_message(ScintillaHandle,SCI_STYLESETFONT,Byte Ptr(ForWhat),Name.ToCString())
 		EndIf
