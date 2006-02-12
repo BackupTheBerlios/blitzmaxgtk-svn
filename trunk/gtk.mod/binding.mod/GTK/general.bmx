@@ -26,3 +26,13 @@ Extern
 
 
 End Extern
+
+'Enumeration GtkPackType
+Const GTK_PACK_START:Byte = 0
+Const GTK_PACK_END:Byte = 1
+
+'Enumeration GtkPositionType
+Const GTK_POS_LEFT:Byte = 0
+Const GTK_POS_RIGHT:Byte = 1
+Const GTK_POS_TOP:Byte = 2
+Const GTK_POS_BOTTOM:Byte = 3
