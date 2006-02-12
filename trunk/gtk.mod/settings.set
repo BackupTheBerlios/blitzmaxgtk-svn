@@ -33,3 +33,8 @@ Scintilla_Font_LINENUMBER_FontName:!helvetica
 Scintilla_Font_LINENUMBER_FontSize:8
 Scintilla_Font_LINENUMBER_FontColor:255,255,255
 Scintilla_BGColor_LINENUMBER:0,80,110
+Scintilla_CaretColor:170,170,170
+Scintilla_CaretBGColor:48,51,102
+Scintilla_CaretVisible:1
+Scintilla_SelectionBGColor:170,170,170
+Scintilla_TabWidth:4
