@@ -24,10 +24,10 @@ Notebook.Handle = Widget.Handle
 
 ' Load the keywords
 Global KeywordList:TList = New TList
-If Settings.GetValue("KeywordsFile")="" Then
+If Settings.GetValue("Scintilla_KeywordsFile")="" Then
 	Scream("Keyword-Datei nicht festgelegt")
 Else
-	Local KeyWordsFile:TStream = ReadStream(Settings.GetValue("KeywordsFile"))
+	Local KeyWordsFile:TStream = ReadStream(Settings.GetValue("Scintilla_KeywordsFile"))
 	While Not KeyWordsFile.EOF()
 		Local ALine:String = KeyWordsFile.ReadLine()
 		For Local i:Int = 1 To Len(ALine)
@@ -121,6 +121,8 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 	Scintilla.SetCaretLineVisible(True)
 	Scintilla.SetSelectionBack($AA,$AA,$AA)
 	Scintilla.SetTabWidth(4)
+
+	Scintilla.SetKeywordList(0,KeywordList)
 End Function
 
 Function MakeColorString:String(ColorR:Byte,ColorG:Byte,ColorB:Byte)
