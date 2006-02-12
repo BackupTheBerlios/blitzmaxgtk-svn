@@ -98,7 +98,7 @@ Else
 	ModtoDoc = Input$("Please enter the modfile to doc (full path) >")
 EndIf
 
-Local PrgDir:String = ExtractDir(AppArgs[0])
+Local PrgDir:String = AppDir
 
 Local BaseDir:String = ExtractDir(ModtoDoc)
 Print "Base path: " + BaseDir
