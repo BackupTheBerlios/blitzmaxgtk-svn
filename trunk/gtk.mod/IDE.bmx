@@ -5,6 +5,14 @@ Import GTK.Scintilla
 Import BRL.StandardIO
 Import "settings.bmx"
 
+Type TDocument
+	Field Name:String
+	Field File:String
+End Type
+
+'Create document list
+Global DocumentList:TList = New TList
+
 'Load Settings
 Global Settings:TSettings = New TSettings
 Settings.LoadAllSettings()
@@ -87,6 +95,8 @@ Function AddNBPage()
 				CButton.add(TImage)
 
 			LabelHBox.PackEnd(CButton)
+		
+			CButton.SignalConnect("clicked",CloseTab,TempScintilla.Handle)
 
 
 	Notebook.AppendPage(TempScintilla,LabelHBox)
@@ -202,4 +212,10 @@ Function ExtractB:Byte(Text:String)
 	Local CTPos:Int = Instr(Text,",",CSPos+1)
 	If CTPos = -1 Scream "Fehler bemi Lesen der Farbe"
 	Return Byte(Mid(Text,CSPos+1,CTPos-CSPos-1))
+End Function
+
+Function CloseTab(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
+	Local TWidget:GtkWidget = New GtkWidget
+	TWidget.Handle = AdditionalData
+	Notebook.RemovePage(Notebook.GetPageOfWidget(TWidget))
 End Function
