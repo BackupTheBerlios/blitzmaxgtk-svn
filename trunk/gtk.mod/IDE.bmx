@@ -3,6 +3,11 @@ Strict
 Framework GTK.OOP
 Import GTK.Scintilla
 Import BRL.StandardIO
+Import "settings.bmx"
+
+'Load Settings
+Global Settings:TSettings = New TSettings
+Settings.LoadAllSettings()
 
 ' Initialization stuff
 GTKUtil.Init()
@@ -25,6 +30,7 @@ GTKUtil.Main()
 
 ' Function to close the editor, called in several places
 Function IDEClose()
+	Settings.SaveAllSettings()
 	GTKUtil.Quit()
 End Function
 

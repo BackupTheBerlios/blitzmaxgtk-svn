@@ -1,3 +1,7 @@
+Import BRL.Linkedlist
+Import BRL.Filesystem
+Import BRL.Retro
+
 Type TSetting
 	Field Name:String
 	Field Value:String
