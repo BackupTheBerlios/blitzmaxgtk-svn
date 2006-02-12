@@ -54,9 +54,15 @@ End Function
 
 Function SetupScintilla(Scintilla:GtkScintilla)
 	Scintilla.ClearStyle()
-	Scintilla.SetLexer(SCLEX_BLITZMAX)
-	Scintilla.SetStyleBits(STYLE_LINENUMBER)
+
+	Scintilla.SetLexer(Int(Settings.GetValue("Scintilla_Lexer")))
+	'Settings.SetValue("Scintilla_Lexer",SCLEX_BLITZMAX)
+
+	Scintilla.SetStyleBits(Int(Settings.GetValue("Scintilla_StyleBits")))
+	'Settings.SetValue("Scintilla_StyleBits",STYLE_LINENUMBER)	
+
 	Scintilla.SetBGColor($22,$55,$88)
+	
 	Scintilla.SetFont(SCE_B_DEFAULT,"!courier",10,$EE,$EE,$EE)
 	Scintilla.SetFont(SCE_B_COMMENT,"!courier",10,$FF,$EE,$00)
 	Scintilla.SetFont(SCE_B_NUMBER,"!courier",10,$33,$FF,$DD)
