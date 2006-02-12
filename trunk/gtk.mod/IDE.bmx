@@ -79,4 +79,6 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 	Scintilla.SetCaretColor($AA,$AA,$AA)
 	Scintilla.SetCaretLineBack($00,$33,$66)
 	Scintilla.SetCaretLineVisible(True)
+	Scintilla.SetSelectionBack($AA,$AA,$AA)
+	Scintilla.SetTabWidth(4)
 End Function

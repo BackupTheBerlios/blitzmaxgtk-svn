@@ -143,4 +143,28 @@ Type GtkScintilla Extends GtkWidget
 	Method GetCaretLineBack(ColorR:Byte Ptr,ColorG:Byte Ptr,ColorB:Byte Ptr)
 		DecodeColor(scintilla_send_message(ScintillaHandle,SCI_GETCARETLINEBACK,Null,Null),ColorR,ColorG,ColorB)
 	End Method
+
+	Method SetSelectionFore(ColorR:Byte,ColorG:Byte,ColorB:Byte)
+		scintilla_send_message(ScintillaHandle,SCI_SETSELFORE,Byte Ptr(True),Byte Ptr(EncodeColor(ColorR,ColorG,ColorB)))
+	End Method
+
+	Method SetSelectionBack(ColorR:Byte,ColorG:Byte,ColorB:Byte)
+		scintilla_send_message(ScintillaHandle,SCI_SETSELBACK,Byte Ptr(True),Byte Ptr(EncodeColor(ColorR,ColorG,ColorB)))
+	End Method
+
+	Method DisableSelectionFore()
+		scintilla_send_message(ScintillaHandle,SCI_SETSELFORE,Byte Ptr(False),Null)
+	End Method
+
+	Method DisableSelectionBack()
+		scintilla_send_message(ScintillaHandle,SCI_SETSELBACK,Byte Ptr(False),Null)
+	End Method
+
+	Method SetTabWidth(Width:Int)
+		scintilla_send_message(ScintillaHandle,SCI_SETTABWIDTH,Byte Ptr(Width),Null)
+	End Method
+
+	Method GetTabWidth(Width:Int)
+		Return scintilla_send_message(ScintillaHandle,SCI_GETTABWIDTH,Null,Null)
+	End Method
 End Type
