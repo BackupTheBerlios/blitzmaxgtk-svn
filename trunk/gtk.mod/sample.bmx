@@ -1,7 +1,7 @@
 Framework GTK.OOP
 Import GTK.Scintilla
 GTKUtil.Init()
-GladeUtil.Init()
+Glade.Init()
 
 Local Application:GladeXML = GladeXML.Create("sample.glade")
 Application.ConnectSignals()
