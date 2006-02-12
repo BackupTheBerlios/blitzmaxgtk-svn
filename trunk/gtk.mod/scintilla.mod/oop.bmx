@@ -103,7 +103,7 @@ Type GtkScintilla Extends GtkWidget
 	End Method
 
 	Method GetMarginWidth:Int(Num:Int)
-		Return scintilla_send_message(ScintillaHandle,SCI_GETMARGINWIDHTN,Byte Ptr(Num),Null)
+		Return scintilla_send_message(ScintillaHandle,SCI_GETMARGINWIDTHN,Byte Ptr(Num),Null)
 	End Method
 
 	Method SetMarginSensitive(Num:Int,Sensitive:Byte)
@@ -112,6 +112,6 @@ Type GtkScintilla Extends GtkWidget
 
 	Method GetMarginSensitive:Byte(Num:Int)
 		Return scintilla_send_message(ScintillaHandle,SCI_GETMARGINSENSITIVEN,Byte Ptr(Num),Null)
-	End method
+	End Method
 End Type
 			
