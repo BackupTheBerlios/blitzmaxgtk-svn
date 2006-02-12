@@ -22,6 +22,29 @@ Local Widget:GtkWidget = Application.GetWidget("notebook3")
 Global Notebook:GtkNotebook = New GtkNotebook
 Notebook.Handle = Widget.Handle
 
+' Load the keywords
+Global KeywordList:TList = New TList
+If Settings.GetValue("KeywordsFile")="" Then
+	Scream("Keyword-Datei nicht festgelegt")
+Else
+	Local KeyWordsFile:TStream = ReadStream(Settings.GetValue("KeywordsFile"))
+	While Not KeyWordsFile.EOF()
+		Local ALine:String = KeyWordsFile.ReadLine()
+		For Local i:Int = 1 To Len(ALine)
+			Local TempChar:String = Mid(ALine,i,1)
+			If TempChar ="(" Or TempChar=":" Or TempChar="|" Or TempChar="$" Or TempChar="[" Or TempChar="%" Or TempChar="#" Or TempChar="!" Or TempChar=" " Then
+				KeywordList.addLast(Lower(Left(ALine,i-1)))
+				i = Len(ALine)+1
+			EndIf
+		Next
+	Wend
+EndIf
+
+Local TestString:String = MakeColorString(123,234,11)
+Print TestString
+Print ExtractR(TestString)
+Print ExtractG(TestString)
+Print ExtractB(TestString)
 ' Adding the first page
 AddNBPage()
 
@@ -98,4 +121,32 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 	Scintilla.SetCaretLineVisible(True)
 	Scintilla.SetSelectionBack($AA,$AA,$AA)
 	Scintilla.SetTabWidth(4)
+End Function
+
+Function MakeColorString:String(ColorR:Byte,ColorG:Byte,ColorB:Byte)
+	Return ColorR + "," + ColorG + "," + ColorB
+End Function
+
+Function ExtractR:Byte(Text:String)
+	Local CPos:Int = Instr(Text,",")
+	If CPos = -1 Scream "Fehler beim Lesen der Farbe"
+	Return Byte(Left(Text,CPos-1))
+End Function
+
+Function ExtractG:Byte(Text:String)
+	Local CPos:Int = Instr(Text,",")
+	If CPos = -1 Scream "Fehler beim Lesen der Farbe"
+	Local CSPos:Int = Instr(Text,",",CPos+1)
+	If CSPos = -1 Scream "Fehler beim Lesen der Farbe"
+	Return Byte(Mid(Text,CPos+1,CSPos-CPos-1))
+End Function
+
+Function ExtractB:Byte(Text:String)
+	Local CPos:Int = Instr(Text,",")
+	If CPos = -1 Scream "Fehler beim Lesen der Farbe"
+	Local CSPos:Int = Instr(Text,",",CPos+1)
+	If CSPos = -1 Scream "Fehler beim Lesen der Farbe"
+	Local CTPos:Int = Instr(Text,",",CSPos+1)
+	If CTPos = -1 Scream "Fehler bemi Lesen der Farbe"
+	Return Byte(Mid(Text,CSPos+1,CTPos-CSPos-1))
 End Function
