@@ -41,11 +41,14 @@ Else
 	Wend
 EndIf
 
+Rem 
 Local TestString:String = MakeColorString(123,234,11)
 Print TestString
 Print ExtractR(TestString)
 Print ExtractG(TestString)
 Print ExtractB(TestString)
+End Rem
+
 ' Adding the first page
 AddNBPage()
 
@@ -84,10 +87,14 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 	Scintilla.SetStyleBits(Int(Settings.GetValue("Scintilla_StyleBits")))
 	'Settings.SetValue("Scintilla_StyleBits",STYLE_LINENUMBER)	
 
-
-	Scintilla.SetBGColor($22,$55,$88)
+	Scintilla.SetBGColor(ExtractR(Settings.GetValue("Scintilla_BGColor")),ExtractG(Settings.GetValue("Scintilla_BGColor")),ExtractB(Settings.GetValue("Scintilla_BGColor")))
+	'Settings.SetValue("Scintilla_BGColor",MakeColorString($22,$55,$88))
 	
-	Scintilla.SetFont(SCE_B_DEFAULT,"!courier",10,$EE,$EE,$EE)
+	Scintilla.SetFont(SCE_B_DEFAULT,Settings.GetValue("Scintilla_Font_Default_FontName"),Int(Settings.GetValue("Scintilla_Font_Default_FontSize")),$EE,$EE,$EE)
+	Settings.SetValue("Scintilla_Font_Default_FontName","!courier")
+	Settings.SetValue("Scintilla_Font_Default_FontSize","10")
+	Settings.SetValue("Scintilla_Font_Default_FontColor",MakeColorString($EE,$EE,$EE))
+
 	Scintilla.SetFont(SCE_B_COMMENT,"!courier",10,$FF,$EE,$00)
 	Scintilla.SetFont(SCE_B_NUMBER,"!courier",10,$33,$FF,$DD)
 	Scintilla.SetFont(SCE_B_KEYWORD,"!courier",10,$AA,$FF,$FF)
@@ -97,12 +104,9 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 	Scintilla.SetFont(SCE_B_ERROR,"!courier",10,$FF,$00,$00)
 
 
-	Scintilla.SetMarginType(0,Int(Settings.GetValue("Scintilla_MarginType0")))
-	'Settings.SetValue("Scintilla_MarginType0",SC_MARGIN_NUMBER)
-	Scintilla.SetMarginType(1,Int(Settings.GetValue("Scintilla_MarginType1")))
-	'Settings.SetValue("Scintilla_MarginType1",SC_MARGIN_SYMBOL)
-	Scintilla.SetMarginMask(1,Int(Settings.GetValue("Scintilla_MarginMask1")))
-	'Settings.SetValue("Scintilla_MarginMask1",SC_MASK_FOLDERS)
+	Scintilla.SetMarginType(0,SC_MARGIN_NUMBER)
+	Scintilla.SetMarginType(1,SC_MARGIN_SYMBOL)
+	Scintilla.SetMarginMask(1,SC_MASK_FOLDERS)
 
 
 	Scintilla.SetMarginWidth(0,Int(Settings.GetValue("Scintilla_MarginWidth0")))
