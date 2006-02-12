@@ -57,9 +57,9 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 
 	Scintilla.SetLexer(Int(Settings.GetValue("Scintilla_Lexer")))
 	'Settings.SetValue("Scintilla_Lexer",SCLEX_BLITZMAX)
-
 	Scintilla.SetStyleBits(Int(Settings.GetValue("Scintilla_StyleBits")))
 	'Settings.SetValue("Scintilla_StyleBits",STYLE_LINENUMBER)	
+
 
 	Scintilla.SetBGColor($22,$55,$88)
 	
@@ -71,12 +71,23 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 	Scintilla.SetFont(SCE_B_IDENTIFIER,"!courier",10,$FF,$FF,$FF)
 	Scintilla.SetFont(SCE_B_OPERATOR,"!courier",10,$FF,$FF,$FF)
 	Scintilla.SetFont(SCE_B_ERROR,"!courier",10,$FF,$00,$00)
-	Scintilla.SetMarginType(0,SC_MARGIN_NUMBER)
-	Scintilla.SetMarginType(1,SC_MARGIN_SYMBOL)
-	Scintilla.SetMarginMask(1,SC_MASK_FOLDERS)
-	Scintilla.SetMarginWidth(0,35)
-	Scintilla.SetMarginWidth(1,20)
-	Scintilla.SetMarginWidth(2,0)
+
+
+	Scintilla.SetMarginType(0,Int(Settings.GetValue("Scintilla_MarginType0")))
+	'Settings.SetValue("Scintilla_MarginType0",SC_MARGIN_NUMBER)
+	Scintilla.SetMarginType(1,Int(Settings.GetValue("Scintilla_MarginType1")))
+	'Settings.SetValue("Scintilla_MarginType1",SC_MARGIN_SYMBOL)
+	Scintilla.SetMarginMask(1,Int(Settings.GetValue("Scintilla_MarginMask1")))
+	'Settings.SetValue("Scintilla_MarginMask1",SC_MASK_FOLDERS)
+
+
+	Scintilla.SetMarginWidth(0,Int(Settings.GetValue("Scintilla_MarginWidth0")))
+	'Settings.SetValue("Scintilla_MarginWidth0",35)
+	Scintilla.SetMarginWidth(1,Int(Settings.GetValue("Scintilla_MarginWidth1")))
+	'Settings.SetValue("Scintilla_MarginWidth1",20)
+	Scintilla.SetMarginWidth(2,Int(Settings.GetValue("Scintilla_MarginWidth2")))
+	'Settings.SetValue("Scintilla_MarginWidth2",0)
+
 	Scintilla.SetMarginSensitive(0,False)
 	Scintilla.SetMarginSensitive(1,True)
 	Scintilla.SetMarginSensitive(2,False)
