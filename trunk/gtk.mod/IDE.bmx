@@ -28,6 +28,7 @@ If Settings.GetValue("Scintilla_KeywordsFile")="" Then
 	Scream("Keyword-Datei nicht festgelegt")
 Else
 	Local KeyWordsFile:TStream = ReadStream(Settings.GetValue("Scintilla_KeywordsFile"))
+	If KeyWordsFile = Null Then Scream("Konnte Keywords-Datei nicht öffnen")
 	While Not KeyWordsFile.EOF()
 		Local ALine:String = KeyWordsFile.ReadLine()
 		For Local i:Int = 1 To Len(ALine)
