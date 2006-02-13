@@ -11,6 +11,12 @@ Type GladeXML
 		Return TempXML
 	End Function
 
+	Function CreateFromHandle:GladeXML(Handle:Byte Ptr)
+		Local TempXML:GladeXML = New GladeXML
+		TempXML.mHandle = Handle
+		Return TempXML
+	End Function
+
 	Method ConnectSignals()
 		glade_xml_signal_autoconnect(mHandle)
 	End Method

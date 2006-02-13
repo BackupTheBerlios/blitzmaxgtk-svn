@@ -5,6 +5,12 @@ Type GtkLabel Extends GtkMisc
 		Return TempLabel
 	End Function
 
+	Function CreateFromHandle:GtkLabel(Handle:Byte Ptr)
+		Local TempLabel:GtkLabel = New GtkLabel
+		TempLabel.Handle = Handle
+		Return TempLabel
+	End Function
+	
 	Method SetText(Text:String)
 		gtk_label_set_text(Handle,Text.ToCString())
 	End Method

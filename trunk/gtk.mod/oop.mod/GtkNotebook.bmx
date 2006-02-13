@@ -5,6 +5,12 @@ Type GtkNotebook Extends GtkContainer
 		Return TempNotebook
 	End Function
 
+	Function CreateFromHandle:GtkNotebook(Handle:Byte Ptr)
+		Local TempNotebook:GtkNotebook = New GtkNotebook
+		TempNotebook.Handle = Handle
+		Return TempNotebook
+	End Function
+
 	Method AppendPage(Child:GtkWidget,Label:GtkWidget=Null)
 		Local LHandle:Byte Ptr = Null
 		If Label <> Null Then LHandle = Label.Handle

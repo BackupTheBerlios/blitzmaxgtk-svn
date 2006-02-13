@@ -5,6 +5,12 @@ Type GtkEntry Extends GtkWidget
 		Return TempEntry
 	End Function
 
+	Function CreateFromHandle:GtkEntry(Handle:Byte Ptr)
+		Local TempEntry:GtkEntry = New GtkEntry
+		TempEntry.Handle = Handle
+		Return TempEntry
+	End Function
+
 	Method SetMaxLength(MaxLength:Int)
 		gtk_entry_set_max_length(Handle,MaxLength)
 	End Method
@@ -15,5 +21,5 @@ Type GtkEntry Extends GtkWidget
 
 	Method SetVisibility(Visible:Byte)
 		gtk_entry_set_visibility(Handle,Visible)
-	End method
+	End Method
 End Type

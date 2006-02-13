@@ -4,6 +4,12 @@ Type GtkColorButton Extends GtkButton
 		TempButton.Handle = gtk_color_button_new()
 		Return TempButton
 	End Function
+
+	Function CreateFromHandle:GtkColorButton(Handle:Byte Ptr)
+		Local TempButton:GtkColorButton = New GtkColorButton
+		TempButton.Handle = Handle
+		Return TempButton
+	End Function
 	
 	Method SetUseAlpha(Use:Byte)
 		gtk_color_button_set_use_alpha(Handle,Use)

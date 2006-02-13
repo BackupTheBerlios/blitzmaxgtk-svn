@@ -1,3 +1,5 @@
+Strict
+
 Module GTK.OOP
 
 ModuleInfo "Name: GTK.OOP"

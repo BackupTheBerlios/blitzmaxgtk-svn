@@ -1,8 +1,13 @@
 Type GtkButton Extends GtkBin
-	
 	Function Create:GtkButton()
 		Local TempButton:GtkButton = New GtkButton
 		TempButton.Handle = gtk_button_new()
+		Return TempButton
+	End Function
+
+	Function CreateFromHandle:GtkButton(Handle:Byte Ptr)
+		Local TempButton:GtkButton = New GtkButton
+		TempButton.Handle = Handle
 		Return TempButton
 	End Function
 		

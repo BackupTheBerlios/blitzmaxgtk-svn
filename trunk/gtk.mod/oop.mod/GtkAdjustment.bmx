@@ -5,6 +5,12 @@ Type GtkAdjustment Extends GtkObject
 		Return TempAdj
 	End Function
 
+	Function CreateFromHandle:GtkAdjustment(Handle:Byte Ptr)
+		Local TempAdj:GtkAdjustment = New GtkAdjustment
+		TempAdj.Handle = Handle
+		Return TempAdj
+	End Function
+
 	Method SetValue(Value:Double)
 		gtk_adjustment_set_value(Handle,Value)
 	End Method
