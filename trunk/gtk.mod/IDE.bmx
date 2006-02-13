@@ -30,6 +30,13 @@ Local Widget:GtkWidget = Application.GetWidget("notebook3")
 Global Notebook:GtkNotebook = New GtkNotebook
 Notebook.Handle = Widget.Handle
 
+Local TmpWidget:GtkWidget = Application.GetWidget("frmOptions")
+Global frmOptions:GtkWindow = New GtkWindow
+frmOptions.Handle = TmpWidget.Handle
+TmpWidget = Null
+
+
+
 ' Load the keywords
 Global KeywordList:TList = New TList
 If Settings.GetValue("Scintilla_KeywordsFile")="" Then
@@ -231,4 +238,8 @@ Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 	EndIf
 	
 	dialog.Destroy()
+End Function
+
+Function MIEinstellungenClick()
+	frmOptions.show()
 End Function
