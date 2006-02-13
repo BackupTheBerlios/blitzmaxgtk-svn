@@ -106,8 +106,20 @@ Function AddNBPage()
 	SetupScintilla(TempScintilla)
 End Function
 
+Function UpdateAllScintillas()
+	Print "upall"
+	Print "c: " + Notebook.GetPagesCount()
+	For Local i:Int = 0 To Notebook.GetPagesCount()-1
+		SetupScintilla(GtkScintilla.CreateFromHandle(Notebook.GetPage(i)))
+	Next
+End Function
+
 Function SetupScintilla(Scintilla:GtkScintilla)
-	Scintilla.ClearStyle()
+	If Scintilla=Null Then
+		Print "something strange happened"
+		Return
+	EndIf
+	Print "setupscin"
 
 	Scintilla.SetLexer(Int(Settings.GetValue("Scintilla_Lexer")))
 	'Settings.SetValue("Scintilla_Lexer",SCLEX_BLITZMAX)
@@ -257,6 +269,8 @@ Function button_opttions_click()
 		ColorButton_Scintilla_BG.GetColorInt(Varptr(FR),Varptr(FG),Varptr(FB))
 		Settings.SetValue("Scintilla_BGColor",MakeColorString(FR,FG,FB))
 
+	Settings.SaveAllSettings()
+	UpdateAllScintillas()
 
 	frmOptions.hide()
 

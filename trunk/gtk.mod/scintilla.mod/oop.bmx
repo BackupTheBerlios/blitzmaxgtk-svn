@@ -8,6 +8,13 @@ Type GtkScintilla Extends GtkWidget
 		Return TempScintilla
 	End Function
 
+	Function CreateFromHandle:GtkScintilla(Handle:Byte Ptr)
+		Local TempScintilla:GtkScintilla = New GtkScintilla
+		TempScintilla.Handle = Handle
+		TempScintilla.ScintillaHandle = g_type_check_instance_cast(TempScintilla.Handle,scintilla_get_type())
+		Return TempScintilla
+	End Function
+
 	Method ClearAll()
 		scintilla_send_message(ScintillaHandle,SCI_CLEARALL,Null,Null)
 	End Method
