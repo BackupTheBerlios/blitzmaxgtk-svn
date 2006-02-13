@@ -26,16 +26,9 @@ Global Application:GladeXML = GladeXML.Create("ide.glade")
 Application.ConnectSignals()
 
 ' Getting the main notebook
-Local Widget:GtkWidget = Application.GetWidget("notebook3")
-Global Notebook:GtkNotebook = New GtkNotebook
-Notebook.Handle = Widget.Handle
+Global Notebook:GtkNotebook = GtkNotebook.CreateFromHandle(Application.GetWidget("notebook3"))
 
-Local TmpWidget:GtkWidget = Application.GetWidget("frmOptions")
-Global frmOptions:GtkWindow = New GtkWindow
-frmOptions.Handle = TmpWidget.Handle
-TmpWidget = Null
-
-
+Global frmOptions:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmOptions"))
 
 ' Load the keywords
 Global KeywordList:TList = New TList
@@ -224,8 +217,8 @@ End Function
 Function CloseTab(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 	Local TWidget:GtkWidget = New GtkWidget
 	TWidget.Handle = AdditionalData
-	Notebook.RemovePage(Notebook.GetPageOfWidget(TWidget))
 	TWidget.Destroy()
+	Notebook.RemovePage(Notebook.GetPageOfWidget(TWidget))
 End Function
 
 Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)

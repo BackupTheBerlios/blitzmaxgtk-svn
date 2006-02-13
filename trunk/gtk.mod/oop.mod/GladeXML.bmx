@@ -21,9 +21,7 @@ Type GladeXML
 		glade_xml_signal_autoconnect(mHandle)
 	End Method
 
-	Method GetWidget:GtkWidget(Name:String)
-		Local Widget:GtkWidget = New GtkWidget
-		Widget.Handle = glade_xml_get_widget(mHandle,Name.ToCString())
-		Return Widget
+	Method GetWidget:Byte Ptr(Name:String)
+		Return glade_xml_get_widget(mHandle,Name.ToCString())
 	End Method
 End Type
