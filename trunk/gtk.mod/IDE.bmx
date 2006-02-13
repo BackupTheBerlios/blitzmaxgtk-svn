@@ -49,9 +49,6 @@ Else
 	Wend
 EndIf
 
-Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD("Test",Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-cancel",GTK_RESPONSE_CANCEL)
-dialog.Run()
-
 Rem 
 Local TestString:String = MakeColorString(123,234,11)
 Print TestString
@@ -222,4 +219,16 @@ Function CloseTab(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 	TWidget.Handle = AdditionalData
 	Notebook.RemovePage(Notebook.GetPageOfWidget(TWidget))
 	TWidget.Destroy()
+End Function
+
+Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
+	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD("Test",Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-open",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
+	
+	If dialog.Run() = GTK_RESPONSE_OK Then
+		Scream "Yeah!"
+	Else
+		Scream "Oh no!"
+	EndIf
+	
+	dialog.Destroy()
 End Function

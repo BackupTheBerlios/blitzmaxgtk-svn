@@ -58,6 +58,7 @@
 		      <property name="visible">True</property>
 		      <property name="label">gtk-open</property>
 		      <property name="use_stock">True</property>
+		      <signal name="activate" handler="bb_OpenClick" last_modification_time="Mon, 13 Feb 2006 16:49:21 GMT"/>
 		    </widget>
 		  </child>
 
@@ -212,6 +213,7 @@
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
 	      <property name="is_important">False</property>
+	      <signal name="clicked" handler="bb_OpenClick" last_modification_time="Mon, 13 Feb 2006 16:49:27 GMT"/>
 	    </widget>
 	    <packing>
 	      <property name="expand">False</property>
