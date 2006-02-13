@@ -3,4 +3,18 @@ Type GdkColor
 	Field Red:Short
 	Field Green:Short
 	Field Blue:Short
+
+	Function MakeOutOfInts:GdkColor(R:Int,G:Int,B:Int)
+		Local TempColor:GdkColor = New GdkColor
+		TempColor.Red = 65535/255*R
+		TempColor.Green = 65535/255*G
+		TempColor.Blue = 65535/255*B
+		Return TempColor
+	End Function
+
+	Function GiveInts(Color:GdkColor,R:Int Ptr,G:Int Ptr,B:Int Ptr)
+		R[0] = 255/65535 * Color.Red
+		G[0] = 255/65535 * Color.Green
+		B[0] = 255/65535 * Color.Blue
+	End Function
 End Type

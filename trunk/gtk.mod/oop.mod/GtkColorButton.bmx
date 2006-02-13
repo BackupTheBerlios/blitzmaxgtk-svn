@@ -15,7 +15,7 @@ Type GtkColorButton Extends GtkButton
 		gtk_color_button_set_use_alpha(Handle,Use)
 	End Method
 
-	Method SetAlpha(Alpha:Int)
+	Method SetAlpha(Alpha:Short)
 		gtk_color_button_set_alpha(Handle,Alpha)
 	End Method
 
@@ -28,6 +28,11 @@ Type GtkColorButton Extends GtkButton
 		TempColor.Red = R
 		TempColor.Green = G
 		TempColor.Blue = B
+		gtk_color_button_set_color(Handle,TempColor)
+	End Method
+
+	Method SetColorInt(R:Int,G:Int,B:Int)
+		Local TempColor:GdkColor = GdkColor.MakeOutOfInts(R,G,B)
 		gtk_color_button_set_color(Handle,TempColor)
 	End Method
 
