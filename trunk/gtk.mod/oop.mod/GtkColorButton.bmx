@@ -35,6 +35,26 @@ Type GtkColorButton Extends GtkButton
 		Local TempColor:GdkColor = GdkColor.MakeOutOfInts(R,G,B)
 		gtk_color_button_set_color(Handle,TempColor)
 	End Method
+	
+	Method GetColor(R:Short Ptr,G:Short Ptr,B:Short Ptr)
+		Local TempColor:GdkColor = New GdkColor
+		gtk_color_button_get_color(Handle,TempColor)
+		R[0] = TempColor.Red
+		G[0] = TempColor.Green
+		B[0] = TempColor.Blue
+	End Method
+
+	Method GetColorInt(R:Int Ptr,G:Int Ptr,B:Int Ptr)
+		Local TempColor:GdkColor = New GdkColor
+		gtk_color_button_get_color(Handle,TempColor)
+		TempColor.GiveInts(R,G,B)
+	End Method
+
+	Method GetGdkColor:GdkColor()
+		Local TempColor:GdkColor = New GdkColor
+		gtk_color_button_get_color(Handle,TempColor)
+		Return TempColor
+	End Method
 
 	Method SetTitle(Title:String)
 		gtk_color_button_set_title(Handle,Title.ToCString())
