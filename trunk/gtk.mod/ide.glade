@@ -9,6 +9,8 @@
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
+  <property name="default_width">200</property>
+  <property name="default_height">500</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
   <property name="decorated">True</property>
@@ -689,6 +691,7 @@
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
   <property name="urgency_hint">False</property>
+  <signal name="show" handler="bb_frmOptions_show" last_modification_time="Mon, 13 Feb 2006 18:04:43 GMT"/>
 
   <child>
     <widget class="GtkVBox" id="vbox2">
@@ -984,7 +987,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkColorButton" id="colorbutton1">
+		    <widget class="GtkColorButton" id="colorbutton__Scintilla_BG">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
 		      <property name="use_alpha">False</property>

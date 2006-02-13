@@ -22,7 +22,7 @@ GTKUtil.Init()
 Glade.Init()
 
 ' Loading interface
-Local Application:GladeXML = GladeXML.Create("ide.glade")
+Global Application:GladeXML = GladeXML.Create("ide.glade")
 Application.ConnectSignals()
 
 ' Getting the main notebook
@@ -242,4 +242,15 @@ End Function
 
 Function MIEinstellungenClick()
 	frmOptions.show()
+End Function
+
+Function frmOptions_show()
+	LoadScintillaOptions()
+
+End Function
+
+Function LoadScintillaOptions()
+	Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton__Scintilla_BG"))
+		ColorButton_Scintilla_BG.setColor(20,20,20)
+
 End Function
