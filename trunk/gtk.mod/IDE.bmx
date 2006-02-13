@@ -170,7 +170,7 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 	'Settings.SetValue("Scintilla_Font_LINENUMBER_FontName","!helvetica")
 	'Settings.SetValue("Scintilla_Font_LINENUMBER_FontSize","8")
 	'Settings.SetValue("Scintilla_Font_LINENUMBER_FontColor",MakeColorString($FF,$FF,$FF))
-	Scintilla.SetFontBGColor(STYLE_LINENUMBER,ExtractR(Settings.GetValue("Scintilla_BGColor_LINENUMBER")),ExtractG(Settings.GetValue("Scintilla_BGColor_LINENUMBER")),ExtractB(Settings.GetValue("Scintilla_BGColor_LINENUMBER")))
+	Scintilla.SetFontBGColor(STYLE_LINENUMBER,ExtractR(Settings.GetValue("Scintilla_BGColor")),ExtractG(Settings.GetValue("Scintilla_BGColor")),ExtractB(Settings.GetValue("Scintilla_BGColor")))
 	'Settings.SetValue("Scintilla_BGColor_LINENUMBER",MakeColorString($00,$50,$6E))
 	Scintilla.SetCaretColor(ExtractR(Settings.GetValue("Scintilla_CaretColor")),ExtractG(Settings.GetValue("Scintilla_CaretColor")),ExtractB(Settings.GetValue("Scintilla_CaretColor")))
 	'Settings.SetValue("Scintilla_CaretColor",MakeColorString($AA,$AA,$AA))
@@ -243,7 +243,21 @@ Function frmOptions_show()
 End Function
 
 Function LoadScintillaOptions()
-	Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton__Scintilla_BG"))
-		ColorButton_Scintilla_BG.setColor(20,20,20)
+
+	Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
+		ColorButton_Scintilla_BG.setColorInt(ExtractR(Settings.GetValue("Scintilla_BGColor")),ExtractG(Settings.GetValue("Scintilla_BGColor")),ExtractB(Settings.GetValue("Scintilla_BGColor")))
+
+End Function
+
+
+Function button_opttions_click()
+
+	Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
+		Local FR:Int,FG:Int,FB:Int
+		ColorButton_Scintilla_BG.GetColorInt(Varptr(FR),Varptr(FG),Varptr(FB))
+		Settings.SetValue("Scintilla_BGColor",MakeColorString(FR,FG,FB))
+
+
+	frmOptions.hide()
 
 End Function
