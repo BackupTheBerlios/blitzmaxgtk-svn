@@ -1,10 +1,9 @@
 Scintilla_Lexer:67
 Scintilla_StyleBits:33
-Scintilla_MarginWidth0:27
-Scintilla_MarginWidth1:15
-Scintilla_MarginWidth2:8
-Scintilla_KeywordsFile:/home/bigmichi/Programme/BlitzMax/doc/bmxmods/commands.txt
-Scintilla_BGColor:0,69,99
+Scintilla_MarginWidth0:35
+Scintilla_MarginWidth1:20
+Scintilla_MarginWidth2:0
+Scintilla_BGColor:0,80,110
 Scintilla_Font_Default_FontName:!bitstream charter
 Scintilla_Font_Default_FontSize:12
 Scintilla_Font_Default_FontColor:238,238,238
@@ -37,3 +36,4 @@ Scintilla_CaretBGColor:48,51,102
 Scintilla_CaretVisible:1
 Scintilla_SelectionBGColor:170,170,170
 Scintilla_TabWidth:4
+Scintilla_KeywordsFile:/home/bigmichi/Programme/BlitzMax/doc/bmxmods/commands.txt
