@@ -9,6 +9,7 @@ ModuleInfo "Version: 0.01"
 ModuleInfo "Author: bigmichi and phiker"
 
 Import GTK.Binding 
+Import BRL.Math
 
 Include "Glade.bmx"
 Include "GladeXML.bmx"
