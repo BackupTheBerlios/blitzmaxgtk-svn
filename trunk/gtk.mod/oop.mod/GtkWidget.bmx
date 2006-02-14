@@ -1,5 +1,5 @@
 Type GtkWidget Extends GtkObject
-	Function CreateFromHandle:GtkWidget(Handle:Byte Ptr)
+	Function CreateWidgetFromHandle:GtkWidget(Handle:Byte Ptr)
 		Local TempWidget:GtkWidget = New GtkWidget
 		TempWidget.Handle = Handle
 		Return TempWidget

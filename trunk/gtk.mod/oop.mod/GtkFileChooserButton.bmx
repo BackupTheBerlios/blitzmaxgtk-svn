@@ -1,13 +1,17 @@
 Type GtkFileChooserButton Extends GtkHBox
+	Field FCHandle:Byte Ptr
+
 	Function CreateFCB:GtkFileChooserButton(Title:String,Action:Int)
 		Local TempButton:GtkFileChooserButton = New GtkFileChooserButton
 		TempButton.Handle = gtk_file_chooser_button_new(Title.ToCString(),Action)
+		TempButton.FCHandle = g_type_check_instance_cast(TempButton.Handle,gtk_file_chooser_get_type())
 		Return TempButton
 	End Function
 
 	Function CreateFCBFromHandle:GtkFileChooserButton(Handle:Byte Ptr)
 		Local TempButton:GtkFileChooserButton = New GtkFileChooserButton
 		TempButton.Handle = Handle
+		TempButton.FCHandle = g_type_check_instance_cast(TempButton.Handle,gtk_file_chooser_get_type())
 		Return TempButton
 	End Function
 
