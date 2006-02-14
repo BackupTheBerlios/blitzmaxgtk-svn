@@ -1,10 +1,10 @@
 Scintilla_Lexer:67
 Scintilla_StyleBits:33
 Scintilla_MarginWidth0:35
-Scintilla_MarginWidth1:20
+Scintilla_MarginWidth1:25
 Scintilla_MarginWidth2:0
 Scintilla_KeywordsFile:/home/bigmichi/Programme/BlitzMax/doc/bmxmods/commands.txt
-Scintilla_BGColor:0,79,109
+Scintilla_BGColor:0,69,99
 Scintilla_Font_Default_FontName:!bitstream charter
 Scintilla_Font_Default_FontSize:12
 Scintilla_Font_Default_FontColor:238,238,238

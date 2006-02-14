@@ -836,6 +836,25 @@
 		  </child>
 
 		  <child>
+		    <widget class="GtkSpinButton" id="spinbutton_Scintilla_Margin0">
+		      <property name="visible">True</property>
+		      <property name="can_focus">True</property>
+		      <property name="climb_rate">1</property>
+		      <property name="digits">0</property>
+		      <property name="numeric">False</property>
+		      <property name="update_policy">GTK_UPDATE_ALWAYS</property>
+		      <property name="snap_to_ticks">False</property>
+		      <property name="wrap">False</property>
+		      <property name="adjustment">0 0 100 1 10 10</property>
+		    </widget>
+		    <packing>
+		      <property name="padding">2</property>
+		      <property name="expand">True</property>
+		      <property name="fill">True</property>
+		    </packing>
+		  </child>
+
+		  <child>
 		    <widget class="GtkSpinButton" id="spinbutton_Scintilla_Margin1">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
@@ -845,7 +864,7 @@
 		      <property name="update_policy">GTK_UPDATE_ALWAYS</property>
 		      <property name="snap_to_ticks">False</property>
 		      <property name="wrap">False</property>
-		      <property name="adjustment">35 0 100 1 10 10</property>
+		      <property name="adjustment">0 0 100 1 10 10</property>
 		    </widget>
 		    <packing>
 		      <property name="padding">2</property>
@@ -856,25 +875,6 @@
 
 		  <child>
 		    <widget class="GtkSpinButton" id="spinbutton_Scintilla_Margin2">
-		      <property name="visible">True</property>
-		      <property name="can_focus">True</property>
-		      <property name="climb_rate">1</property>
-		      <property name="digits">0</property>
-		      <property name="numeric">False</property>
-		      <property name="update_policy">GTK_UPDATE_ALWAYS</property>
-		      <property name="snap_to_ticks">False</property>
-		      <property name="wrap">False</property>
-		      <property name="adjustment">20 0 100 1 10 10</property>
-		    </widget>
-		    <packing>
-		      <property name="padding">2</property>
-		      <property name="expand">True</property>
-		      <property name="fill">True</property>
-		    </packing>
-		  </child>
-
-		  <child>
-		    <widget class="GtkSpinButton" id="spinbutton_Scintilla_Margin3">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
 		      <property name="climb_rate">1</property>
