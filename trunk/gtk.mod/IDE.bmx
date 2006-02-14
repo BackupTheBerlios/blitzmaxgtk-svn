@@ -107,8 +107,8 @@ Function AddNBPage()
 End Function
 
 Function UpdateAllScintillas()
-	Print "upall"
-	Print "c: " + Notebook.GetPagesCount()
+	'Print "upall"
+	'Print "c: " + Notebook.GetPagesCount()
 	For Local i:Int = 0 To Notebook.GetPagesCount()-1
 		SetupScintilla(GtkScintilla.CreateFromHandle(Notebook.GetPage(i)))
 	Next

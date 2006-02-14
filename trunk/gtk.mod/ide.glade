@@ -836,7 +836,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkSpinButton" id="spinbutton1">
+		    <widget class="GtkSpinButton" id="spinbutton_Scintilla_Margin1">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
 		      <property name="climb_rate">1</property>
@@ -855,7 +855,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkSpinButton" id="spinbutton2">
+		    <widget class="GtkSpinButton" id="spinbutton_Scintilla_Margin2">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
 		      <property name="climb_rate">1</property>
@@ -874,7 +874,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkSpinButton" id="spinbutton3">
+		    <widget class="GtkSpinButton" id="spinbutton_Scintilla_Margin3">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
 		      <property name="climb_rate">1</property>
