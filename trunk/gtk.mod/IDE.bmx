@@ -230,6 +230,7 @@ Function CloseTab(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 	Local TWidget:GtkWidget = New GtkWidget
 	TWidget.Handle = AdditionalData
 	TWidget.Destroy()
+	Print "CloseTab called, page: " + Notebook.GetPageOfWidget(TWidget)
 	Notebook.RemovePage(Notebook.GetPageOfWidget(TWidget))
 End Function
 
