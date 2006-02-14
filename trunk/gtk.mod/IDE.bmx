@@ -227,9 +227,7 @@ Function ExtractB:Byte(Text:String)
 End Function
 
 Function CloseTab(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
-	Local TWidget:GtkWidget = New GtkWidget
-	TWidget.Handle = AdditionalData
-	TWidget.Destroy()
+	Local TWidget:GtkWidget = GtkWidget.CreateWidgetFromHandle(AdditionalData)
 	Print "CloseTab called, page: " + Notebook.GetPageOfWidget(TWidget)
 	Notebook.RemovePage(Notebook.GetPageOfWidget(TWidget))
 End Function
