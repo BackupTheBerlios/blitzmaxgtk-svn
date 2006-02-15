@@ -13,7 +13,7 @@ Type TSettings
 	Method SaveAllSettings()
 		DeleteFile("settings.set")
 		CreateFile("settings.set")
-		Local SaveFile:TStream = OpenStream("settings.set")
+		Local SaveFile:TStream = OpenStream("cfg/settings.set")
 		For Local TSet:TSetting = EachIn SettingsList
 			SaveFile.WriteLine(TSet.Name+":"+TSet.Value)	
 		Next 
@@ -21,7 +21,7 @@ Type TSettings
 	End Method
 
 	Method LoadAllSettings()
-		Local LoadFile:TStream = OpenFile("settings.set")
+		Local LoadFile:TStream = OpenFile("cfg/settings.set")
 		While Not Eof(LoadFile)
 			Local RL:String = ReadLine(LoadFile)
 			Local LName:String = Left(RL, Instr(RL,":")-1)
