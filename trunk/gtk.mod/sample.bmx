@@ -8,9 +8,7 @@ Application.ConnectSignals()
 
 Local Scintilla:GtkScintilla = GtkScintilla.Create()
 Scintilla.Show()
-Local Widget:GtkWidget = Application.GetWidget("main_vbox")
-Local VBox:GtkVBox = New GtkVBox
-VBox.Handle = Widget.Handle
+Local VBox:GtkVBox = GtkVBox.CreateFromHandle(Application.GetWidget("main_vbox"))
 VBox.PackEnd(Scintilla)
 
 GTKUtil.Main()
