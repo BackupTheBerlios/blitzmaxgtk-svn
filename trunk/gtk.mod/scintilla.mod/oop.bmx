@@ -33,6 +33,10 @@ Type GtkScintilla Extends GtkWidget
 		Next
 	End Method
 
+	Method GetLineCount:Int()
+		Return scintilla_send_message(ScintillaHandle,SCI_GETLINECOUNT,Null,Null)
+	End Method
+
 	Method ClearAll()
 		scintilla_send_message(ScintillaHandle,SCI_CLEARALL,Null,Null)
 	End Method
