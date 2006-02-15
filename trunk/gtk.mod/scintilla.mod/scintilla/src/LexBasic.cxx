@@ -282,7 +282,7 @@ static void ColouriseMaxDoc(unsigned int startPos, int length, int initStyle,
 				sc.SetState(SCE_B_LABEL);
 			} else if (sc.Match('\'')) {
 				sc.SetState(SCE_B_COMMENT);
-			} else if ((!sc.Match("end rem")) && (sc.Match("rem"))) {
+			} else if ((!sc.Match("end rem")) && (sc.Match("rem")) && (isfirst)) {
 				sc.SetState(SCE_B_MULTILINECOMMENT);
 			} else if (sc.Match('"')) {
 				sc.SetState(SCE_B_STRING);

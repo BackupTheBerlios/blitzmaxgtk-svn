@@ -15,6 +15,14 @@ Type GtkScintilla Extends GtkWidget
 		Return TempScintilla
 	End Function
 
+	Method InsertText(Text:String,Pos:Int=0)
+		scintilla_send_message(ScintillaHandle,SCI_INSERTTEXT,Byte Ptr(Pos),Text.ToCString())
+	End Method
+
+	Method AppendText(Text:String)
+		scintilla_send_message(ScintillaHandle,SCI_APPENDTEXT,Byte Ptr(Len(Text)),Text.ToCString())
+	End Method
+
 	Method ClearAll()
 		scintilla_send_message(ScintillaHandle,SCI_CLEARALL,Null,Null)
 	End Method

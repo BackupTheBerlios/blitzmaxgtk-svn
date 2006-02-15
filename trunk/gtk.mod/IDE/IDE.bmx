@@ -8,6 +8,8 @@ Import "settings.bmx"
 Type TDocument
 	Field Name:String
 	Field File:String
+	Field Label:GtkLabel
+	Field Scintilla:GtkScintilla
 End Type
 
 'Create document list
@@ -79,7 +81,7 @@ End Function
 Function AddNBPage()
 	Local TempScintilla:GtkScintilla = GtkScintilla.Create()
 	TempScintilla.SetSizeRequest(700,500)
-	Local TempLabel:GtkLabel = GtkLabel.Create("Dokument1")
+	Local TempLabel:GtkLabel = GtkLabel.Create("Unbenannt")
 
 	Local LabelHBox:GtkHBox = GtkHBox.Create()
 		TempLabel.show()
@@ -100,6 +102,12 @@ Function AddNBPage()
 
 
 	Notebook.AppendPage(TempScintilla,LabelHBox)
+	Local Document:TDocument = New TDocument
+	Document.Name = "Unbenannt"
+	Document.File = ""
+	Document.Label = TempLabel
+	Document.Scintilla = TempScintilla
+	DocumentList.addLast(Document)
 	'Making active
 	Notebook.ShowAll()
 	Notebook.SetCurrentPage(Notebook.GetPagesCount()-1)
@@ -234,11 +242,22 @@ End Function
 
 Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD("Test",Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-open",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
-	
+	dialog.SetLocalOnly(True)
 	If dialog.Run() = GTK_RESPONSE_OK Then
-		Scream "Yeah!"
-	Else
-		Scream "Oh no!"
+		Local Stream:TStream = ReadStream(dialog.GetFilename())
+		If Stream=Null Then
+			Scream "Datei konnte nicht geladen werden"
+		EndIf
+		AddNBPage()
+		Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+		Document.Label.SetText(StripDir(Dialog.GetFilename()))
+		Document.Name = StripDir(Dialog.GetFilename())
+		Document.File = Dialog.GetFilename()
+		Local FirstLine:Byte = True
+		While Not Eof(Stream)
+			If FirstLine Document.Scintilla.AppendText(Stream.ReadLine()) Else Document.Scintilla.AppendText("~n" + Stream.ReadLine())
+			firstline = False
+		Wend
 	EndIf
 	
 	dialog.Destroy()
