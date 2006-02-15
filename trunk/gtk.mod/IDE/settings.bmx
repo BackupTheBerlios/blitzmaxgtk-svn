@@ -11,8 +11,8 @@ Type TSettings
 	Global Settingslist:TList = New TList
 	
 	Method SaveAllSettings()
-		DeleteFile("settings.set")
-		CreateFile("settings.set")
+		DeleteFile("cfg/settings.set")
+		CreateFile("cfg/settings.set")
 		Local SaveFile:TStream = OpenStream("cfg/settings.set")
 		For Local TSet:TSetting = EachIn SettingsList
 			SaveFile.WriteLine(TSet.Name+":"+TSet.Value)	
