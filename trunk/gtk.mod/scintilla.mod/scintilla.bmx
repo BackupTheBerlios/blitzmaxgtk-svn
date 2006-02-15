@@ -10,6 +10,7 @@ ModuleInfo "Author: bigmichi and phiker"
 
 Import BRL.LinkedList
 Import BRL.Retro
+Import BRL.Blitz
 Import GTK.OOP
 Import "config.bmx"
 Import "ScintillaConstants.bmx"

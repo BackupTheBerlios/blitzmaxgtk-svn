@@ -6,7 +6,7 @@ Glade.Init()
 Local Application:GladeXML = GladeXML.Create("sample.glade")
 Application.ConnectSignals()
 
-Local Scintilla:GtkScintilla = GtkScintilla.Create()
+Global Scintilla:GtkScintilla = GtkScintilla.Create()
 Scintilla.Show()
 Local VBox:GtkVBox = GtkVBox.CreateFromHandle(Application.GetWidget("main_vbox"))
 VBox.PackEnd(Scintilla)
@@ -14,7 +14,8 @@ VBox.PackEnd(Scintilla)
 GTKUtil.Main()
 
 Function on_stupid_button_clicked()
-	GTKUtil.Quit()
+'	GTKUtil.Quit()
+Print Scintilla.GetLine(1)
 End Function
 
 Function on_main_window_destroy_event()

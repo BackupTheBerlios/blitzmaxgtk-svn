@@ -23,6 +23,16 @@ Type GtkScintilla Extends GtkWidget
 		scintilla_send_message(ScintillaHandle,SCI_APPENDTEXT,Byte Ptr(Len(Text)),Text.ToCString())
 	End Method
 
+	Method GetLine:String(Line:Int)
+		Local Puffer:Byte[1024]
+		scintilla_send_message(ScintillaHandle,SCI_GETLINE,Byte Ptr(Line),Puffer)
+		Local rstring:String
+		For Local i:Int = 0 To 1023
+			If Puffer[i] = 0 Then Return rstring
+			rstring :+ Chr(Puffer[i])
+		Next
+	End Method
+
 	Method ClearAll()
 		scintilla_send_message(ScintillaHandle,SCI_CLEARALL,Null,Null)
 	End Method
