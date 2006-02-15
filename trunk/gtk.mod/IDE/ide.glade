@@ -244,12 +244,13 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkToolButton" id="toolbutton3">
+	    <widget class="GtkToolButton" id="toolbutton_Open">
 	      <property name="visible">True</property>
 	      <property name="stock_id">gtk-save</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
 	      <property name="is_important">False</property>
+	      <signal name="clicked" handler="bb_toolbutton_Open_click" last_modification_time="Wed, 15 Feb 2006 14:55:11 GMT"/>
 	    </widget>
 	    <packing>
 	      <property name="expand">False</property>

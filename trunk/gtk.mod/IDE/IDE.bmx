@@ -242,8 +242,9 @@ Function CloseTab(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 End Function
 
 Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
-	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD("Test",Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-open",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
+	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD("Datei oeffnen",Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-open",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
 	dialog.SetLocalOnly(True)
+
 	If dialog.Run() = GTK_RESPONSE_OK Then
 		Local Stream:TStream = ReadStream(dialog.GetFilename())
 		If Stream=Null Then
@@ -263,6 +264,32 @@ Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 	
 	dialog.Destroy()
 End Function
+
+Function toolbutton_Open_click()
+	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD("Datei speichern",Null,GTK_FILE_CHOOSER_ACTION_SAVE,"gtk-save",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
+	dialog.SetLocalOnly(True)
+
+	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	If Document.File Then Dialog.SetFileName(Document.File)
+
+	If dialog.Run() = GTK_RESPONSE_OK Then
+		CreateFile(dialog.GetFilename())
+		Local Stream:TStream = OpenStream(dialog.GetFilename())
+
+		If Stream=Null Then
+			Scream "Datei konnte nicht gespeichert werden"
+		EndIf
+
+		For Local ZI:Int = 0 To Document.Scintilla.GetLineCount()-1
+			Local TL:String =Document.Scintilla.GetLine(ZI)
+			Stream.WriteLine(TL[..(Len(TL)-1)])
+		Next 
+
+		Stream.Close()
+	EndIf
+	
+	dialog.Destroy()
+End Function 
 
 Function MIEinstellungenClick()
 	frmOptions.show()
@@ -317,4 +344,4 @@ Function button_opttions_click()
 
 	frmOptions.hide()
 
-End Function
+End Functio
