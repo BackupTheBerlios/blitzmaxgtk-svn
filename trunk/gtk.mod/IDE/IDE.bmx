@@ -271,7 +271,7 @@ Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 	dialog.Destroy()
 End Function
 
-Function toolbutton_Open_click()
+Function tb_save_click()
 	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD("Datei speichern",Null,GTK_FILE_CHOOSER_ACTION_SAVE,"gtk-save",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
 	dialog.SetLocalOnly(True)
 
@@ -288,7 +288,11 @@ Function toolbutton_Open_click()
 
 		For Local ZI:Int = 0 To Document.Scintilla.GetLineCount()-1
 			Local TL:String =Document.Scintilla.GetLine(ZI)
-			Stream.WriteLine(TL[..(Len(TL)-1)])
+			If ZI = Document.Scintilla.GetLineCount()-1 Then 
+				Stream.WriteLine(TL)
+			Else 
+				Stream.WriteLine(TL[..(Len(TL)-1)])
+			End If 
 		Next 
 
 		Stream.Close()
@@ -349,5 +353,21 @@ Function button_opttions_click()
 	UpdateAllScintillas()
 
 	frmOptions.hide()
+
+End Function
+
+Function tb_comp_click()
+
+Local foo:Byte Ptr[4]
+foo[0] = "/home/bigmichi/Programme/BlitzMax/bin/bmk".ToCString()
+foo[1] = "makeapp".ToCString()
+foo[2] = "/home/bigmichi/Programme/BlitzMax/mod/gtk.mod/sample.bmx".ToCString()
+foo[3] = Null
+vte_terminal_fork_command(vte.Handle,"/home/bigmichi/Programme/BlitzMax/bin/bmk".ToCString(),Foo,Null,Null,False,False,False)
+
+End Function
+
+
+Function tb_run_click()
 
 End Function

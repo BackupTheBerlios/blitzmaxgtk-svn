@@ -229,7 +229,7 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkToolButton" id="toolbutton2">
+	    <widget class="GtkToolButton" id="tb_open">
 	      <property name="visible">True</property>
 	      <property name="stock_id">gtk-open</property>
 	      <property name="visible_horizontal">True</property>
@@ -244,13 +244,13 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkToolButton" id="toolbutton_Open">
+	    <widget class="GtkToolButton" id="tb_save">
 	      <property name="visible">True</property>
 	      <property name="stock_id">gtk-save</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
 	      <property name="is_important">False</property>
-	      <signal name="clicked" handler="bb_toolbutton_Open_click" last_modification_time="Wed, 15 Feb 2006 14:55:11 GMT"/>
+	      <signal name="clicked" handler="bb_tb_save_click" last_modification_time="Sat, 18 Feb 2006 18:56:43 GMT"/>
 	    </widget>
 	    <packing>
 	      <property name="expand">False</property>
@@ -341,12 +341,30 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkToolButton" id="toolbutton9">
+	    <widget class="GtkToolButton" id="tb_comp">
+	      <property name="visible">True</property>
+	      <property name="label" translatable="yes">Complimieren</property>
+	      <property name="use_underline">True</property>
+	      <property name="stock_id">gtk-convert</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
+	      <signal name="clicked" handler="bb_tb_comp_click" last_modification_time="Sat, 18 Feb 2006 18:52:57 GMT"/>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkToolButton" id="tb_run">
 	      <property name="visible">True</property>
 	      <property name="stock_id">gtk-execute</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
 	      <property name="is_important">False</property>
+	      <signal name="clicked" handler="bb_tb_run_click" last_modification_time="Sat, 18 Feb 2006 18:53:06 GMT"/>
 	    </widget>
 	    <packing>
 	      <property name="expand">False</property>

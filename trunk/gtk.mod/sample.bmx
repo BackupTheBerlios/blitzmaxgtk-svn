@@ -13,7 +13,7 @@ Local VBox:GtkVBox = GtkVBox.CreateFromHandle(Application.GetWidget("main_vbox")
 VBox.PackEnd(Scintilla)
 
 Global Vte:Byte Ptr = vte_terminal_new()
-v(Vte,100,50)
+
 Local t:GtkWidget = New GtkWidget
 t.handle = vte
 VBox.PackEnd(t)
@@ -31,6 +31,8 @@ foo[1] = "makeapp".ToCString()
 foo[2] = "/home/bigmichi/Programme/BlitzMax/mod/gtk.mod/IDE/IDE.bmx".ToCString()
 foo[3] = Null
 vte_terminal_fork_command(vte,"/home/bigmichi/Programme/BlitzMax/bin/bmk".ToCString(),Foo,Null,Null,False,False,False)
+
+
 foo[0] = "/home/bigmichi/Programme/BlitzMax/mod/gtk.mod/IDE/IDE".ToCString()
 foo[1] = Null
 foo[2] = Null
