@@ -13,7 +13,7 @@ Local VBox:GtkVBox = GtkVBox.CreateFromHandle(Application.GetWidget("main_vbox")
 VBox.PackEnd(Scintilla)
 
 Global Vte:Byte Ptr = vte_terminal_new()
-vte_terminal_set_size(Vte,100,50)
+v(Vte,100,50)
 Local t:GtkWidget = New GtkWidget
 t.handle = vte
 VBox.PackEnd(t)

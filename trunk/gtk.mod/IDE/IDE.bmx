@@ -32,7 +32,7 @@ Application.ConnectSignals()
 Global Notebook:GtkNotebook = GtkNotebook.CreateFromHandle(Application.GetWidget("notebook3"))
 Global exp_compiler:Byte Ptr = Application.GetWidget("exp_compiler")
 Global VTE:VteTerminal = VteTerminal.Create()
-VTE.SetSize(166,51)
+VTE.SetSizeRequest(20,80)
 VTE.Show()
 gtk_container_add(exp_compiler,VTE.Handle)
 
