@@ -10,6 +10,11 @@ Type VteTerminal Extends GtkWidget
 		TempTerm.Handle = Handle
 		Return TempTerm
 	End Function
+	
+	Method SetSize(colums:int,rows:int)
+		
+		vte_terminal_set_size(g_type_check_instance_cast(Handle,vte_terminal_get_type()),colums,rows)
+	End Method
 
 	Method ForkCommand:Int(command:String,argv:String[]=Null,envv:String[]=Null,directory:String="",lastlog:Byte=False,utmp:Byte=False,wtmp:Byte=False)
 		Local argvptr:Byte Ptr = Null

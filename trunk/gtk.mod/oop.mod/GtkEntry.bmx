@@ -22,4 +22,8 @@ Type GtkEntry Extends GtkWidget
 	Method SetVisibility(Visible:Byte)
 		gtk_entry_set_visibility(Handle,Visible)
 	End Method
+	
+	Method GetText:String()
+		Return String.FromCString(gtk_entry_get_text(Handle))
+	End Method
 End Type

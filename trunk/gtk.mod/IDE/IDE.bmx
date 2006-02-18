@@ -27,12 +27,18 @@ Glade.Init()
 Global Application:GladeXML = GladeXML.Create("ide.glade")
 Application.ConnectSignals()
 
+
 ' Getting the main notebook
 Global Notebook:GtkNotebook = GtkNotebook.CreateFromHandle(Application.GetWidget("notebook3"))
+Global exp_compiler:Byte Ptr = Application.GetWidget("exp_compiler")
+Global VTE:VteTerminal = VteTerminal.Create()
+VTE.SetSize(166,51)
+VTE.Show()
+gtk_container_add(exp_compiler,VTE.Handle)
 
 Global frmOptions:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmOptions"))
 
-' Load the keywords
+' Load the keywords #
 Global KeywordList:TList = New TList
 If Settings.GetValue("Scintilla_KeywordsFile")="" Then
 	Scream("Keyword-Datei nicht festgelegt")
@@ -344,4 +350,4 @@ Function button_opttions_click()
 
 	frmOptions.hide()
 
-End Functio
+End Function
