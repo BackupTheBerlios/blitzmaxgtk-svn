@@ -8,7 +8,7 @@ Import "settings.bmx"
 ?win32
 Import "procwin32.bmx"
 ?linux
-import "proclinux.bmx"
+Import "proclinux.bmx"
 ?mac
 Import "procmac.bmx"
 ?
@@ -39,10 +39,13 @@ Application.ConnectSignals()
 ' Getting the main notebook
 Global Notebook:GtkNotebook = GtkNotebook.CreateFromHandle(Application.GetWidget("notebook3"))
 Global exp_compiler:Byte Ptr = Application.GetWidget("exp_compiler")
-Global VTE:VteTerminal = VteTerminal.Create()
-VTE.SetSizeRequest(20,80)
-VTE.Show()
-gtk_container_add(exp_compiler,VTE.Handle)
+Global T_emp:GtkWidget = New GtkWidget
+T_emp.Handle = exp_compiler
+TProcLib.Create(T_emp)
+'Global VTE:VteTerminal = VteTerminal.Create()
+'VTE.SetSizeRequest(20,80)
+'VTE.Show()
+'gtk_container_add(exp_compiler,VTE.Handle)
 
 Global frmOptions:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmOptions"))
 
@@ -368,10 +371,11 @@ Function button_opttions_click()
 End Function
 
 Function tb_comp_click()
+
 Local Args:String[2]
 Args[0] = "makeapp"
 Args[1] = "/home/philipp/bmx/mod/gtk.mod/sample.bmx"
-Vte.ForkCommand("/home/philipp/bmx/bin/bmk",Args)
+TProcLib.CreateProcess("/home/philipp/bmx/bin/bmk",Args)
 End Function
 
 
