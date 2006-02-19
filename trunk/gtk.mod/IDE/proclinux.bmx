@@ -10,8 +10,8 @@ Type TProcLib Extends TProcShape
 		_widget = VteTerminal.Create()
 		_widget.Show()
 		_widget.SetSizeRequest(20,100)
-		'vte_terminal_set_color_background(_widget,GdkColor.MakeOutOfInts(255,255,255))
 		TopWidget.add(_widget)
+		vte_terminal_set_color_background(_widget.Handle,GdkColor.MakeOutOfInts(255,0,255))
 '		_widget.ConnectSignal(
 	End Function
 

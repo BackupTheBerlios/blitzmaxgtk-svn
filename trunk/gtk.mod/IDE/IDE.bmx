@@ -402,7 +402,7 @@ Function tb_comp_click()
 		Local Args:String[2]
 		Args[0] = "makeapp"
 		Args[1] = Document.File
-		TProcLib.CreateProcess("/home/bigmichi/Programme/BlitzMax/bin/bmk",Args)
+		TProcLib.CreateProcess("/home/philipp/bmx/bin/bmk",Args)
 	Else
 		Scream("Sie muessen die Datei erst Speichern!")
 	End If 
