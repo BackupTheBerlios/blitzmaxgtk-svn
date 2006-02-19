@@ -144,7 +144,7 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 		Print "something strange happened"
 		Return
 	EndIf
-	Print "setupscin"
+	'Print "setupscin"
 
 	Scintilla.SetLexer(Int(Settings.GetValue("Scintilla_Lexer")))
 	'Settings.SetValue("Scintilla_Lexer",SCLEX_BLITZMAX)
@@ -383,5 +383,8 @@ End Function
 
 
 Function tb_run_click()
-	'child-exited
+	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	If Document.File <> "" Then
+		TProcLib.CreateProcess(Left(Document.File,Len(Document.File)-4),Null)
+	End If
 End Function

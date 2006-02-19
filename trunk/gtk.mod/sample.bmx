@@ -3,8 +3,6 @@ Import GTK.Scintilla
 GTKUtil.Init()
 Glade.Init()
 
-'test
-
 Local Application:GladeXML = GladeXML.Create("sample.glade")
 Application.ConnectSignals()
 
@@ -19,7 +17,6 @@ VBox.PackEnd(Vte)
 Vte.Show()
 Vte.SetSizeRequest(100,500)
 vte_terminal_set_size(Vte.Handle,100,500)
-Global Vte:Byte Ptr = vte_terminal_new()
 
 GTKUtil.Main()
 

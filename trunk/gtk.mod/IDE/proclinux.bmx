@@ -1,3 +1,5 @@
+Strict
+
 Import GTK.OOP
 Include "procshape.bmx"
 
@@ -13,6 +15,6 @@ Type TProcLib Extends TProcShape
 	End Function
 
 	Function CreateProcess:Int(Path:String,ArgV:String[])
-		Return _widget.ForkCommand(Name,ArgV)
+		Return _widget.ForkCommand(Path,ArgV)
 	End Function
 End Type
