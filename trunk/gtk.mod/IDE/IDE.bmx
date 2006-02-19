@@ -39,9 +39,9 @@ Application.ConnectSignals()
 ' Getting the main notebook
 Global Notebook:GtkNotebook = GtkNotebook.CreateFromHandle(Application.GetWidget("notebook3"))
 Global exp_compiler:Byte Ptr = Application.GetWidget("exp_compiler")
-Global T_emp:GtkWidget = New GtkWidget
+Global T_emp:GtkContainer = New GtkContainer
 T_emp.Handle = exp_compiler
-TProcLib.Create(T_emp)
+TProcLib.Init(T_emp)
 'Global VTE:VteTerminal = VteTerminal.Create()
 'VTE.SetSizeRequest(20,80)
 'VTE.Show()
