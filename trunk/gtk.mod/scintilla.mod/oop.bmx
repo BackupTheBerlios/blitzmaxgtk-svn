@@ -196,4 +196,22 @@ Type GtkScintilla Extends GtkWidget
 	Method GetTabWidth(Width:Int)
 		Return scintilla_send_message(ScintillaHandle,SCI_GETTABWIDTH,Null,Null)
 	End Method
+
+	Method SetProperty(Key:String,Value:String)
+		scintilla_send_message(ScintillaHandle,SCI_SETPROPERTY,Key.ToCString(),Value.ToCString())
+	End Method
+
+	Method DefineMarker(Marker:Int,Symbols:Int,ForeR:Byte=0,ForeG:Byte=0,ForeB:Byte=0,BackR:Byte=0,BackG:Byte=0,BackB:Byte=0)
+		scintilla_send_message(ScintillaHandle,SCI_MARKERDEFINE,Byte Ptr(Marker),Byte Ptr(Symbols))
+		scintilla_send_message(ScintillaHandle,SCI_MARKERSETFORE,Byte Ptr(Marker),Byte Ptr(EncodeColor(ForeR,ForeG,ForeB)))
+		scintilla_send_message(ScintillaHandle,SCI_MARKERSETBACK,Byte Ptr(Marker),Byte Ptr(EncodeColor(BackR,BackG,BackB)))
+	End Method
+
+	Method GetLineFromPosition:Int(Position:Int)
+		Return scintilla_send_message(ScintillaHandle,SCI_LINEFROMPOSITION,Byte Ptr(Position),Null)
+	End Method
+
+	Method ToggleFoldPoint(Line:Int)
+		scintilla_send_message(ScintillaHandle,SCI_TOGGLEFOLD,Byte Ptr(Line),Null)
+	End Method
 End Type
