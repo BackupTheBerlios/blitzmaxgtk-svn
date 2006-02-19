@@ -130,6 +130,7 @@ Function AddNBPage()
 	Notebook.ShowAll()
 	Notebook.SetCurrentPage(Notebook.GetPagesCount()-1)
 	SetupScintilla(TempScintilla)
+	TempScintilla.SignalConnect("sci-notify",DoScintillaEvents)
 End Function
 
 Function UpdateAllScintillas()
@@ -220,6 +221,16 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 	'Settings.SetValue("Scintilla_SelectionBGColor",MakeColorString($AA,$AA,$AA))
 	Scintilla.SetTabWidth(Int(Settings.GetValue("Scintilla_TabWidth")))
 	'Settings.SetValue("Scintilla_TabWidth","4")
+
+	Scintilla.SetProperty("fold","1")
+	Scintilla.SetProperty("fold.compact","0")
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDEROPEN,SC_MARK_CIRCLEMINUS,170,170,170,0,0,0)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDER,SC_MARK_CIRCLEPLUS,170,170,170,0,0,0)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDERSUB,SC_MARK_VLINE,170,170,170,0,0,0)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDERTAIL,SC_MARK_LCORNERCURVE,170,170,170,0,0,0)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDEREND,SC_MARK_CIRCLEPLUSCONNECTED,170,170,170,0,0,0)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDEROPENMID,SC_MARK_CIRCLEMINUSCONNECTED,170,170,170,0,0,0)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDERMIDTAIL,SC_MARK_TCORNERCURVE,170,170,170,0,0,0)
 
 	Scintilla.SetKeywordList(0,KeywordList)
 End Function
@@ -416,4 +427,11 @@ Function tb_run_click()
 	If Document.File <> "" Then
 		TProcLib.CreateProcess(Left(Document.File,Len(Document.File)-4),Null)
 	End If
+End Function
+
+Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotification,GdkEvent:Byte Ptr)
+	Local TempScintilla:GtkScintilla = GtkScintilla.CreateFromHandle(Widget)
+	If notification.Code = SCN_MARGINCLICK
+		TempScintilla.ToggleFoldPoint(TempScintilla.GetLineFromPosition(Notification.position))
+	EndIf
 End Function
