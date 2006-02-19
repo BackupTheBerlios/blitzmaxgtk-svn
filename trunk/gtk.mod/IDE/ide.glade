@@ -343,7 +343,7 @@
 	  <child>
 	    <widget class="GtkToolButton" id="tb_comp">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Complimieren</property>
+	      <property name="label" translatable="yes">Compilieren</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_id">gtk-convert</property>
 	      <property name="visible_horizontal">True</property>
