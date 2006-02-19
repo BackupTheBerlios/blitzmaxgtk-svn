@@ -368,14 +368,10 @@ Function button_opttions_click()
 End Function
 
 Function tb_comp_click()
-
-Local foo:Byte Ptr[4]
-foo[0] = "/home/philipp/bmx/bin/bmk".ToCString()
-foo[1] = "makeapp".ToCString()
-foo[2] = "/home/philipp/bmx/mod/gtk.mod/sample.bmx".ToCString()
-foo[3] = Null
-vte_terminal_fork_command(vte.Handle,"/home/philipp/bmx/bin/bmk".ToCString(),Foo,Null,Null,False,False,False)
-
+Local Args:String[2]
+Args[0] = "makeapp"
+Args[1] = "/home/philipp/bmx/mod/gtk.mod/sample.bmx"
+Vte.ForkCommand("/home/philipp/bmx/bin/bmk",Args)
 End Function
 
 
