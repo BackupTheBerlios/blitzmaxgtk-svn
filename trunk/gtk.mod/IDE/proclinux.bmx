@@ -1,14 +1,16 @@
 Include "procshape.bmx"
 
 Type TProcLib Extends TProcShape
-	Field _widget:VteTerminal
+	Field widget:VteTerminal
 
-	Function Create(TopWidget:GtkWidget)
-		_widget = VteTerminal.Create()
+	Function Create:TProcLib(TopWidget:GtkWidget)
+		Local TTP:TProcLib = New TProcLib
+		TTP.widget = VteTerminal.Create()
+		Return widget
 '		_widget.ConnectSignal(
 	End Function
 
-	Function CreateProcess(Name:String,ArgV:String[])
-'		_widget.ForkCommand(Name,ArgV)
-	End Function
+	Method CreateProcess:Int(Path:String,ArgV:String[])
+		widget.ForkCommand(Name,ArgV)
+	End Method
 End Type

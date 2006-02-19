@@ -8,7 +8,7 @@ Import "settings.bmx"
 ?win32
 Import "procwin32.bmx"
 ?linux
-Import "proclinux.bmx"
+Include "proclinux.bmx"
 ?mac
 Import "procmac.bmx"
 ?
@@ -376,5 +376,5 @@ End Function
 
 
 Function tb_run_click()
-
+	'child-exited
 End Function
