@@ -5,6 +5,14 @@ Import GTK.Scintilla
 Import BRL.StandardIO
 Import "settings.bmx"
 
+?win32
+Import "procwin32.bmx"
+?linux
+Import "proclinux.bmx"
+?mac
+Import "procmac.bmx"
+?
+
 Type TDocument
 	Field Name:String
 	Field File:String
@@ -44,17 +52,20 @@ If Settings.GetValue("Scintilla_KeywordsFile")="" Then
 	Scream("Keyword-Datei nicht festgelegt")
 Else
 	Local KeyWordsFile:TStream = ReadStream(Settings.GetValue("Scintilla_KeywordsFile"))
-	If KeyWordsFile = Null Then Scream("Konnte Keywords-Datei nicht öffnen")
-	While Not KeyWordsFile.EOF()
-		Local ALine:String = KeyWordsFile.ReadLine()
-		For Local i:Int = 1 To Len(ALine)
-			Local TempChar:String = Mid(ALine,i,1)
-			If TempChar ="(" Or TempChar=":" Or TempChar="|" Or TempChar="$" Or TempChar="[" Or TempChar="%" Or TempChar="#" Or TempChar="!" Or TempChar=" " Then
-				KeywordList.addLast(Lower(Left(ALine,i-1)))
-				i = Len(ALine)+1
-			EndIf
-		Next
-	Wend
+	If KeyWordsFile = Null Then
+		Scream("Konnte Keywords-Datei nicht oeffnen")
+	Else
+		While Not KeyWordsFile.EOF()
+			Local ALine:String = KeyWordsFile.ReadLine()
+			For Local i:Int = 1 To Len(ALine)
+				Local TempChar:String = Mid(ALine,i,1)
+				If TempChar ="(" Or TempChar=":" Or TempChar="|" Or TempChar="$" Or TempChar="[" Or TempChar="%" Or TempChar="#" Or TempChar="!" Or TempChar=" " Then
+					KeywordList.addLast(Lower(Left(ALine,i-1)))
+					i = Len(ALine)+1
+				EndIf
+			Next
+		Wend
+	EndIf
 EndIf
 
 Rem 
@@ -359,11 +370,11 @@ End Function
 Function tb_comp_click()
 
 Local foo:Byte Ptr[4]
-foo[0] = "/home/bigmichi/Programme/BlitzMax/bin/bmk".ToCString()
+foo[0] = "/home/philipp/bmx/bin/bmk".ToCString()
 foo[1] = "makeapp".ToCString()
-foo[2] = "/home/bigmichi/Programme/BlitzMax/mod/gtk.mod/sample.bmx".ToCString()
+foo[2] = "/home/philipp/bmx/mod/gtk.mod/sample.bmx".ToCString()
 foo[3] = Null
-vte_terminal_fork_command(vte.Handle,"/home/bigmichi/Programme/BlitzMax/bin/bmk".ToCString(),Foo,Null,Null,False,False,False)
+vte_terminal_fork_command(vte.Handle,"/home/philipp/bmx/bin/bmk".ToCString(),Foo,Null,Null,False,False,False)
 
 End Function
 
