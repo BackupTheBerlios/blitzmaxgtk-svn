@@ -283,6 +283,34 @@ Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 End Function
 
 Function tb_save_click()
+
+	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	If Document.File <> "" Then
+
+		CreateFile(Document.File)
+		Local Stream:TStream = OpenStream(Document.File)
+
+		If Stream=Null Then
+			Scream "Datei konnte nicht gespeichert werden"
+		EndIf
+
+		For Local ZI:Int = 0 To Document.Scintilla.GetLineCount()-1
+			Local TL:String =Document.Scintilla.GetLine(ZI)
+			If ZI = Document.Scintilla.GetLineCount()-1 Then 
+				Stream.WriteLine(TL)
+			Else 
+				Stream.WriteLine(TL[..(Len(TL)-1)])
+			End If 
+		Next 
+
+		Stream.Close()
+	Else
+		mi_save_under_click()
+	EndIf
+	
+End Function 
+
+Function mi_save_under_click()
 	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD("Datei speichern",Null,GTK_FILE_CHOOSER_ACTION_SAVE,"gtk-save",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
 	dialog.SetLocalOnly(True)
 
