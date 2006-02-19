@@ -7,6 +7,7 @@ Type TProcLib Extends TProcShape
 	Function Init(TopWidget:GtkContainer)
 		_widget = VteTerminal.Create()
 		_widget.Show()
+		_widget.SetSizeRequest(20,100)
 		TopWidget.add(_widget)
 '		_widget.ConnectSignal(
 	End Function

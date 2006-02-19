@@ -42,10 +42,7 @@ Global exp_compiler:Byte Ptr = Application.GetWidget("exp_compiler")
 Global T_emp:GtkContainer = New GtkContainer
 T_emp.Handle = exp_compiler
 TProcLib.Init(T_emp)
-'Global VTE:VteTerminal = VteTerminal.Create()
-'VTE.SetSizeRequest(20,80)
-'VTE.Show()
-'gtk_container_add(exp_compiler,VTE.Handle)
+
 
 Global frmOptions:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmOptions"))
 
@@ -372,10 +369,16 @@ End Function
 
 Function tb_comp_click()
 
-Local Args:String[2]
-Args[0] = "makeapp"
-Args[1] = "/home/philipp/bmx/mod/gtk.mod/sample.bmx"
-TProcLib.CreateProcess("/home/philipp/bmx/bin/bmk",Args)
+	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	If Document.File <> "" Then
+		Local Args:String[2]
+		Args[0] = "makeapp"
+		Args[1] = Document.File
+		TProcLib.CreateProcess("/home/bigmichi/Programme/BlitzMax/bin/bmk",Args)
+	Else
+		Scream("Sie muessen die Datei erst Speichern!")
+	End If 
+
 End Function
 
 

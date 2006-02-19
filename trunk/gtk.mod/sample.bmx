@@ -3,6 +3,7 @@ Import GTK.Scintilla
 GTKUtil.Init()
 Glade.Init()
 
+'test
 
 Local Application:GladeXML = GladeXML.Create("sample.glade")
 Application.ConnectSignals()
