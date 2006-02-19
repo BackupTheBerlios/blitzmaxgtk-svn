@@ -8,7 +8,7 @@ Import "settings.bmx"
 ?win32
 Import "procwin32.bmx"
 ?linux
-Include "proclinux.bmx"
+import "proclinux.bmx"
 ?mac
 Import "procmac.bmx"
 ?

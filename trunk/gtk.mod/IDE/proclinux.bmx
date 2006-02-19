@@ -1,16 +1,15 @@
+Import GTK.OOP
 Include "procshape.bmx"
 
 Type TProcLib Extends TProcShape
-	Field widget:VteTerminal
+	Global _widget:VteTerminal
 
 	Function Create:TProcLib(TopWidget:GtkWidget)
-		Local TTP:TProcLib = New TProcLib
-		TTP.widget = VteTerminal.Create()
-		Return widget
+		_widget = VteTerminal.Create()
 '		_widget.ConnectSignal(
 	End Function
 
-	Method CreateProcess:Int(Path:String,ArgV:String[])
-		widget.ForkCommand(Name,ArgV)
-	End Method
+	Function CreateProcess:Int(Path:String,ArgV:String[])
+		Return _widget.ForkCommand(Name,ArgV)
+	End Function
 End Type
