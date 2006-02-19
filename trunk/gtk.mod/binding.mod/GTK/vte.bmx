@@ -3,4 +3,6 @@ Extern
 	Function vte_terminal_fork_command:Int(terminal:Byte Ptr,command:Byte Ptr,argv:Byte Ptr,envv:Byte Ptr,directory:Byte Ptr,lastlog:Byte,utmp:Byte,wtmp:Byte)="vte_terminal_fork_command"
 	Function vte_terminal_set_size(terminal:Byte Ptr, columns:Long, rows:Long)="vte_terminal_set_size"
 	Function vte_terminal_set_color_background(terminal:Byte Ptr, color:Byte Ptr)="vte_terminal_set_color_background"
+	Function vte_terminal_set_color_foreground(terminal:Byte Ptr, color:Byte Ptr)="vte_terminal_set_color_foreground"
+	Function vte_terminal_set_font_from_string(terminal:Byte Ptr, name:Byte Ptr)="vte_terminal_set_font_from_string"
 End Extern

@@ -44,6 +44,7 @@ T_emp.Handle = exp_compiler
 TProcLib.Init(T_emp)
 
 
+
 Global frmOptions:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmOptions"))
 
 ' Load the keywords #
@@ -402,7 +403,7 @@ Function tb_comp_click()
 		Local Args:String[2]
 		Args[0] = "makeapp"
 		Args[1] = Document.File
-		TProcLib.CreateProcess("/home/philipp/bmx/bin/bmk",Args)
+		TProcLib.CreateProcess("/home/bigmichi/Programme/BlitzMax/bin/bmk",Args)
 	Else
 		Scream("Sie muessen die Datei erst Speichern!")
 	End If 
