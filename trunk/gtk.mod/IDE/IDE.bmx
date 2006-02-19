@@ -54,7 +54,7 @@ If Settings.GetValue("Scintilla_KeywordsFile")="" Then
 Else
 	Local KeyWordsFile:TStream = ReadStream(Settings.GetValue("Scintilla_KeywordsFile"))
 	If KeyWordsFile = Null Then
-		Scream("Konnte Keywords-Datei nicht oeffnen")
+		Scream("Konnte Keywords-Datei nicht öffnen")
 	Else
 		While Not KeyWordsFile.EOF()
 			Local ALine:String = KeyWordsFile.ReadLine()
@@ -76,7 +76,6 @@ Print ExtractR(TestString)
 Print ExtractG(TestString)
 Print ExtractB(TestString)
 End Rem
-
 ' Adding the first page
 AddNBPage()
 
@@ -91,9 +90,13 @@ End Function
 
 Function Scream(What:String)
 	Local TMR:Byte Ptr= gtk_message_dialog_new(Null,0,GTK_MESSAGE_WARNING,GTK_BUTTONS_OK,"Warnung".ToCString())
-	gtk_message_dialog_format_secondary_text(TMR,What.TocString())
+	gtk_message_dialog_format_secondary_text(TMR,ISO_8859_1_To_UTF_8(What).ToCString())
 	gtk_dialog_run(TMR)
 	gtk_widget_destroy(TMR)
+End Function
+
+Function ISO_8859_1_To_UTF_8:String(InputString:String)
+	Return String.FromCString(g_convert(InputString.ToCString(),-1,"UTF-8".ToCString(),"ISO-8859-1".ToCString(),Null,Null,Null))
 End Function
 
 Function AddNBPage()
@@ -161,6 +164,7 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 	'Settings.SetValue("Scintilla_Font_Default_FontSize","12")
 	'Settings.SetValue("Scintilla_Font_Default_FontColor",MakeColorString($EE,$EE,$EE))
 	Scintilla.SetFont(SCE_B_COMMENT,Settings.GetValue("Scintilla_Font_COMMENT_FontName"),Int(Settings.GetValue("Scintilla_Font_COMMENT_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_COMMENT_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_COMMENT_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_COMMENT_FontColor")))
+	Scintilla.SetFont(SCE_B_MULTILINECOMMENT,Settings.GetValue("Scintilla_Font_COMMENT_FontName"),Int(Settings.GetValue("Scintilla_Font_COMMENT_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_COMMENT_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_COMMENT_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_COMMENT_FontColor")))
 	'Settings.SetValue("Scintilla_Font_COMMENT_FontName","!bitstream charter")
 	'Settings.SetValue("Scintilla_Font_COMMENT_FontSize","12")
 	'Settings.SetValue("Scintilla_Font_COMMENT_FontColor",MakeColorString($B1,$E7,$EB))
@@ -271,7 +275,7 @@ Function CloseTab(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 End Function
 
 Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
-	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD("Datei oeffnen",Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-open",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
+	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD(ISO_8859_1_To_UTF_8("Datei öffnen"),Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-open",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
 	dialog.SetLocalOnly(True)
 
 	If dialog.Run() = GTK_RESPONSE_OK Then
@@ -299,8 +303,8 @@ Function tb_save_click()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
 	If Document.File <> "" Then
 
-		CreateFile(Document.File)
-		Local Stream:TStream = OpenStream(Document.File)
+'		CreateFile(Document.File)
+		Local Stream:TStream = WriteStream(Document.File)
 
 		If Stream=Null Then
 			Scream "Datei konnte nicht gespeichert werden"
@@ -330,13 +334,16 @@ Function mi_save_under_click()
 	If Document.File Then Dialog.SetFileName(Document.File)
 
 	If dialog.Run() = GTK_RESPONSE_OK Then
-		CreateFile(dialog.GetFilename())
-		Local Stream:TStream = OpenStream(dialog.GetFilename())
+
+'		CreateFile(dialog.GetFilename())
+		Local Stream:TStream = WriteStream(dialog.GetFilename())
 
 		If Stream=Null Then
 			Scream "Datei konnte nicht gespeichert werden"
 		EndIf
-
+		Document.File = Dialog.GetFileName()
+		Document.Name = StripDir(Document.File)
+		Document.Label.SetText(Document.Name)
 		For Local ZI:Int = 0 To Document.Scintilla.GetLineCount()-1
 			Local TL:String =Document.Scintilla.GetLine(ZI)
 			If ZI = Document.Scintilla.GetLineCount()-1 Then 
@@ -407,25 +414,16 @@ Function button_opttions_click()
 
 End Function
 
-Function tb_comp_click()
-
-	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
-	If Document.File <> "" Then
-		Local Args:String[2]
-		Args[0] = "makeapp"
-		Args[1] = Document.File
-		TProcLib.CreateProcess("/home/bigmichi/Programme/BlitzMax/bin/bmk",Args)
-	Else
-		Scream("Sie muessen die Datei erst Speichern!")
-	End If 
-
-End Function
-
 
 Function tb_run_click()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
 	If Document.File <> "" Then
-		TProcLib.CreateProcess(Left(Document.File,Len(Document.File)-4),Null)
+		Print StripExt(Document.File)
+		Local Targs:String[3]
+		Targs[0] = "makeapp"
+		Targs[1] = "-x"
+		Targs[2] = StripExt(Document.File)
+		TProcLib.CreateProcess("/home/bigmichi/Programme/BlitzMax/bin/bmk",targs)
 	End If
 End Function
 

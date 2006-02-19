@@ -9,7 +9,7 @@
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
-  <property name="default_width">200</property>
+  <property name="default_width">800</property>
   <property name="default_height">500</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
@@ -339,23 +339,6 @@
 	    <packing>
 	      <property name="expand">False</property>
 	      <property name="homogeneous">False</property>
-	    </packing>
-	  </child>
-
-	  <child>
-	    <widget class="GtkToolButton" id="tb_comp">
-	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Compilieren</property>
-	      <property name="use_underline">True</property>
-	      <property name="stock_id">gtk-convert</property>
-	      <property name="visible_horizontal">True</property>
-	      <property name="visible_vertical">True</property>
-	      <property name="is_important">False</property>
-	      <signal name="clicked" handler="bb_tb_comp_click" last_modification_time="Sat, 18 Feb 2006 18:52:57 GMT"/>
-	    </widget>
-	    <packing>
-	      <property name="expand">False</property>
-	      <property name="homogeneous">True</property>
 	    </packing>
 	  </child>
 

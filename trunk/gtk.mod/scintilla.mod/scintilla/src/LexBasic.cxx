@@ -192,14 +192,13 @@ static void ColouriseBasicDoc(unsigned int startPos, int length, int initStyle,
 
 static void ColouriseMaxDoc(unsigned int startPos, int length, int initStyle,
                            WordList *keywordlists[], Accessor &styler) {
-	bool wasfirst = true, isfirst = true, wascomment = false; // true if first token in a line
+	bool wasfirst = true, isfirst = true; // true if first token in a line
 	styler.StartAt(startPos);
 
 	StyleContext sc(startPos, length, initStyle, styler);
     
 	// Can't use sc.More() here else we miss the last character
 	for (; ; sc.Forward()) {
-        wascomment = false;        
         
         if (sc.state == SCE_B_IDENTIFIER) {           
            if (!IsIdentifier(sc.ch)) {
@@ -264,13 +263,11 @@ static void ColouriseMaxDoc(unsigned int startPos, int length, int initStyle,
 		} else if  (sc.state == SCE_B_MULTILINECOMMENT) {
             if (sc.Match("end rem")) {                
                 sc.SetState(SCE_B_DEFAULT);
-                styler.ColourTo(sc.currentPos + 6, SCE_B_MULTILINECOMMENT);
-                wascomment = true;                          
+                //styler.ColourTo(sc.currentPos + 6, SCE_B_MULTILINECOMMENT);
                 }
             if (sc.Match("endrem")) {                
                 sc.SetState(SCE_B_DEFAULT);
-                styler.ColourTo(sc.currentPos + 5, SCE_B_MULTILINECOMMENT);
-                wascomment = true;                        
+                //styler.ColourTo(sc.currentPos + 5, SCE_B_MULTILINECOMMENT);
                 }
         }    
 
@@ -367,7 +364,8 @@ static int CheckBlitzMaxFoldPoint(char const *token, int &level) {
 		!strcmp(token, "end select") ||
 		!strcmp(token, "endselect") ||
 		!strcmp(token, "wend") ||
-		!strcmp(token, "until"))
+		!strcmp(token, "until") ||
+		!strcmp(token, "forever"))
 {
 		return -1;
 	}
