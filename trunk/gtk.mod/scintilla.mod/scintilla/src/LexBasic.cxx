@@ -350,7 +350,9 @@ static int CheckBlitzMaxFoldPoint(char const *token, int &level) {
 		!strcmp(token, "for")  ||
 		!strcmp(token, "while") ||
 		!strcmp(token, "repeat")||
-		!strcmp(token, "select")){
+		!strcmp(token, "select")||
+		!strcmp(token, "rem")||
+		!strcmp(token, "foldstart")){
 		level |= SC_FOLDLEVELHEADERFLAG;
 		return 1;
 	}
@@ -365,7 +367,9 @@ static int CheckBlitzMaxFoldPoint(char const *token, int &level) {
 		!strcmp(token, "endselect") ||
 		!strcmp(token, "wend") ||
 		!strcmp(token, "until") ||
-		!strcmp(token, "forever"))
+		!strcmp(token, "forever")||
+		!strcmp(token, "end rem")||
+		!strcmp(token, "foldend"))
 {
 		return -1;
 	}

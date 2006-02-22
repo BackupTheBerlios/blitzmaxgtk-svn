@@ -1040,4 +1040,37 @@
   </child>
 </widget>
 
+<widget class="GtkAboutDialog" id="frmAbout">
+  <property name="destroy_with_parent">False</property>
+  <property name="name" translatable="yes">BlitzMax-IDE development version</property>
+  <property name="copyright" translatable="yes">Copyright (C) 2005-2006 bigmichi and phiker
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA</property>
+  <property name="license" translatable="yes">The whole GNU General Public License can be found in the file COPYING</property>
+  <property name="wrap_license">False</property>
+  <property name="website">http://blitzmaxgtk.berlios.de/typo3</property>
+  <property name="website_label" translatable="yes">BlitzMaxGTK-Homepage</property>
+  <property name="authors">Kern:
+Michael Sytko aka bigmichi
+Philipp Kerling aka phiker
+
+Lexer:
+Christian Hans aka ganxta
+
+Außerdem danken wir allen Open-Source-Programmieren und ganz besonders Linus Torvalds, durch die dieses Projekt erst möglich geworden ist!</property>
+  <property name="documenters">Dokumentatoren werden noch gesucht, Interessierte melden sich bitte bei &lt;k.philipp@gmail.com&gt;.</property>
+  <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">translator-credits</property>
+</widget>
+
 </glade-interface>

@@ -1,5 +1,5 @@
 #!/bin/sh
-echo "Automated installer for BlitzMax module Pub.GTK"
+echo "Automated installer for the BlitzMax GTK-modules"
 echo "(C) 2005-2006 by phiker"
 echo "install: Checking identity"
 if [ $LOGNAME = "root" ]; then

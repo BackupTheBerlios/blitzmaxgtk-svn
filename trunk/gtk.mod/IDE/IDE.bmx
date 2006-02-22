@@ -13,6 +13,12 @@ Import "proclinux.bmx"
 Import "procmac.bmx"
 ?
 
+Print "BMax-IDE development version , Copyright (C) 2005-2006 by bigmichi and phiker"
+Print "BMax-IDE comes with ABSOLUTELY NO WARRANTY; For details"
+Print "look at 'Hilfe->Info'.  This is free software, and you are welcome"
+Print "to redistribute it under certain conditions; see COPYING"
+Print "for details."
+
 Type TDocument
 	Field Name:String
 	Field File:String
@@ -66,6 +72,8 @@ Else
 				EndIf
 			Next
 		Wend
+		KeywordList.addLast("foldstart")
+		KeywordList.addLast("foldend")
 	EndIf
 EndIf
 
@@ -290,7 +298,10 @@ Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 		Document.File = Dialog.GetFilename()
 		Local FirstLine:Byte = True
 		While Not Eof(Stream)
-			If FirstLine Document.Scintilla.AppendText(Stream.ReadLine()) Else Document.Scintilla.AppendText("~n" + Stream.ReadLine())
+			Local ALine:String = Stream.ReadLine()
+			If Lower(Left(ALine,Len("'foldstart"))) = "'foldstart" Then ALine=Mid(ALine,2)
+			If Lower(Left(ALine,Len("'foldend"))) = "'foldend" Then ALine=Mid(ALine,2)
+			If FirstLine Document.Scintilla.AppendText(ALine) Else Document.Scintilla.AppendText("~n" + ALine)
 			firstline = False
 		Wend
 	EndIf
@@ -312,6 +323,8 @@ Function tb_save_click()
 
 		For Local ZI:Int = 0 To Document.Scintilla.GetLineCount()-1
 			Local TL:String =Document.Scintilla.GetLine(ZI)
+			If Lower(Left(TL,Len("foldstart"))) = "foldstart" Then TL="'" + TL
+			If Lower(Left(TL,Len("foldend"))) = "foldend" Then TL="'" + TL
 			If ZI = Document.Scintilla.GetLineCount()-1 Then 
 				Stream.WriteLine(TL)
 			Else 
@@ -346,6 +359,9 @@ Function mi_save_under_click()
 		Document.Label.SetText(Document.Name)
 		For Local ZI:Int = 0 To Document.Scintilla.GetLineCount()-1
 			Local TL:String =Document.Scintilla.GetLine(ZI)
+			If Lower(Left(TL,Len("foldstart"))) = "foldstart" Then TL="'" + TL
+			If Lower(Left(TL,Len("foldend"))) = "foldend" Then TL="'" + TL
+
 			If ZI = Document.Scintilla.GetLineCount()-1 Then 
 				Stream.WriteLine(TL)
 			Else 
@@ -432,4 +448,9 @@ Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotifi
 	If notification.Code = SCN_MARGINCLICK
 		TempScintilla.ToggleFoldPoint(TempScintilla.GetLineFromPosition(Notification.position))
 	EndIf
+End Function
+
+Function ShowInfo()
+	Local AboutWindow:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmAbout"))
+	AboutWindow.Show()
 End Function
