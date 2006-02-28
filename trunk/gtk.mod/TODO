@@ -1,7 +1,6 @@
-- Add Strg+{V,C,X} support
-- Disable currently unsopported menu items
+(done) - Disable currently unsopported menu items
 - Add size-resizable option to VTE-Terminal
-- Add custom fold-point support to BB-Lexer
+(done) - Add custom fold-point support to BB-Lexer
 - Save before execute
 - Save old open folder
 - Add F5 shortcut

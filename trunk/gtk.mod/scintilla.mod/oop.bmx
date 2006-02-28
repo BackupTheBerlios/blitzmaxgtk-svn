@@ -230,4 +230,16 @@ Type GtkScintilla Extends GtkWidget
 	Method ToggleFoldPoint(Line:Int)
 		scintilla_send_message(ScintillaHandle,SCI_TOGGLEFOLD,Byte Ptr(Line),Null)
 	End Method
+
+	Method Cut()
+		scintilla_send_message(ScintillaHandle,SCI_CUT,Null,Null)
+	End Method
+
+	Method Copy()
+		scintilla_send_message(ScintillaHandle,SCI_COPY,Null,Null)
+	End Method
+
+	Method Paste()
+		scintilla_send_message(ScintillaHandle,SCI_PASTE,Null,Null)
+	End Method
 End Type

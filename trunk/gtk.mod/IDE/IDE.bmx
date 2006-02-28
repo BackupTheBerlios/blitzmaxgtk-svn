@@ -470,3 +470,19 @@ Function ShowInfo()
 	Local AboutWindow:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmAbout"))
 	AboutWindow.Show()
 End Function
+
+
+Function Cut()
+	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	Document.Scintilla.Cut()
+End Function
+
+Function Copy()
+	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	Document.Scintilla.Copy()
+End Function
+
+Function Paste()
+	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	Document.Scintilla.Paste()
+End Function
