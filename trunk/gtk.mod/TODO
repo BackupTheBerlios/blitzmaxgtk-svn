@@ -3,6 +3,6 @@
 (done) - Add custom fold-point support to BB-Lexer
 - Save before execute
 - Save old open folder
-- Add F5 shortcut
+(done) - Add F5 shortcut
 - Add menu option to compile without executing
 - remove license violations

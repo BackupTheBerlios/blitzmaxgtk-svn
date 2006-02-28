@@ -173,8 +173,23 @@
 	  <child>
 	    <widget class="GtkMenuItem" id="menuitem3">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">_Ansicht</property>
+	      <property name="label" translatable="yes">_Programm</property>
 	      <property name="use_underline">True</property>
+
+	      <child>
+		<widget class="GtkMenu" id="menuitem3_menu">
+
+		  <child>
+		    <widget class="GtkImageMenuItem" id="ausführen1">
+		      <property name="visible">True</property>
+		      <property name="label">gtk-execute</property>
+		      <property name="use_stock">True</property>
+		      <signal name="activate" handler="bb_tb_run_click" last_modification_time="Tue, 28 Feb 2006 15:36:14 GMT"/>
+		      <accelerator key="F5" modifiers="0" signal="activate"/>
+		    </widget>
+		  </child>
+		</widget>
+	      </child>
 	    </widget>
 	  </child>
 
