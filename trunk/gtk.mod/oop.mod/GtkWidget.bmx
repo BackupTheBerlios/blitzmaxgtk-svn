@@ -44,4 +44,9 @@ Type GtkWidget Extends GtkObject
 	Method Destroy()
 		gtk_widget_destroy(Handle)
 	End Method
+
+	method SetSensitive(Sensitive:byte)
+		gtk_widget_set_sensitive(Handle,Sensitive)
+	end method
 End Type
+

@@ -20,6 +20,8 @@ Import GTK.OOP
 Import BRL.StandardIO
 Include "procshape.bmx"
 
+const ChildExitedMessage:String = "Prozess beendet" + chr$(13)
+
 Type TProcLib Extends TProcShape
 	Global _widget:VteTerminal, _is_running:Byte=False
 
@@ -48,4 +50,5 @@ End Type
 Function TProcLibChildExit()
 	Print "child exit detected"
 	TProcLib._is_running = False
+	vte_terminal_feed(TProcLib._widget.Handle,ChildExitedMessage.ToCString(),len(ChildExitedMessage))
 End Function

@@ -242,4 +242,25 @@ Type GtkScintilla Extends GtkWidget
 	Method Paste()
 		scintilla_send_message(ScintillaHandle,SCI_PASTE,Null,Null)
 	End Method
+
+	method Undo()
+		scintilla_send_message(ScintillaHandle,SCI_UNDO,null,null)
+	end method
+
+	method CanUndo:byte()
+		return scintilla_send_message(ScintillaHandle,SCI_CANUNDO,null,null)
+	end method
+
+	method Redo()
+		scintilla_send_message(ScintillaHandle,SCI_REDO,null,null)
+	end method
+
+	method CanRedo:byte()
+		return scintilla_send_message(ScintillaHandle,SCI_CANREDO,null,null)
+	end method
+
+	method EmptyUndoBuffer()
+		scintilla_send_message(ScintillaHandle,SCI_EMPTYUNDOBUFFER,null,null)
+	end method
 End Type
+

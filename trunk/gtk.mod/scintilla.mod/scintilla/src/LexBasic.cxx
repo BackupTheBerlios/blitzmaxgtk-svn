@@ -199,7 +199,6 @@ static void ColouriseMaxDoc(unsigned int startPos, int length, int initStyle,
     
 	// Can't use sc.More() here else we miss the last character
 	for (; ; sc.Forward()) {
-        
         if (sc.state == SCE_B_IDENTIFIER) {           
            if (!IsIdentifier(sc.ch)) {
 				// Labels
@@ -261,14 +260,14 @@ static void ColouriseMaxDoc(unsigned int startPos, int length, int initStyle,
 				sc.SetState(SCE_B_DEFAULT);
             }            
 		} else if  (sc.state == SCE_B_MULTILINECOMMENT) {
-            if (sc.Match("end rem")) {                
+            if (sc.Match("end rem") || sc.Match("End rem") || sc.Match("End Rem") || sc.Match("end Rem") || sc.Match("endrem") || sc.Match("Endrem") || sc.Match("endRem") || sc.Match("EndRem")) {                
                 sc.SetState(SCE_B_DEFAULT);
                 //styler.ColourTo(sc.currentPos + 6, SCE_B_MULTILINECOMMENT);
                 }
-            if (sc.Match("endrem")) {                
+    /*        if (sc.Match("endrem")) {                
                 sc.SetState(SCE_B_DEFAULT);
                 //styler.ColourTo(sc.currentPos + 5, SCE_B_MULTILINECOMMENT);
-                }
+                }*/
         }    
 
 		if (sc.atLineStart)
@@ -279,7 +278,7 @@ static void ColouriseMaxDoc(unsigned int startPos, int length, int initStyle,
 				sc.SetState(SCE_B_LABEL);
 			} else if (sc.Match('\'')) {
 				sc.SetState(SCE_B_COMMENT);
-			} else if ((!sc.Match("end rem")) && (sc.Match("rem")) && (isfirst)) {
+			} else if ((!sc.Match("end rem") && !sc.Match("End rem") && !sc.Match("end Rem") && !sc.Match("End Rem")) && (sc.Match("rem") || sc.Match("Rem")) && (isfirst)) {
 				sc.SetState(SCE_B_MULTILINECOMMENT);
 			} else if (sc.Match('"')) {
 				sc.SetState(SCE_B_STRING);

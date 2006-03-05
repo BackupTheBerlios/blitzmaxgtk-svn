@@ -50,6 +50,7 @@ Global Settings:TSettings = New TSettings
 Settings.LoadAllSettings()
 
 ' Initialization stuff
+'foldstart
 GTKUtil.Init()
 Glade.Init()
 
@@ -102,6 +103,13 @@ Print ExtractB(TestString)
 End Rem
 ' Adding the first page
 AddNBPage()
+
+'foldend
+
+' Sample for custom fold point
+'foldstart
+' Some shit here
+'foldend
 
 ' Main loop
 GTKUtil.Main()
@@ -233,11 +241,14 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 	Scintilla.SetMarginSensitive(1,True)
 	Scintilla.SetMarginSensitive(2,False)
 
+	scintilla_send_message(Scintilla.Handle,SCI_SETFOLDMARGINCOLOUR,byte ptr(true),byte ptr(scintilla.encodecolor(ExtractR(Settings.GetValue("Scintilla_FoldingMargin_BGColor")),extractg(Settings.GetValue("Scintilla_FoldingMargin_BGColor")),extractB(Settings.GetValue("Scintilla_FoldingMargin_BGColor")))))
+	scintilla_send_message(Scintilla.Handle,SCI_SETFOLDMARGINHICOLOUR,byte ptr(true),byte ptr(scintilla.encodecolor(ExtractR(Settings.GetValue("Scintilla_FoldingMargin_BGColor")),extractg(Settings.GetValue("Scintilla_FoldingMargin_BGColor")),extractB(Settings.GetValue("Scintilla_FoldingMargin_BGColor")))))
+
 	Scintilla.SetFont(STYLE_LINENUMBER,Settings.GetValue("Scintilla_Font_LINENUMBER_FontName"),Int(Settings.GetValue("Scintilla_Font_LINENUMBER_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_LINENUMBER_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_LINENUMBER_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_LINENUMBER_FontColor")))
 	'Settings.SetValue("Scintilla_Font_LINENUMBER_FontName","!helvetica")
 	'Settings.SetValue("Scintilla_Font_LINENUMBER_FontSize","8")
 	'Settings.SetValue("Scintilla_Font_LINENUMBER_FontColor",MakeColorString($FF,$FF,$FF))
-	Scintilla.SetFontBGColor(STYLE_LINENUMBER,ExtractR(Settings.GetValue("Scintilla_BGColor")),ExtractG(Settings.GetValue("Scintilla_BGColor")),ExtractB(Settings.GetValue("Scintilla_BGColor")))
+	Scintilla.SetFontBGColor(STYLE_LINENUMBER,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),ExtractG(Settings.GetValue("Scintilla_LineNumbers_BGColor")),ExtractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")))
 	'Settings.SetValue("Scintilla_BGColor_LINENUMBER",MakeColorString($00,$50,$6E))
 	Scintilla.SetCaretColor(ExtractR(Settings.GetValue("Scintilla_CaretColor")),ExtractG(Settings.GetValue("Scintilla_CaretColor")),ExtractB(Settings.GetValue("Scintilla_CaretColor")))
 	'Settings.SetValue("Scintilla_CaretColor",MakeColorString($AA,$AA,$AA))
@@ -252,17 +263,19 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 
 	Scintilla.SetProperty("fold","1")
 	Scintilla.SetProperty("fold.compact","0")
-	Scintilla.DefineMarker(SC_MARKNUM_FOLDEROPEN,SC_MARK_CIRCLEMINUS,170,170,170,0,0,0)
-	Scintilla.DefineMarker(SC_MARKNUM_FOLDER,SC_MARK_CIRCLEPLUS,170,170,170,0,0,0)
-	Scintilla.DefineMarker(SC_MARKNUM_FOLDERSUB,SC_MARK_VLINE,170,170,170,0,0,0)
-	Scintilla.DefineMarker(SC_MARKNUM_FOLDERTAIL,SC_MARK_LCORNERCURVE,170,170,170,0,0,0)
-	Scintilla.DefineMarker(SC_MARKNUM_FOLDEREND,SC_MARK_CIRCLEPLUSCONNECTED,170,170,170,0,0,0)
-	Scintilla.DefineMarker(SC_MARKNUM_FOLDEROPENMID,SC_MARK_CIRCLEMINUSCONNECTED,170,170,170,0,0,0)
-	Scintilla.DefineMarker(SC_MARKNUM_FOLDERMIDTAIL,SC_MARK_TCORNERCURVE,170,170,170,0,0,0)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDEROPEN,SC_MARK_CIRCLEMINUS,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractg(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")),255,255,255)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDER,SC_MARK_CIRCLEPLUS,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractg(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")),255,255,255)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDERSUB,SC_MARK_VLINE,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractg(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")),255,255,255)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDERTAIL,SC_MARK_LCORNERCURVE,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractg(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")),255,255,255)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDEREND,SC_MARK_CIRCLEPLUSCONNECTED,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractg(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")),255,255,255)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDEROPENMID,SC_MARK_CIRCLEMINUSCONNECTED,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractg(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")),255,255,255)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDERMIDTAIL,SC_MARK_TCORNERCURVE,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractg(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")),255,255,255)
 
 	Scintilla.SetKeywordList(0,KeywordList)
 End Function
 
+'Color functions
+'foldstart
 Function MakeColorString:String(ColorR:Byte,ColorG:Byte,ColorB:Byte)
 	Return ColorR + "," + ColorG + "," + ColorB
 End Function
@@ -282,6 +295,7 @@ Function ExtractG:Byte(Text:String)
 End Function
 
 Function ExtractB:Byte(Text:String)
+'foldend
 	Local CPos:Int = Instr(Text,",")
 	If CPos = -1 Scream "Fehler beim Lesen der Farbe"
 	Local CSPos:Int = Instr(Text,",",CPos+1)
@@ -298,6 +312,8 @@ Function CloseTab(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 	Notebook.RemovePage(Notebook.GetPageOfWidget(TWidget))
 End Function
 
+'Buttons
+'foldstart
 Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD(ISO_8859_1_To_UTF_8("Datei öffnen"),Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-open",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
 	dialog.SetLocalOnly(True)
@@ -320,6 +336,19 @@ Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 			If FirstLine Document.Scintilla.AppendText(ALine) Else Document.Scintilla.AppendText("~n" + ALine)
 			firstline = False
 		Wend
+		if Settings.GetValue(Document.File + "_have_foldinfo") = "yes" then
+			local foldInfo:string = Settings.GetValue(Document.File + "_foldinfo")
+			local lines:int[] = split(foldInfo,",")
+			GTKUtil.SingleIteration()
+			for local i:int = 0 to lines.length-1
+				print "fold: " + lines[i]
+				GTKUtil.SingleIteration()
+				Document.Scintilla.ToggleFoldPoint(Lines[i])
+				GTKUtil.SingleIteration()
+			next
+			GTKUtil.SingleIteration()
+		endif
+		Document.Scintilla.EmptyUndoBuffer()
 	EndIf
 	
 	dialog.Destroy()
@@ -336,9 +365,12 @@ Function tb_save_click()
 		If Stream=Null Then
 			Scream "Datei konnte nicht gespeichert werden"
 		EndIf
-
+		local foldinfo:string = ""
 		For Local ZI:Int = 0 To Document.Scintilla.GetLineCount()-1
 			Local TL:String =Document.Scintilla.GetLine(ZI)
+			if scintilla_send_message(Document.Scintilla.Handle,SCI_GETFOLDEXPANDED,byte ptr(ZI),null) = false then
+				foldinfo = foldinfo + ZI + ","
+			endif
 			If Lower(Left(TL,Len("foldstart"))) = "foldstart" Then TL="'" + TL
 			If Lower(Left(TL,Len("foldend"))) = "foldend" Then TL="'" + TL
 			If ZI = Document.Scintilla.GetLineCount()-1 Then 
@@ -347,6 +379,12 @@ Function tb_save_click()
 				Stream.WriteLine(TL[..(Len(TL)-1)])
 			End If 
 		Next 
+		if len(foldinfo)>0 then
+			foldinfo = left(foldinfo,len(foldinfo)-1)
+			print "DEBUG: FOLDINFO: (" + foldinfo +")"
+			Settings.SetValue(Document.File + "_have_foldinfo","yes")
+			Settings.SetValue(Document.File + "_foldinfo",foldinfo)
+		endif
 
 		Stream.Close()
 	Else
@@ -418,7 +456,6 @@ Function LoadScintillaOptions()
 
 End Function
 
-
 Function button_opttions_click()
 
 	Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
@@ -446,6 +483,16 @@ Function button_opttions_click()
 
 End Function
 
+function mi_compile_click()
+	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	If Document.File <> "" Then
+		Print StripExt(Document.File)
+		Local Targs:String[2]
+		Targs[0] = "makeapp"
+		Targs[1] = StripExt(Document.File)
+		TProcLib.CreateProcess("/home/bigmichi/Programme/BlitzMax/bin/bmk",targs)
+	End If
+end function
 
 Function tb_run_click()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
@@ -459,11 +506,31 @@ Function tb_run_click()
 	End If
 End Function
 
+function Undo()
+	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	if Document.Scintilla.CanUndo() then
+		Document.Scintilla.Undo()
+	end if
+end function
+
+function Redo()
+	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	if Document.Scintilla.CanRedo() then 
+		Document.Scintilla.Redo()
+	end if
+end function
+
+'foldend
 Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotification,GdkEvent:Byte Ptr)
 	Local TempScintilla:GtkScintilla = GtkScintilla.CreateFromHandle(Widget)
 	If notification.Code = SCN_MARGINCLICK
+		print TempScintilla.GetLineFromPosition(Notification.Position)
 		TempScintilla.ToggleFoldPoint(TempScintilla.GetLineFromPosition(Notification.position))
 	EndIf
+	local UndoItem:GtkWidget = GtkWidget.CreateWidgetFromHandle(Application.GetWidget("MenuItem_Undo"))
+	local RedoItem:gtkwidget = gtkwidget.CreateWidgetFromHandle(Application.GetWidget("MenuItem_Redo"))
+	if TempScintilla.CanUndo() then UndoItem.SetSensitive(true) else UndoItem.SetSensitive(false)
+	if TempScintilla.CanRedo() then RedoItem.SetSensitive(true) else RedoItem.SetSensitive(false)
 End Function
 
 Function ShowInfo()
@@ -486,3 +553,27 @@ Function Paste()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
 	Document.Scintilla.Paste()
 End Function
+
+function split:int[](InputString:string,Separator:string)
+	local intarray:int[1]
+	if instr(InputString,Separator) = 0 then
+		intarray[0] = int(inputstring)
+		return intarray
+	endif
+	local oldpos:int
+	local actpos:int
+	while true
+		local nextsep:int = instr(InputString,Separator,oldpos+1)
+		if nextsep = 0 then
+			intarray = intarray[..actpos+1]
+			intarray[actpos] = int(mid(InputString,oldpos+1))
+			exit
+		endif
+		intarray = intarray[..actpos+1]
+		intarray[actpos] = int(mid(InputString,oldpos+1,nextsep-oldpos))
+		oldpos = nextsep
+		actpos = actpos + 1
+	wend
+	return intarray
+end function
+

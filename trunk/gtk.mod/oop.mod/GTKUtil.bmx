@@ -26,4 +26,10 @@ Type GTKUtil
 	Function Quit()
 		gtk_main_quit()
 	End Function
+
+	function SingleIteration()
+		while gtk_events_pending()
+			gtk_main_iteration();
+		wend
+	end function
 End Type

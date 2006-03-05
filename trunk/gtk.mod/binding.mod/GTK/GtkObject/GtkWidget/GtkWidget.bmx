@@ -53,7 +53,7 @@ Extern
 	'Function gtk_widget_set_name(widget:Byte Ptr,name:Byte Ptr)="gtk_widget_set_name"
 	'Function gchar*:const(widget:Byte Ptr)="gchar*"
 	'Function gtk_widget_set_state(widget:Byte Ptr,state:GtkStateType)="gtk_widget_set_state"
-	'Function gtk_widget_set_sensitive(widget:Byte Ptr,sensitive:gboolean)="gtk_widget_set_sensitive"
+	Function gtk_widget_set_sensitive(widget:Byte Ptr,sensitive:byte)="gtk_widget_set_sensitive"
 	'Function gtk_widget_set_parent(widget:Byte Ptr,parent:Byte Ptr)="gtk_widget_set_parent"
 	'Function gtk_widget_set_parent_window(widget:Byte Ptr,parent_window:Byte Ptr)="gtk_widget_set_parent_window"
 	'Function gtk_widget_get_parent_window:Byte Ptr(widget:Byte Ptr)="gtk_widget_get_parent_window"
