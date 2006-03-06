@@ -94,6 +94,12 @@ Else
 	EndIf
 EndIf
 
+' Set status of debug-/quick-build-mode
+local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
+local debugbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_debugmode"))
+quickbuild.SetActive(byte(Settings.GetValue("QuickBuild")))
+debugbuild.SetActive(byte(Settings.GetValue("DebugBuild")))
+
 Rem 
 Local TestString:String = MakeColorString(123,234,11)
 Print TestString
@@ -483,13 +489,40 @@ Function button_opttions_click()
 
 End Function
 
+function mnu_quickbuild_toggled()
+	local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
+	Settings.SetValue("QuickBuild",quickbuild.GetActive())
+end function
+
+function mnu_debugmode_toggled()
+	local debugbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_debugmode"))
+	Settings.SetValue("DebugBuild",debugbuild.GetActive())
+end function
+
 function mi_compile_click()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
 	If Document.File <> "" Then
-		Print StripExt(Document.File)
-		Local Targs:String[2]
+		local argnum:byte = 2
+		local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
+		if not quickbuild.GetActive() = true then
+			argnum = argnum + 1
+		endif
+		local debugbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_debugmode"))
+		if not debugbuild.GetActive() = true then
+			argnum = argnum + 1
+		endif
+		Local Targs:String[argnum]
 		Targs[0] = "makeapp"
-		Targs[1] = StripExt(Document.File)
+		argnum = 1
+		if not quickbuild.GetActive() = true then
+			Targs[argnum] = "-a"
+			argnum = argnum + 1
+		endif
+		if not debugbuild.GetActive() = true then
+			Targs[argnum] = "-r"
+			argnum = argnum + 1
+		endif
+		Targs[argnum] = StripExt(Document.File)
 		TProcLib.CreateProcess("/home/bigmichi/Programme/BlitzMax/bin/bmk",targs)
 	End If
 end function
@@ -497,11 +530,28 @@ end function
 Function tb_run_click()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
 	If Document.File <> "" Then
-		Print StripExt(Document.File)
-		Local Targs:String[3]
+		local argnum:byte = 3
+		local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
+		if not quickbuild.GetActive() = true then
+			argnum = argnum + 1
+		endif
+		local debugbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_debugmode"))
+		if not debugbuild.GetActive() = true then
+			argnum = argnum + 1
+		endif
+		Local Targs:String[argnum]
 		Targs[0] = "makeapp"
-		Targs[1] = "-x"
-		Targs[2] = StripExt(Document.File)
+		argnum = 1
+		if not quickbuild.GetActive() = true then
+			Targs[argnum] = "-a"
+			argnum = argnum + 1
+		endif
+		if not debugbuild.GetActive() = true then
+			Targs[argnum] = "-r"
+			argnum = argnum + 1
+		endif
+		Targs[argnum] = "-x"
+		Targs[argnum+1] = StripExt(Document.File)
 		TProcLib.CreateProcess("/home/bigmichi/Programme/BlitzMax/bin/bmk",targs)
 	End If
 End Function

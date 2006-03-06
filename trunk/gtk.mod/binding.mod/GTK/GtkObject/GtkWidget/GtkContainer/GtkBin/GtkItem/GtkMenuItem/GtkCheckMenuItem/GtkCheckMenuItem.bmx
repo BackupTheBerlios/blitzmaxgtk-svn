@@ -26,4 +26,5 @@ Extern
 	Function gtk_check_menu_item_set_inconsistent(check_menu_item:Byte Ptr,setting:Byte)="gtk_check_menu_item_set_inconsistent"
 	Function gtk_check_menu_item_set_draw_as_radio(check_menu_item:Byte Ptr,draw_as_radio:Byte)="gtk_check_menu_item_set_draw_as_radio"
 	Function gtk_check_menu_item_get_draw_as_radio:Byte(check_menu_item:Byte Ptr)="gtk_check_menu_item_get_draw_as_radio"
+	function gtk_check_menu_item_get_type:byte ptr()
 End Extern
