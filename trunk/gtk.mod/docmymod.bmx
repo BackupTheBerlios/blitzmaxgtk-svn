@@ -25,6 +25,8 @@ Import BRL.MaxUtil
 Import BRL.System
 Import Pub.Resource
 
+' Types and consts
+'foldstart
 Type TType
 	Field Name:String
 	Field Description:String
@@ -86,6 +88,7 @@ Global Functions:TList = New TList
 Global ModuleInfos:TList = New TList
 Global ModuleName:String = ""
 
+'foldend
 Print "DocMyMod v" + DOCMYMOD_VERSION
 Local ArgNum:Int = AppArgs.Length - 1
 Print "Called as " + AppArgs[0]
@@ -933,6 +936,15 @@ Function ProcessFile(FileName:String)
 			Wend
 			ActLine = File.ReadLine()
 		EndIf
+		If Left(ActLine,1) = "'" Then
+			Comment = Comment[..0]
+			Local descstart:Int = Instr(Actline,"@idesc")
+			If descstart <> 0 Then
+				Comment = Comment[..1]
+				Comment[0] = stripchars(Mid(ActLine,descstart+1))
+			EndIf
+			ActLine = File.ReadLine()
+		EndIf
 		If Lower(Left(ActLine,7)) = "private" Then
 			Local TempLine:String
 			Repeat
@@ -1155,7 +1167,7 @@ Function ParseMethodOrFunction:TMethod(ActLine:String,StartAt:Byte)
 				If ActChar = "," And Mode = 1 Then Mode = 0
 				If ActChar = " " Or ActChar="~t" And Mode = 0 Then
 					ParamList = Left(ParamList,RemSpaces-1) + Mid(ParamList,RemSpaces+1)
-					RemSpaces = 1
+					RemSpaces = 1 ' end rem
 					Mode = 0
 				EndIf
 			Next
@@ -1213,7 +1225,7 @@ Function ParseMethodOrFunction:TMethod(ActLine:String,StartAt:Byte)
 	TheMethod.Params = TempParams
 	Return TheMethod
 End Function
-
+' end rem
 Function SearchNextString:String(Start:Int,Line:String)
 	Local searchIt:Int
 	Local searchMode:Byte = 0
@@ -1311,3 +1323,4 @@ Function DescribeForCmdList:String(TempMethod:TMethod Ptr,ModFolder:String)
 	TString:+"|" + ModFolder
 	Return TString
 End Function
+

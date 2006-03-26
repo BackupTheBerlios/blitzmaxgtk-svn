@@ -49,6 +49,25 @@ Global DocumentList:TList = New TList
 Global Settings:TSettings = New TSettings
 Settings.LoadAllSettings()
 
+global AddTabList:TList = new TList
+AddTabList.addLast("for")
+AddTabList.addLast("type")
+AddTabList.addLast("extern")
+AddTabList.addLast("function")
+AddTabList.addLast("while")
+AddTabList.addLast("repeat")
+
+global RemoveTabList:TList = new TList
+RemoveTabList.addLast("next")
+RemoveTabList.addLast("endtype")
+RemoveTabList.addLast("end type")
+RemoveTabList.addLast("endextern")
+RemoveTabList.addLast("end extern")
+RemoveTabList.addLast("endfunction")
+RemoveTabList.addLast("end function")
+RemoveTabList.addLast("until")
+RemoveTabList.addLast("forever")
+
 ' Initialization stuff
 'foldstart
 GTKUtil.Init()
@@ -582,9 +601,64 @@ end function
 'foldend
 Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotification,GdkEvent:Byte Ptr)
 	Local TempScintilla:GtkScintilla = GtkScintilla.CreateFromHandle(Widget)
-	If notification.Code = SCN_MARGINCLICK
+	If notification.Code = SCN_MARGINCLICK then
 		print TempScintilla.GetLineFromPosition(Notification.Position)
 		TempScintilla.ToggleFoldPoint(TempScintilla.GetLineFromPosition(Notification.position))
+	else if notification.Code = SCN_CHARADDED then
+		print "_DEBUG_: CHARADD: " + notification.ch
+		if notification.ch = 10 then
+			print "_DEBUG_: NOTIFICATION.CH IS 10, checking tab state of previous line"
+			local prevline:int = TempScintilla.GetLineFromPosition(TempScintilla.GetCurrentPosition()) -1
+			print "_DEBUG_: Previous line is line " + prevline
+			local prevtext:string = TempScintilla.GetLine(prevline)
+			prevtext = left(prevtext,len(prevtext)-1)
+			print "_DEBUG_: Previous line text is " + prevtext
+			local tabcount:int = 0
+			for local i:int = 0 to len(prevtext)-1
+				if mid(prevtext,i+1,1) = "~t" then
+					tabcount = tabcount + 1
+				else
+					exit
+				endif
+			next
+			prevtext = mid(prevtext,tabcount+1)
+			for local statement:string = eachin RemoveTabList
+				if lower(left(prevtext,len(statement))) = lower(statement) then
+					print "_DEBUG_: Special remove statement " + statement + " found"
+					if tabcount > 0 then
+						print "_DEBUG_: Trying to remove tab from previous line"
+						tabcount = tabcount - 1
+						local prevselstart:int = scintilla_send_message(TempScintilla.Handle,SCI_GETSELECTIONSTART,null,null)
+						local prevselend:int  = scintilla_send_message(TempScintilla.Handle,SCI_GETSELECTIONEND,null,null)
+						scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONSTART,byte ptr(scintilla_send_message(TempScintilla.Handle,SCI_POSITIONFROMLINE,byte ptr(prevline),null)),null)
+						scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONEND,byte ptr(scintilla_send_message(TempScintilla.Handle,SCI_GETLINEENDPOSITION,byte ptr(prevline),null)),null)
+						local tabstring:string
+						for local i:int = 0 to tabcount-1
+							tabstring = tabstring + "~t"
+						next
+						local tstring:string = tabstring + prevtext
+						scintilla_send_message(TempScintilla.Handle,SCI_REPLACESEL,null,tstring.ToCString())
+						scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONSTART,byte ptr(prevselstart),null)
+						scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONEND,byte ptr(prevselend),null)
+					endif
+					exit
+				endif
+			next
+			print "_DEBUG_: Checking if line has a special statement like for etc."
+			for local statement:string = eachin AddTabList
+				if lower(left(prevtext,len(statement))) = lower(statement) then
+					tabcount = tabcount + 1
+					print "_DEBUG_: Special add statement " + statement + " found"
+					exit
+				endif
+			next
+			print "_DEBUG_: Adding " + tabcount + " tabs"
+			local tabstring:string
+			for local i:int = 0 to tabcount-1
+				tabstring = tabstring + "~t"
+			next
+			TempScintilla.AddText(tabstring)
+		endif
 	EndIf
 	local UndoItem:GtkWidget = GtkWidget.CreateWidgetFromHandle(Application.GetWidget("MenuItem_Undo"))
 	local RedoItem:gtkwidget = gtkwidget.CreateWidgetFromHandle(Application.GetWidget("MenuItem_Redo"))

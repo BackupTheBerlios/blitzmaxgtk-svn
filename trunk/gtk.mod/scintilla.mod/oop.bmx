@@ -14,6 +14,8 @@ Rem
 	along with the BlitzMax GTK-modules; if not, write to the Free Software
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 End Rem
+
+'@idesc Scintilla-Klasse
 Type GtkScintilla Extends GtkWidget
 	Field ScintillaHandle:Byte Ptr
 
@@ -37,6 +39,10 @@ Type GtkScintilla Extends GtkWidget
 
 	Method AppendText(Text:String)
 		scintilla_send_message(ScintillaHandle,SCI_APPENDTEXT,Byte Ptr(Len(Text)),Text.ToCString())
+	End Method
+
+	Method AddText(Text:String)
+		scintilla_send_message(ScintillaHandle,SCI_ADDTEXT,byte ptr(Len(Text)),Text.ToCString())
 	End Method
 
 	Method GetLine:String(Line:Int)
@@ -227,6 +233,10 @@ Type GtkScintilla Extends GtkWidget
 		Return scintilla_send_message(ScintillaHandle,SCI_LINEFROMPOSITION,Byte Ptr(Position),Null)
 	End Method
 
+	Method GetCurrentPosition:int()
+		return scintilla_send_message(ScintillaHandle,SCI_GETCURRENTPOS,null,null)
+	end method
+
 	Method ToggleFoldPoint(Line:Int)
 		scintilla_send_message(ScintillaHandle,SCI_TOGGLEFOLD,Byte Ptr(Line),Null)
 	End Method
@@ -243,24 +253,24 @@ Type GtkScintilla Extends GtkWidget
 		scintilla_send_message(ScintillaHandle,SCI_PASTE,Null,Null)
 	End Method
 
-	method Undo()
-		scintilla_send_message(ScintillaHandle,SCI_UNDO,null,null)
-	end method
+	Method Undo()
+		scintilla_send_message(ScintillaHandle,SCI_UNDO,Null,Null)
+	End Method
 
-	method CanUndo:byte()
-		return scintilla_send_message(ScintillaHandle,SCI_CANUNDO,null,null)
-	end method
+	Method CanUndo:Byte()
+		Return scintilla_send_message(ScintillaHandle,SCI_CANUNDO,Null,Null)
+	End Method
 
-	method Redo()
-		scintilla_send_message(ScintillaHandle,SCI_REDO,null,null)
-	end method
+	Method Redo()
+		scintilla_send_message(ScintillaHandle,SCI_REDO,Null,Null)
+	End Method
 
-	method CanRedo:byte()
-		return scintilla_send_message(ScintillaHandle,SCI_CANREDO,null,null)
-	end method
+	Method CanRedo:Byte()
+		Return scintilla_send_message(ScintillaHandle,SCI_CANREDO,Null,Null)
+	End Method
 
-	method EmptyUndoBuffer()
-		scintilla_send_message(ScintillaHandle,SCI_EMPTYUNDOBUFFER,null,null)
-	end method
+	Method EmptyUndoBuffer()
+		scintilla_send_message(ScintillaHandle,SCI_EMPTYUNDOBUFFER,Null,Null)
+	End Method
 End Type
 
