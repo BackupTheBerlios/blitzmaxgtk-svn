@@ -49,6 +49,7 @@ Global DocumentList:TList = New TList
 Global Settings:TSettings = New TSettings
 Settings.LoadAllSettings()
 
+'Note: If is handled specially
 global AddTabList:TList = new TList
 AddTabList.addLast("for")
 AddTabList.addLast("type")
@@ -67,6 +68,8 @@ RemoveTabList.addLast("endfunction")
 RemoveTabList.addLast("end function")
 RemoveTabList.addLast("until")
 RemoveTabList.addLast("forever")
+RemoveTabList.addLast("endif")
+RemoveTabList.addLast("end if")
 
 ' Initialization stuff
 'foldstart
@@ -623,7 +626,7 @@ Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotifi
 			next
 			prevtext = mid(prevtext,tabcount+1)
 			for local statement:string = eachin RemoveTabList
-				if lower(left(prevtext,len(statement))) = lower(statement) then
+				if lower(left(prevtext,len(statement))) = lower(statement) or lower(prevtext) = "else" or lower(prevtext) = "else if" or lower(prevtext)="elseif" then
 					print "_DEBUG_: Special remove statement " + statement + " found"
 					if tabcount > 0 then
 						print "_DEBUG_: Trying to remove tab from previous line"
@@ -645,13 +648,18 @@ Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotifi
 				endif
 			next
 			print "_DEBUG_: Checking if line has a special statement like for etc."
-			for local statement:string = eachin AddTabList
-				if lower(left(prevtext,len(statement))) = lower(statement) then
-					tabcount = tabcount + 1
-					print "_DEBUG_: Special add statement " + statement + " found"
-					exit
-				endif
-			next
+			if (lower(left(prevtext,2)) = "if" and lower(right(trimright(prevtext),4)) = "then") or lower(prevtext) = "else" or lower(prevtext) = "else if" or lower(prevtext) = "elseif" then
+				print "_DEBUG_: Special add statement if found"
+				tabcount = tabcount + 1
+			else
+				for local statement:string = eachin AddTabList
+					if lower(left(prevtext,len(statement))) = lower(statement) then
+						tabcount = tabcount + 1
+						print "_DEBUG_: Special add statement " + statement + " found"
+						exit
+					endif
+				next
+			end if
 			print "_DEBUG_: Adding " + tabcount + " tabs"
 			local tabstring:string
 			for local i:int = 0 to tabcount-1
@@ -665,6 +673,19 @@ Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotifi
 	if TempScintilla.CanUndo() then UndoItem.SetSensitive(true) else UndoItem.SetSensitive(false)
 	if TempScintilla.CanRedo() then RedoItem.SetSensitive(true) else RedoItem.SetSensitive(false)
 End Function
+
+function trimright:string(istring:string)
+	local theend:int = len(istring)-1
+	for local i:int = len(istring)-1 to 0 step -1
+		if mid(istring,i+1,1) = "~t" or mid(istring,i+1,1) = " " then
+			theend = i
+		else
+			exit
+		endif
+	next
+	print left(istring,theend+1)
+	return left(istring,theend+1)
+end function
 
 Function ShowInfo()
 	Local AboutWindow:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmAbout"))

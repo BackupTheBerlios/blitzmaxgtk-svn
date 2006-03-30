@@ -20,4 +20,5 @@ Extern
 	Function g_type_check_instance_cast:Byte Ptr(instance:Byte Ptr,gtype:Byte Ptr)="g_type_check_instance_cast"
 	Function vte_terminal_get_type:Byte Ptr()="vte_terminal_get_type"
 	Function g_convert:Byte Ptr(InputString:Byte Ptr,length:Int,to_codeset:Byte Ptr,from_codeset:Byte Ptr,bytes_read:Byte Ptr,bytes_written:Byte Ptr,error:Byte Ptr)
+	function g_value_init(Value:byte ptr,GType:int)
 End Extern

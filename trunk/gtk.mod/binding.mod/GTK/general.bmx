@@ -71,3 +71,9 @@ Const GTK_RESPONSE_YES = -8
 Const GTK_RESPONSE_NO = -9
 Const GTK_RESPONSE_APPLY = -10
 Const GTK_RESPONSE_HELP = -11
+
+type GtkTreeIter
+	field stamp:int
+	field user_data:byte ptr, user_data2:byte ptr, user_data3:byte ptr
+end type
+
