@@ -73,4 +73,15 @@ if [ $retval -ne 0 ]; then
 	exit 1
 fi
 cd ..
+echo "install: Configuring IDE"
+cd IDE
+../../../bin/bmk makeapp IDE.bmx
+retval=$?
+if [ $retval -ne 0 ]; then
+	echo
+	echo "install: bmk returned $retval, exiting"
+	exit 1
+fi
+cd ..
 echo "install: Finished"
+echo "install: The IDE binary is at $(pwd)/IDE"
