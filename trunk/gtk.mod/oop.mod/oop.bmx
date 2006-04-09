@@ -27,8 +27,8 @@ ModuleInfo "Author: bigmichi and phiker"
 Import GTK.Binding 
 Import BRL.Math
 
-'import "-I/usr/include/glib-2.0"
-'import "GValue.cpp"
+import "-I/usr/include/glib-2.0"
+'import "GValue.cxx"
 
 Include "Glade.bmx"
 Include "GladeXML.bmx"

@@ -30,4 +30,8 @@ Type GtkWindow Extends GtkBin
 	Method SetTitle(Title:String)
 		gtk_window_set_title(Handle,Title.ToCString())
 	End Method
+	
+	Method SetIconFromFile:byte(Filename:String)
+		return gtk_window_set_icon_from_file(Handle,Filename.ToCString(),null)
+	End Method
 End Type

@@ -88,7 +88,8 @@ Global T_emp:GtkContainer = New GtkContainer
 T_emp.Handle = exp_compiler
 TProcLib.Init(T_emp)
 
-
+Global frmMain:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmMain"))
+frmMain.SetIconFromFile("idelogo.png")
 
 Global frmOptions:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmOptions"))
 

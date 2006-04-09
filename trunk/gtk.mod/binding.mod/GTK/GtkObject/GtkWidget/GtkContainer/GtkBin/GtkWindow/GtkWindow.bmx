@@ -106,7 +106,7 @@ Extern
 	'Function gtk_window_set_default_icon_name(name:Byte Ptr)="gtk_window_set_default_icon_name"
 	'Function gtk_window_set_icon(window:Byte Ptr,icon:Byte Ptr)="gtk_window_set_icon"
 	'Function gtk_window_set_icon_list(window:Byte Ptr,list:Byte Ptr)="gtk_window_set_icon_list"
-	'Function gtk_window_set_icon_from_file:gboolean(window:Byte Ptr,filename:Byte Ptr,*err:Byte Ptr)="gtk_window_set_icon_from_file"
+	Function gtk_window_set_icon_from_file:byte(window:Byte Ptr,filename:Byte Ptr,err:Byte Ptr)="gtk_window_set_icon_from_file"
 	'Function gtk_window_set_icon_name(window:Byte Ptr,name:Byte Ptr)="gtk_window_set_icon_name"
 	'Function gtk_window_set_auto_startup_notification(setting:gboolean)="gtk_window_set_auto_startup_notification"
 	'Function gtk_decorated_window_init(window:Byte Ptr)="gtk_decorated_window_init"
