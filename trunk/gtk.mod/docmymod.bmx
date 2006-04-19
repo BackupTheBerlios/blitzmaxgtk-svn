@@ -890,6 +890,7 @@ Function SedTokens(ActLine:String Ptr,TheTokens:TList Ptr,SedWith:TList Ptr)
 End Function
 
 Function ProcessFile(FileName:String)
+	print "_DBG_ CurrDir: " + currentdir() + " _/DBG_"
 	Print "Analyzing: " + FileName
 	WriteStdout "Trying to open file... "
 	Local File:TStream
@@ -899,6 +900,8 @@ Function ProcessFile(FileName:String)
 		End
 	EndIf
 	Print "OK"
+	print "Switching to " + extractdir(RealPath(FileName))
+	changedir extractdir(realpath(FileName))
 	WriteStdout "Parsing... "
 	Local TypeNum:Int
 	Local IncNum:Int
@@ -919,7 +922,7 @@ Function ProcessFile(FileName:String)
 			Comment = Comment[..0]
 			CommentMode = 1
 			Local RegisterMode:Byte
-			While Lower(Left(ActLine,7)) <> "end rem"
+			While Lower(Left(ActLine,7)) <> "end rem" and lower(left(ActLine,6)) <> "endrem"
 				ActLine = File.ReadLine()
 				ActLine = StripChars(ActLine)
 				If Lower(Left(ActLine,8)) = "@enddesc" Then
@@ -1049,10 +1052,29 @@ Function ProcessFile(FileName:String)
 				IncNum = IncNum + 1
 				Local IncFile:String = SearchNextString(8,ActLine)
 				IncFile = Mid(IncFile,2,Len(IncFile)-2)
+				local olddir:string = currentdir()
+				print "_DBG_ olddir: " + olddir + " _/DBG"
 				Print "Including " + IncFile
 				ProcessFile(IncFile)
+				changedir olddir
 			EndIf
 		EndIf
+		if lower(left(actline,6)) = "import" then
+			if expecting <> EXPECT_NOTHING then
+				print "WARNING! Unexpected file import while waiting for " + ExpectToString(Expecting)
+			else
+				local incfile:string = SearchNextString(7,ActLine)
+				IncFile = mid(IncFile,2,Len(IncFile)-2)
+				if lower(right(incfile,4)) = ".bmx" then
+					IncNum = IncNum + 1
+					local olddir:string = currentdir()
+					print "_DBG_ olddir: " + olddir + " _/DBG"
+					print "Including " + IncFile
+					ProcessFile(IncFile)
+					changedir olddir
+				endif
+			endif
+		endif
 		If Lower(Left(ActLine,6)) = "method" Then
 			If Expecting <> EXPECT_ENDTYPE Then
 				Print "WARNING! Unexpected method declaration while waiting for " + ExpectToString(Expecting)
@@ -1189,7 +1211,7 @@ Function ParseMethodOrFunction:TMethod(ActLine:String,StartAt:Byte)
 						If i = ParamCount Then TempString = Left(ParamList,TheEnd) Else TempString = Left(ParamList,TheEnd-1)
 						Local Divider:Int = Instr(TempString,":")
 						If Divider = 0 Then
-							Print "WARNING! No parameter type found in parameter declaration, assuming int"
+'							Print "WARNING! No parameter type found in parameter declaration, assuming int"
 							TempParam.Name = TempString
 							TempParam.PType = "Int"
 							Divider = Instr(TempParam.Name,"=")

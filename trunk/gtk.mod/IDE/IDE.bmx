@@ -1,4 +1,4 @@
-Rem
+rem
 	This file is part of the BlitzMax GTK-modules.
 	The BlitzMax GTK-modules are free software; you can redistribute and/or modify
 	them under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@ Strict
 ' IDE
 Framework GTK.OOP
 Import GTK.Scintilla
+Import BRL.MaxUtil
 Import BRL.StandardIO
 Import "settings.bmx"
 
@@ -29,7 +30,7 @@ Import "proclinux.bmx"
 Import "procmac.bmx"
 ?
 
-Print "BMax-IDE development version , Copyright (C) 2005-2006 by bigmichi and phiker"
+PRint "BMax-IDE development version , Copyright (C) 2005-2006 by bigmichi and phiker"
 Print "BMax-IDE comes with ABSOLUTELY NO WARRANTY; For details"
 Print "look at 'Hilfe->Info'.  This is free software, and you are welcome"
 Print "to redistribute it under certain conditions; see COPYING"
@@ -87,6 +88,8 @@ Global exp_compiler:Byte Ptr = Application.GetWidget("exp_compiler")
 Global T_emp:GtkContainer = New GtkContainer
 T_emp.Handle = exp_compiler
 TProcLib.Init(T_emp)
+
+global BmxPath:String = BlitzMaxPath()
 
 Global frmMain:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmMain"))
 frmMain.SetIconFromFile("idelogo.png")
@@ -555,7 +558,7 @@ function mi_compile_click()
 			argnum = argnum + 1
 		endif
 		Targs[argnum] = StripExt(Document.File)
-		TProcLib.CreateProcess("/home/bigmichi/Programme/BlitzMax/bin/bmk",targs)
+		TProcLib.CreateProcess(bmxpath + "/bin/bmk",targs)
 	End If
 end function
 
@@ -584,7 +587,7 @@ Function tb_run_click()
 		endif
 		Targs[argnum] = "-x"
 		Targs[argnum+1] = StripExt(Document.File)
-		TProcLib.CreateProcess("/home/bigmichi/Programme/BlitzMax/bin/bmk",targs)
+		TProcLib.CreateProcess(bmxpath + "/bin/bmk",targs)
 	End If
 End Function
 

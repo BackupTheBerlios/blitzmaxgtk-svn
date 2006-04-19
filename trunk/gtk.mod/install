@@ -9,6 +9,7 @@ fi
 echo "install: Configuring gtk.binding"
 cd binding.mod
 echo "install: Running perl config script"
+export PKG_CONFIG_PATH=/usr/share/pkgconfig:/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/X11R6/lib/pkgconfig 
 ./genconf
 retval=$?
 if [ $retval -ne 0 ]; then
