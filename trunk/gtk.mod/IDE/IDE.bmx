@@ -98,9 +98,16 @@ Global frmOptions:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("
 
 ' Load the keywords #
 Global KeywordList:TList = New TList
-If Settings.GetValue("Scintilla_KeywordsFile")="" Then
-	Scream("Keyword-Datei nicht festgelegt")
+If Settings.GetValue("Scintilla_KeywordsFile")="" and filetype(bmxpath+"/doc/bmxmods/commands.txt")<>0 Then
+	Scream("Keywords-Datei nicht festgelegt")
 Else
+	if filetype(settings.getvalue("Scintilla_KeywordsFile")) = 0 then
+		if filetype(bmxpath+"/doc/bmxmods/commands.txt") = 0 then
+			Scream("Keywords-Datei nicht festgelegt")
+		else
+			Settings.SetValue("Scintilla_KeywordsFile",bmxpath+"/doc/bmxmods/commands.txt")
+		endif
+	endif
 	Local KeyWordsFile:TStream = ReadStream(Settings.GetValue("Scintilla_KeywordsFile"))
 	If KeyWordsFile = Null Then
 		Scream("Konnte Keywords-Datei nicht öffnen")

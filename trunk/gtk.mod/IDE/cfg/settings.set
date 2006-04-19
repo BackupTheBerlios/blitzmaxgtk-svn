@@ -38,7 +38,7 @@ Scintilla_CaretBGColor:48,51,102
 Scintilla_CaretVisible:1
 Scintilla_SelectionBGColor:170,170,170
 Scintilla_TabWidth:2
-Scintilla_KeywordsFile:/home/bigmichi/Programme/BlitzMax/doc/bmxmods/commands.txt
+Scintilla_KeywordsFile:/home/philipp/Zeug/Stuff/BlitzMax/doc/bmxmods/commands.txt
 BlitzMax_Pfad:/home/bigmichi/Programme/BlitzMax
 :
 /home/philipp/Zeug/Stuff/BlitzMax/mod/gtk.mod/IDE/IDE.bmx_have_foldinfo:yes
