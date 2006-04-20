@@ -28,7 +28,11 @@ Import GTK.Binding
 Import BRL.Math
 
 import "-I/usr/include/glib-2.0"
-'import "GValue.cxx"
+import "GValue.c"
+
+Extern
+	Function create_gvalue:byte ptr()
+End Extern
 
 Include "Glade.bmx"
 Include "GladeXML.bmx"
@@ -71,5 +75,6 @@ Include "GtkNotebook.bmx"
 Include "GtkMisc.bmx"
 Include "GtkLabel.bmx"
 Include "GtkImage.bmx"
+include "GtkTree.bmx"
 include "GValue.bmx"
 include "GtkListStore.bmx"

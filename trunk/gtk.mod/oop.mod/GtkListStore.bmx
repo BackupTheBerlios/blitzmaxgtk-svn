@@ -10,7 +10,7 @@ type GtkListStore extends GObject
 	end method
 	
 	method SetValue(iter:GtkTreeIter, Column:int, value:byte ptr)
-		gtk_list_store_set_value(Handle,iter,column,value)
+		gtk_list_store_set_value(Handle,varptr iter,column,value)
 	end method
 
 	method Remove(iter:GtkTreeIter)
@@ -19,7 +19,7 @@ type GtkListStore extends GObject
 	
 	method Insert:GtkTreeIter(Position:int)
 		local iter:GtkTreeIter = new GtkTreeIter
-		gtk_list_store_insert(Handle,iter,position)
+		gtk_list_store_insert(Handle,varptr iter,position)
 		return iter
 	end method
 	

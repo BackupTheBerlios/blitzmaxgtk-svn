@@ -260,7 +260,7 @@ static void ColouriseMaxDoc(unsigned int startPos, int length, int initStyle,
 				sc.SetState(SCE_B_DEFAULT);
             }            
 		} else if  (sc.state == SCE_B_MULTILINECOMMENT) {
-            if (sc.Match("end rem") || sc.Match("End rem") || sc.Match("End Rem") || sc.Match("end Rem") || sc.Match("endrem") || sc.Match("Endrem") || sc.Match("endRem") || sc.Match("EndRem")) {                
+           if (sc.Match("end rem") || sc.Match("End rem") || sc.Match("End Rem") || sc.Match("end Rem") || sc.Match("endrem") || sc.Match("Endrem") || sc.Match("endRem") || sc.Match("EndRem")) {                
                 sc.SetState(SCE_B_DEFAULT);
                 //styler.ColourTo(sc.currentPos + 6, SCE_B_MULTILINECOMMENT);
                 }
@@ -278,7 +278,7 @@ static void ColouriseMaxDoc(unsigned int startPos, int length, int initStyle,
 				sc.SetState(SCE_B_LABEL);
 			} else if (sc.Match('\'')) {
 				sc.SetState(SCE_B_COMMENT);
-			} else if ((!sc.Match("end rem") && !sc.Match("End rem") && !sc.Match("end Rem") && !sc.Match("End Rem")) && (sc.Match("rem") || sc.Match("Rem")) && (isfirst)) {
+			} else if ((!sc.Match("end rem") && !sc.Match("End rem") && !sc.Match("end Rem") && !sc.Match("End Rem")) && (sc.Match("rem") || sc.Match("Rem")) && (isfirst) && (sc.atLineEnd)) {
 				sc.SetState(SCE_B_MULTILINECOMMENT);
 			} else if (sc.Match('"')) {
 				sc.SetState(SCE_B_STRING);
