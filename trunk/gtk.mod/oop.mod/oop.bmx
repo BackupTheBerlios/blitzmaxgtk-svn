@@ -28,7 +28,7 @@ Import GTK.Binding
 Import BRL.Math
 
 import "-I/usr/include/glib-2.0"
-import "GValue.c"
+'import "GValue.c"
 
 Extern
 	Function create_gvalue:byte ptr()
@@ -75,6 +75,6 @@ Include "GtkNotebook.bmx"
 Include "GtkMisc.bmx"
 Include "GtkLabel.bmx"
 Include "GtkImage.bmx"
-include "GtkTree.bmx"
-include "GValue.bmx"
-include "GtkListStore.bmx"
+'include "GtkTree.bmx"
+'include "GValue.bmx"
+'include "GtkListStore.bmx"

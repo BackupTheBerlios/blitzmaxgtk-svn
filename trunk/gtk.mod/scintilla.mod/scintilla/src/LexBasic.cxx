@@ -18,6 +18,8 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <string>
+#include <iostream>
 #include <stdio.h>
 #include <ctype.h>
 #include <stdarg.h>
@@ -30,6 +32,8 @@
 #include "KeyWords.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
+
+using namespace std;
 
 /* Bits:
  * 1  - whitespace
@@ -189,13 +193,50 @@ static void ColouriseBasicDoc(unsigned int startPos, int length, int initStyle,
 	}
 	sc.Complete();
 }
+void strlowercase(char string[])
+{
+   int  i = 0;
+   while ( string[i] )
+   {
+      string[i] = tolower(string[i]);
+      i++;
+   }
 
+   return;
+}
 static void ColouriseMaxDoc(unsigned int startPos, int length, int initStyle,
                            WordList *keywordlists[], Accessor &styler) {
-	bool wasfirst = true, isfirst = true; // true if first token in a line
+        char *buffer = new char[1024];
+        for (int fillbuf=0; fillbuf<1024; fillbuf++)
+        	buffer[fillbuf] = '\0';
+	// Zeile "zusammenbauen"
+	unsigned int bpos = 0;
+	for (unsigned int blubkeks=startPos; blubkeks <= startPos+length; blubkeks++)
+	{
+		buffer[bpos] = styler.SafeGetCharAt(blubkeks);
+		bpos++;
+	}
+//	const char *dieZeileC = dieZeile.c_str();
+	strlowercase(buffer);
+	cout << buffer << endl;
 	styler.StartAt(startPos);
-
 	StyleContext sc(startPos, length, initStyle, styler);
+	if (buffer[0] == 'r' && buffer[1] == 'e' && buffer[2] == 'm')
+	{
+		if (buffer[3] == ' ' || buffer[3] == '\0' || buffer[3] == '\n')
+		{
+			for (; ; sc.Forward()) {
+				sc.SetState(SCE_B_MULTILINECOMMENT);
+				if (!sc.More())
+					break;
+			}
+			sc.Complete();
+			return;
+		}
+	}
+	delete[] buffer;
+	bool wasfirst = true, isfirst = true; // true if first token in a line
+
     
 	// Can't use sc.More() here else we miss the last character
 	for (; ; sc.Forward()) {
@@ -261,7 +302,7 @@ static void ColouriseMaxDoc(unsigned int startPos, int length, int initStyle,
             }            
 		} else if  (sc.state == SCE_B_MULTILINECOMMENT) {
            if (sc.Match("end rem") || sc.Match("End rem") || sc.Match("End Rem") || sc.Match("end Rem") || sc.Match("endrem") || sc.Match("Endrem") || sc.Match("endRem") || sc.Match("EndRem")) {                
-                sc.SetState(SCE_B_DEFAULT);
+                sc.SetState(SCE_B_COMMENT);
                 //styler.ColourTo(sc.currentPos + 6, SCE_B_MULTILINECOMMENT);
                 }
     /*        if (sc.Match("endrem")) {                
@@ -368,6 +409,7 @@ static int CheckBlitzMaxFoldPoint(char const *token, int &level) {
 		!strcmp(token, "until") ||
 		!strcmp(token, "forever")||
 		!strcmp(token, "end rem")||
+		!strcmp(token, "endrem")||
 		!strcmp(token, "foldend"))
 {
 		return -1;
@@ -422,7 +464,7 @@ static void FoldBasicDoc(unsigned int startPos, int length,
 		if (c == '\n') { // line end
 			if (!done && wordlen == 0 && foldCompact) // line was only space
 				level |= SC_FOLDLEVELWHITEFLAG;
-			if (level != styler.LevelAt(line))
+			if (level != styler.LevelAt(line) && styler.StyleAt(startPos) != SCE_B_COMMENT && styler.StyleAt(startPos) != SCE_B_MULTILINECOMMENT)
 				styler.SetLevel(line, level);
 			level += go;
 			line++;
