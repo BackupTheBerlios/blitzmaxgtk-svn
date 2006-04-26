@@ -128,6 +128,7 @@ Else
 EndIf
 
 ' Set status of debug-/quick-build-mode
+
 local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
 local debugbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_debugmode"))
 quickbuild.SetActive(byte(Settings.GetValue("QuickBuild")))

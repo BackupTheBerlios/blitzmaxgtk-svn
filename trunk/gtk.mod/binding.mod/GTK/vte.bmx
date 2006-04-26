@@ -22,4 +22,5 @@ Extern
 	Function vte_terminal_set_color_foreground(terminal:Byte Ptr, color:Byte Ptr)="vte_terminal_set_color_foreground"
 	Function vte_terminal_set_font_from_string(terminal:Byte Ptr, name:Byte Ptr)="vte_terminal_set_font_from_string"
 	Function vte_terminal_feed(terminal:byte ptr,data:byte ptr,length:long)="vte_terminal_feed"
+	function vte_terminal_get_adjustment:byte ptr(terminal:byte ptr)="vte_terminal_get_adjustment"
 End Extern

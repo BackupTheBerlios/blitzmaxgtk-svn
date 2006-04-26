@@ -206,8 +206,8 @@ void strlowercase(char string[])
 }
 static void ColouriseMaxDoc(unsigned int startPos, int length, int initStyle,
                            WordList *keywordlists[], Accessor &styler) {
-        char *buffer = new char[1024];
-        for (int fillbuf=0; fillbuf<1024; fillbuf++)
+/*        char *buffer = new char[startPos+length+1];
+        for (int fillbuf=0; fillbuf<startPos+length+1; fillbuf++)
         	buffer[fillbuf] = '\0';
 	// Zeile "zusammenbauen"
 	unsigned int bpos = 0;
@@ -234,7 +234,9 @@ static void ColouriseMaxDoc(unsigned int startPos, int length, int initStyle,
 			return;
 		}
 	}
-	delete[] buffer;
+	delete[] buffer;*/
+	styler.StartAt(startPos);
+	StyleContext sc(startPos, length, initStyle, styler);
 	bool wasfirst = true, isfirst = true; // true if first token in a line
 
     

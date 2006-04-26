@@ -23,18 +23,26 @@ Include "procshape.bmx"
 const ChildExitedMessage:String = "Prozess beendet" + chr$(13)
 
 Type TProcLib Extends TProcShape
-	Global _widget:VteTerminal, _is_running:Byte=False
+	Global _widget:VteTerminal, _is_running:Byte=False, _scrollbar_widget:byte ptr, _box:GtkHBox
 
 	Function Init(TopWidget:GtkContainer)
+		_box = GtkHBox.Create()
+		_box.Show()
+		TopWidget.add(_box)
 		_widget = VteTerminal.Create()
 		_widget.SetSizeRequest(20,100)
-		TopWidget.add(_widget)
+		_box.packstart(_widget,true,true)
 
 		vte_terminal_set_color_background(_widget.Handle,GdkColor.MakeOutOfInts(255,255,255))
 		vte_terminal_set_color_foreground(_widget.Handle,GdkColor.MakeOutOfInts(0,0,0))
 		vte_terminal_set_font_from_string(_widget.Handle,"bitstream charter regular 9".ToCString())
 		_widget.show()
 		_widget.SignalConnect("child-exited",TProcLibChildExit)
+		' Scrollbar
+		_scrollbar_widget = gtk_vscrollbar_new(vte_terminal_get_adjustment(_widget.TerminalHandle))
+		gtk_widget_show(_scrollbar_widget)
+		local tmpwidget:GtkWidget = GtkWidget.CreateWidgetFromHandle(_scrollbar_widget)
+		_box.packend(tmpwidget,false,false)
 	End Function
 
 	Function CreateProcess:Int(Path:String,ArgV:String[])
