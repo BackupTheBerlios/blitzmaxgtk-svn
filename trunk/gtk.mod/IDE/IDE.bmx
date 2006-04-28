@@ -1,4 +1,4 @@
-rem
+Rem
 	This file is part of the BlitzMax GTK-modules.
 	The BlitzMax GTK-modules are free software; you can redistribute and/or modify
 	them under the terms of the GNU General Public License as published by
@@ -30,7 +30,19 @@ Import "proclinux.bmx"
 Import "procmac.bmx"
 ?
 
-PRint "BMax-IDE development version , Copyright (C) 2005-2006 by bigmichi and phiker"
+' 0 = development, 1 = release, 2 = pre-release
+Const ReleaseVersion:Byte = 2
+
+WriteStdOut "BMax-IDE "
+Select ReleaseVersion
+	Case 0 
+		writestdout "development"
+	Case 1
+		writestdout "release"
+	Case 2
+		writestdout "pre-release"
+End Select
+Print " version, Copyright (C) 2005-2006 by bigmichi and phiker"
 Print "BMax-IDE comes with ABSOLUTELY NO WARRANTY; For details"
 Print "look at 'Hilfe->Info'.  This is free software, and you are welcome"
 Print "to redistribute it under certain conditions; see COPYING"
@@ -51,7 +63,7 @@ Global Settings:TSettings = New TSettings
 Settings.LoadAllSettings()
 
 'Note: If is handled specially
-global AddTabList:TList = new TList
+Global AddTabList:TList = New TList
 AddTabList.addLast("for")
 AddTabList.addLast("type")
 AddTabList.addLast("extern")
@@ -59,7 +71,7 @@ AddTabList.addLast("function")
 AddTabList.addLast("while")
 AddTabList.addLast("repeat")
 
-global RemoveTabList:TList = new TList
+Global RemoveTabList:TList = New TList
 RemoveTabList.addLast("next")
 RemoveTabList.addLast("endtype")
 RemoveTabList.addLast("end type")
@@ -89,25 +101,27 @@ Global T_emp:GtkContainer = New GtkContainer
 T_emp.Handle = exp_compiler
 TProcLib.Init(T_emp)
 
-global BmxPath:String = BlitzMaxPath()
+Global BmxPath:String = BlitzMaxPath()
 
 Global frmMain:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmMain"))
 frmMain.SetIconFromFile("idelogo.png")
 
 Global frmOptions:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmOptions"))
 
+Global frmCmdOpts:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmCmdOpts"))
+
 ' Load the keywords #
 Global KeywordList:TList = New TList
-If Settings.GetValue("Scintilla_KeywordsFile")="" and filetype(bmxpath+"/doc/bmxmods/commands.txt")<>0 Then
+If Settings.GetValue("Scintilla_KeywordsFile")="" And FileType(bmxpath+"/doc/bmxmods/commands.txt")<>0 Then
 	Scream("Keywords-Datei nicht festgelegt")
 Else
-	if filetype(settings.getvalue("Scintilla_KeywordsFile")) = 0 then
-		if filetype(bmxpath+"/doc/bmxmods/commands.txt") = 0 then
+	If FileType(settings.getvalue("Scintilla_KeywordsFile")) = 0 Then
+		If FileType(bmxpath+"/doc/bmxmods/commands.txt") = 0 Then
 			Scream("Keywords-Datei nicht festgelegt")
-		else
+		Else
 			Settings.SetValue("Scintilla_KeywordsFile",bmxpath+"/doc/bmxmods/commands.txt")
-		endif
-	endif
+		EndIf
+	EndIf
 	Local KeyWordsFile:TStream = ReadStream(Settings.GetValue("Scintilla_KeywordsFile"))
 	If KeyWordsFile = Null Then
 		Scream("Konnte Keywords-Datei nicht öffnen")
@@ -129,17 +143,17 @@ EndIf
 
 ' Set status of debug-/quick-build-mode
 
-local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
-local debugbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_debugmode"))
-quickbuild.SetActive(byte(Settings.GetValue("QuickBuild")))
-debugbuild.SetActive(byte(Settings.GetValue("DebugBuild")))
+Local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
+Local debugbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_debugmode"))
+quickbuild.SetActive(Byte(Settings.GetValue("QuickBuild")))
+debugbuild.SetActive(Byte(Settings.GetValue("DebugBuild")))
 
 Rem 
 Local TestString:String = MakeColorString(123,234,11)
-Print TestString
-Print ExtractR(TestString)
-Print ExtractG(TestString)
-Print ExtractB(TestString)
+DoDbgLog TestString
+DoDbgLog ExtractR(TestString)
+DoDbgLog ExtractG(TestString)
+DoDbgLog ExtractB(TestString)
 End Rem
 ' Adding the first page
 AddNBPage()
@@ -209,8 +223,8 @@ Function AddNBPage()
 End Function
 
 Function UpdateAllScintillas()
-	'Print "upall"
-	'Print "c: " + Notebook.GetPagesCount()
+	'DoDbgLog "upall"
+	'DoDbgLog "c: " + Notebook.GetPagesCount()
 	For Local i:Int = 0 To Notebook.GetPagesCount()-1
 		SetupScintilla(GtkScintilla.CreateFromHandle(Notebook.GetPage(i)))
 	Next
@@ -218,10 +232,10 @@ End Function
 
 Function SetupScintilla(Scintilla:GtkScintilla)
 	If Scintilla=Null Then
-		Print "something strange happened"
+		DoDbgLog "something strange happened"
 		Return
 	EndIf
-	'Print "setupscin"
+	'DoDbgLog "setupscin"
 
 	Scintilla.SetLexer(Int(Settings.GetValue("Scintilla_Lexer")))
 	'Settings.SetValue("Scintilla_Lexer",SCLEX_BLITZMAX)
@@ -281,8 +295,8 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 	Scintilla.SetMarginSensitive(1,True)
 	Scintilla.SetMarginSensitive(2,False)
 
-	scintilla_send_message(Scintilla.Handle,SCI_SETFOLDMARGINCOLOUR,byte ptr(true),byte ptr(scintilla.encodecolor(ExtractR(Settings.GetValue("Scintilla_FoldingMargin_BGColor")),extractg(Settings.GetValue("Scintilla_FoldingMargin_BGColor")),extractB(Settings.GetValue("Scintilla_FoldingMargin_BGColor")))))
-	scintilla_send_message(Scintilla.Handle,SCI_SETFOLDMARGINHICOLOUR,byte ptr(true),byte ptr(scintilla.encodecolor(ExtractR(Settings.GetValue("Scintilla_FoldingMargin_BGColor")),extractg(Settings.GetValue("Scintilla_FoldingMargin_BGColor")),extractB(Settings.GetValue("Scintilla_FoldingMargin_BGColor")))))
+	scintilla_send_message(Scintilla.Handle,SCI_SETFOLDMARGINCOLOUR,Byte Ptr(True),Byte Ptr(scintilla.encodecolor(ExtractR(Settings.GetValue("Scintilla_FoldingMargin_BGColor")),extractg(Settings.GetValue("Scintilla_FoldingMargin_BGColor")),extractB(Settings.GetValue("Scintilla_FoldingMargin_BGColor")))))
+	scintilla_send_message(Scintilla.Handle,SCI_SETFOLDMARGINHICOLOUR,Byte Ptr(True),Byte Ptr(scintilla.encodecolor(ExtractR(Settings.GetValue("Scintilla_FoldingMargin_BGColor")),extractg(Settings.GetValue("Scintilla_FoldingMargin_BGColor")),extractB(Settings.GetValue("Scintilla_FoldingMargin_BGColor")))))
 
 	Scintilla.SetFont(STYLE_LINENUMBER,Settings.GetValue("Scintilla_Font_LINENUMBER_FontName"),Int(Settings.GetValue("Scintilla_Font_LINENUMBER_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_LINENUMBER_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_LINENUMBER_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_LINENUMBER_FontColor")))
 	'Settings.SetValue("Scintilla_Font_LINENUMBER_FontName","!helvetica")
@@ -347,7 +361,7 @@ End Function
 
 Function CloseTab(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 	Local TWidget:GtkWidget = GtkWidget.CreateWidgetFromHandle(AdditionalData)
-	Print "CloseTab called, page: " + Notebook.GetPageOfWidget(TWidget)
+	DoDbgLog "CloseTab called, page: " + Notebook.GetPageOfWidget(TWidget)
 	DocumentList.Remove(DocumentList.ValueAtIndex(Notebook.GetPageOfWidget(TWidget)))
 	Notebook.RemovePage(Notebook.GetPageOfWidget(TWidget))
 End Function
@@ -376,18 +390,18 @@ Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 			If FirstLine Document.Scintilla.AppendText(ALine) Else Document.Scintilla.AppendText("~n" + ALine)
 			firstline = False
 		Wend
-		if Settings.GetValue(Document.File + "_have_foldinfo") = "yes" then
-			local foldInfo:string = Settings.GetValue(Document.File + "_foldinfo")
-			local lines:int[] = split(foldInfo,",")
+		If Settings.GetValue(Document.File + "_have_foldinfo") = "yes" Then
+			Local foldInfo:String = Settings.GetValue(Document.File + "_foldinfo")
+			Local lines:Int[] = split(foldInfo,",")
 			GTKUtil.SingleIteration()
-			for local i:int = 0 to lines.length-1
-				print "fold: " + lines[i]
+			For Local i:Int = 0 To lines.length-1
+				DoDbgLog "fold: " + lines[i]
 				GTKUtil.SingleIteration()
 				Document.Scintilla.ToggleFoldPoint(Lines[i])
 				GTKUtil.SingleIteration()
-			next
+			Next
 			GTKUtil.SingleIteration()
-		endif
+		EndIf
 		Document.Scintilla.EmptyUndoBuffer()
 	EndIf
 	
@@ -405,12 +419,12 @@ Function tb_save_click()
 		If Stream=Null Then
 			Scream "Datei konnte nicht gespeichert werden"
 		EndIf
-		local foldinfo:string = ""
+		Local foldinfo:String = ""
 		For Local ZI:Int = 0 To Document.Scintilla.GetLineCount()-1
 			Local TL:String =Document.Scintilla.GetLine(ZI)
-			if scintilla_send_message(Document.Scintilla.Handle,SCI_GETFOLDEXPANDED,byte ptr(ZI),null) = false then
+			If scintilla_send_message(Document.Scintilla.Handle,SCI_GETFOLDEXPANDED,Byte Ptr(ZI),Null) = False Then
 				foldinfo = foldinfo + ZI + ","
-			endif
+			EndIf
 			If Lower(Left(TL,Len("foldstart"))) = "foldstart" Then TL="'" + TL
 			If Lower(Left(TL,Len("foldend"))) = "foldend" Then TL="'" + TL
 			If ZI = Document.Scintilla.GetLineCount()-1 Then 
@@ -419,12 +433,12 @@ Function tb_save_click()
 				Stream.WriteLine(TL[..(Len(TL)-1)])
 			End If 
 		Next 
-		if len(foldinfo)>0 then
-			foldinfo = left(foldinfo,len(foldinfo)-1)
-			print "DEBUG: FOLDINFO: (" + foldinfo +")"
+		If Len(foldinfo)>0 Then
+			foldinfo = Left(foldinfo,Len(foldinfo)-1)
+			DoDbgLog "DEBUG: FOLDINFO: (" + foldinfo +")"
 			Settings.SetValue(Document.File + "_have_foldinfo","yes")
 			Settings.SetValue(Document.File + "_foldinfo",foldinfo)
-		endif
+		EndIf
 
 		Stream.Close()
 	Else
@@ -480,11 +494,11 @@ End Function
 
 Function LoadScintillaOptions()
 
-rem 'Hintergrund für Scintilla
+Rem 'Hintergrund für Scintilla
 	Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
 		ColorButton_Scintilla_BG.setColorInt(ExtractR(Settings.GetValue("Scintilla_BGColor")),ExtractG(Settings.GetValue("Scintilla_BGColor")),ExtractB(Settings.GetValue("Scintilla_BGColor")))
 end rem
-rem 'Marginwerte von Scintilla
+Rem 'Marginwerte von Scintilla
 	Local Spinbutton_Scintilla_Margin0:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin0"))
 		Spinbutton_Scintilla_Margin0.SetValue(Int(Settings.GetValue("Scintilla_MarginWidth0")))
 	Local Spinbutton_Scintilla_Margin1:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin1"))
@@ -501,7 +515,7 @@ End Function
 
 Function button_opttions_click()
 
-rem 'Hintergrund und Margin von Scintilla
+Rem 'Hintergrund und Margin von Scintilla
 	Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
 		Local FR:Int,FG:Int,FB:Int
 		ColorButton_Scintilla_BG.GetColorInt(Varptr(FR),Varptr(FG),Varptr(FB))
@@ -532,172 +546,182 @@ Function button_options_abort()
 	frmOptions.hide()
 End Function
 
-function mnu_quickbuild_toggled()
-	local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
+Function mnu_quickbuild_toggled()
+	Local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
 	Settings.SetValue("QuickBuild",quickbuild.GetActive())
-end function
+End Function
 
-function mnu_debugmode_toggled()
-	local debugbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_debugmode"))
+Function mnu_debugmode_toggled()
+	Local debugbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_debugmode"))
 	Settings.SetValue("DebugBuild",debugbuild.GetActive())
-end function
+End Function
 
-function mi_compile_click()
+Function mi_compile_click()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
 	If Document.File <> "" Then
-		local argnum:byte = 2
-		local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
-		if not quickbuild.GetActive() = true then
+		Local argnum:Byte = 2
+		Local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
+		If Not quickbuild.GetActive() = True Then
 			argnum = argnum + 1
-		endif
-		local debugbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_debugmode"))
-		if not debugbuild.GetActive() = true then
+		EndIf
+		Local debugbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_debugmode"))
+		If Not debugbuild.GetActive() = True Then
 			argnum = argnum + 1
-		endif
+		EndIf
 		Local Targs:String[argnum]
 		Targs[0] = "makeapp"
 		argnum = 1
-		if not quickbuild.GetActive() = true then
+		If Not quickbuild.GetActive() = True Then
 			Targs[argnum] = "-a"
 			argnum = argnum + 1
-		endif
-		if not debugbuild.GetActive() = true then
+		EndIf
+		If Not debugbuild.GetActive() = True Then
 			Targs[argnum] = "-r"
 			argnum = argnum + 1
-		endif
+		EndIf
 		Targs[argnum] = StripExt(Document.File)
 		TProcLib.CreateProcess(bmxpath + "/bin/bmk",targs)
 	End If
-end function
+End Function
 
 Function tb_run_click()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
 	If Document.File <> "" Then
-		local argnum:byte = 3
-		local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
-		if not quickbuild.GetActive() = true then
+		Local argnum:Byte = 3
+		'local argnum:byte = 2
+		Local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
+		If Not quickbuild.GetActive() = True Then
 			argnum = argnum + 1
-		endif
-		local debugbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_debugmode"))
-		if not debugbuild.GetActive() = true then
+		EndIf
+		Local debugbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_debugmode"))
+		If Not debugbuild.GetActive() = True Then
 			argnum = argnum + 1
-		endif
+		EndIf
+		Local Pargs:String[] = parseCmdProps(Settings.GetValue("CommandLine"))
+		argnum = argnum + Pargs.length
 		Local Targs:String[argnum]
 		Targs[0] = "makeapp"
 		argnum = 1
-		if not quickbuild.GetActive() = true then
+		If Not quickbuild.GetActive() = True Then
 			Targs[argnum] = "-a"
 			argnum = argnum + 1
-		endif
-		if not debugbuild.GetActive() = true then
+		EndIf
+		If Not debugbuild.GetActive() = True Then
 			Targs[argnum] = "-r"
 			argnum = argnum + 1
-		endif
+		EndIf
 		Targs[argnum] = "-x"
-		Targs[argnum+1] = StripExt(Document.File)
+		argnum = argnum + 1
+		Targs[argnum] = StripExt(Document.File)
+		argnum = argnum + 1
+		For Local i:Int = 0 To Pargs.length-1
+			Targs[argnum] = Pargs[i]
+			argnum = argnum + 1
+		Next
+		'Targs[argnum] = StripExt(Document.File)
 		TProcLib.CreateProcess(bmxpath + "/bin/bmk",targs)
 	End If
 End Function
 
-function Undo()
+Function Undo()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
-	if Document.Scintilla.CanUndo() then
+	If Document.Scintilla.CanUndo() Then
 		Document.Scintilla.Undo()
-	end if
-end function
+	End If
+End Function
 
-function Redo()
+Function Redo()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
-	if Document.Scintilla.CanRedo() then 
+	If Document.Scintilla.CanRedo() Then 
 		Document.Scintilla.Redo()
-	end if
-end function
+	End If
+End Function
 
 'foldend
 Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotification,GdkEvent:Byte Ptr)
 	Local TempScintilla:GtkScintilla = GtkScintilla.CreateFromHandle(Widget)
-	If notification.Code = SCN_MARGINCLICK then
-		print TempScintilla.GetLineFromPosition(Notification.Position)
+	If notification.Code = SCN_MARGINCLICK Then
+		DoDbgLog TempScintilla.GetLineFromPosition(Notification.Position)
 		TempScintilla.ToggleFoldPoint(TempScintilla.GetLineFromPosition(Notification.position))
-	else if notification.Code = SCN_CHARADDED then
-		print "_DEBUG_: CHARADD: " + notification.ch
-		if notification.ch = 10 then
-			print "_DEBUG_: NOTIFICATION.CH IS 10, checking tab state of previous line"
-			local prevline:int = TempScintilla.GetLineFromPosition(TempScintilla.GetCurrentPosition()) -1
-			print "_DEBUG_: Previous line is line " + prevline
-			local prevtext:string = TempScintilla.GetLine(prevline)
-			prevtext = left(prevtext,len(prevtext)-1)
-			print "_DEBUG_: Previous line text is " + prevtext
-			local tabcount:int = 0
-			for local i:int = 0 to len(prevtext)-1
-				if mid(prevtext,i+1,1) = "~t" then
+	Else If notification.Code = SCN_CHARADDED Then
+		DoDbgLog "_DEBUG_: CHARADD: " + notification.ch
+		If notification.ch = 10 Then
+			DoDbgLog "_DEBUG_: NOTIFICATION.CH IS 10, checking tab state of previous line"
+			Local prevline:Int = TempScintilla.GetLineFromPosition(TempScintilla.GetCurrentPosition()) -1
+			DoDbgLog "_DEBUG_: Previous line is line " + prevline
+			Local prevtext:String = TempScintilla.GetLine(prevline)
+			prevtext = Left(prevtext,Len(prevtext)-1)
+			DoDbgLog "_DEBUG_: Previous line text is " + prevtext
+			Local tabcount:Int = 0
+			For Local i:Int = 0 To Len(prevtext)-1
+				If Mid(prevtext,i+1,1) = "~t" Then
 					tabcount = tabcount + 1
-				else
-					exit
-				endif
-			next
-			prevtext = mid(prevtext,tabcount+1)
-			for local statement:string = eachin RemoveTabList
-				if lower(left(prevtext,len(statement))) = lower(statement) or lower(prevtext) = "else" or lower(prevtext) = "else if" or lower(prevtext)="elseif" then
-					print "_DEBUG_: Special remove statement " + statement + " found"
-					if tabcount > 0 then
-						print "_DEBUG_: Trying to remove tab from previous line"
+				Else
+					Exit
+				EndIf
+			Next
+			prevtext = Mid(prevtext,tabcount+1)
+			For Local statement:String = EachIn RemoveTabList
+				If Lower(Left(prevtext,Len(statement))) = Lower(statement) Or Lower(prevtext) = "else" Or Lower(prevtext) = "else if" Or Lower(prevtext)="elseif" Then
+					DoDbgLog "_DEBUG_: Special remove statement " + statement + " found"
+					If tabcount > 0 Then
+						DoDbgLog "_DEBUG_: Trying to remove tab from previous line"
 						tabcount = tabcount - 1
-						local prevselstart:int = scintilla_send_message(TempScintilla.Handle,SCI_GETSELECTIONSTART,null,null)
-						local prevselend:int  = scintilla_send_message(TempScintilla.Handle,SCI_GETSELECTIONEND,null,null)
-						scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONSTART,byte ptr(scintilla_send_message(TempScintilla.Handle,SCI_POSITIONFROMLINE,byte ptr(prevline),null)),null)
-						scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONEND,byte ptr(scintilla_send_message(TempScintilla.Handle,SCI_GETLINEENDPOSITION,byte ptr(prevline),null)),null)
-						local tabstring:string
-						for local i:int = 0 to tabcount-1
+						Local prevselstart:Int = scintilla_send_message(TempScintilla.Handle,SCI_GETSELECTIONSTART,Null,Null)
+						Local prevselend:Int  = scintilla_send_message(TempScintilla.Handle,SCI_GETSELECTIONEND,Null,Null)
+						scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONSTART,Byte Ptr(scintilla_send_message(TempScintilla.Handle,SCI_POSITIONFROMLINE,Byte Ptr(prevline),Null)),Null)
+						scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONEND,Byte Ptr(scintilla_send_message(TempScintilla.Handle,SCI_GETLINEENDPOSITION,Byte Ptr(prevline),Null)),Null)
+						Local tabstring:String
+						For Local i:Int = 0 To tabcount-1
 							tabstring = tabstring + "~t"
-						next
-						local tstring:string = tabstring + prevtext
-						scintilla_send_message(TempScintilla.Handle,SCI_REPLACESEL,null,tstring.ToCString())
-						scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONSTART,byte ptr(prevselstart),null)
-						scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONEND,byte ptr(prevselend),null)
-					endif
-					exit
-				endif
-			next
-			print "_DEBUG_: Checking if line has a special statement like for etc."
-			if (lower(left(prevtext,2)) = "if" and lower(right(trimright(prevtext),4)) = "then") or lower(prevtext) = "else" or lower(prevtext) = "else if" or lower(prevtext) = "elseif" then
-				print "_DEBUG_: Special add statement if found"
+						Next
+						Local tstring:String = tabstring + prevtext
+						scintilla_send_message(TempScintilla.Handle,SCI_REPLACESEL,Null,tstring.ToCString())
+						scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONSTART,Byte Ptr(prevselstart),Null)
+						scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONEND,Byte Ptr(prevselend),Null)
+					EndIf
+					Exit
+				EndIf
+			Next
+			DoDbgLog "_DEBUG_: Checking if line has a special statement like for etc."
+			If (Lower(Left(prevtext,2)) = "if" And Lower(Right(trimright(prevtext),4)) = "then") Or Lower(prevtext) = "else" Or Lower(prevtext) = "else if" Or Lower(prevtext) = "elseif" Then
+				DoDbgLog "_DEBUG_: Special add statement if found"
 				tabcount = tabcount + 1
-			else
-				for local statement:string = eachin AddTabList
-					if lower(left(prevtext,len(statement))) = lower(statement) then
+			Else
+				For Local statement:String = EachIn AddTabList
+					If Lower(Left(prevtext,Len(statement))) = Lower(statement) Then
 						tabcount = tabcount + 1
-						print "_DEBUG_: Special add statement " + statement + " found"
-						exit
-					endif
-				next
-			end if
-			print "_DEBUG_: Adding " + tabcount + " tabs"
-			local tabstring:string
-			for local i:int = 0 to tabcount-1
+						DoDbgLog "_DEBUG_: Special add statement " + statement + " found"
+						Exit
+					EndIf
+				Next
+			End If
+			DoDbgLog "_DEBUG_: Adding " + tabcount + " tabs"
+			Local tabstring:String
+			For Local i:Int = 0 To tabcount-1
 				tabstring = tabstring + "~t"
-			next
+			Next
 			TempScintilla.AddText(tabstring)
-		endif
+		EndIf
 	EndIf
-	local UndoItem:GtkWidget = GtkWidget.CreateWidgetFromHandle(Application.GetWidget("MenuItem_Undo"))
-	local RedoItem:gtkwidget = gtkwidget.CreateWidgetFromHandle(Application.GetWidget("MenuItem_Redo"))
-	if TempScintilla.CanUndo() then UndoItem.SetSensitive(true) else UndoItem.SetSensitive(false)
-	if TempScintilla.CanRedo() then RedoItem.SetSensitive(true) else RedoItem.SetSensitive(false)
+	Local UndoItem:GtkWidget = GtkWidget.CreateWidgetFromHandle(Application.GetWidget("MenuItem_Undo"))
+	Local RedoItem:GtkWidget = gtkwidget.CreateWidgetFromHandle(Application.GetWidget("MenuItem_Redo"))
+	If TempScintilla.CanUndo() Then UndoItem.SetSensitive(True) Else UndoItem.SetSensitive(False)
+	If TempScintilla.CanRedo() Then RedoItem.SetSensitive(True) Else RedoItem.SetSensitive(False)
 End Function
 
-function trimright:string(istring:string)
-	local theend:int = len(istring)-1
-	for local i:int = len(istring)-1 to 0 step -1
-		if mid(istring,i+1,1) = "~t" or mid(istring,i+1,1) = " " then
+Function trimright:String(istring:String)
+	Local theend:Int = Len(istring)-1
+	For Local i:Int = Len(istring)-1 To 0 Step -1
+		If Mid(istring,i+1,1) = "~t" Or Mid(istring,i+1,1) = " " Then
 			theend = i
-		else
-			exit
-		endif
-	next
-	print left(istring,theend+1)
-	return left(istring,theend+1)
-end function
+		Else
+			Exit
+		EndIf
+	Next
+	DoDbgLog Left(istring,theend+1)
+	Return Left(istring,theend+1)
+End Function
 
 Function ShowInfo()
 	Local AboutWindow:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmAbout"))
@@ -720,26 +744,76 @@ Function Paste()
 	Document.Scintilla.Paste()
 End Function
 
-function split:int[](InputString:string,Separator:string)
-	local intarray:int[1]
-	if instr(InputString,Separator) = 0 then
-		intarray[0] = int(inputstring)
-		return intarray
-	endif
-	local oldpos:int
-	local actpos:int
-	while true
-		local nextsep:int = instr(InputString,Separator,oldpos+1)
-		if nextsep = 0 then
+Function split:Int[](InputString:String,Separator:String)
+	Local intarray:Int[1]
+	If Instr(InputString,Separator) = 0 Then
+		intarray[0] = Int(inputstring)
+		Return intarray
+	EndIf
+	Local oldpos:Int
+	Local actpos:Int
+	While True
+		Local nextsep:Int = Instr(InputString,Separator,oldpos+1)
+		If nextsep = 0 Then
 			intarray = intarray[..actpos+1]
-			intarray[actpos] = int(mid(InputString,oldpos+1))
-			exit
-		endif
+			intarray[actpos] = Int(Mid(InputString,oldpos+1))
+			Exit
+		EndIf
 		intarray = intarray[..actpos+1]
-		intarray[actpos] = int(mid(InputString,oldpos+1,nextsep-oldpos))
+		intarray[actpos] = Int(Mid(InputString,oldpos+1,nextsep-oldpos))
 		oldpos = nextsep
 		actpos = actpos + 1
-	wend
-	return intarray
-end function
+	Wend
+	Return intarray
+End Function
 
+'command-line options
+'foldstart
+	Function parseCmdProps:String[](cmdprops:String)
+		DebugStop
+		Local quotemode:Byte = False
+		Local startch:Byte = 1
+		Local parsedCmds:String[]
+		Local remch:Byte = False
+		For Local chn:Int = 1 To Len(cmdprops)
+			Local ch:String = Mid(cmdprops,chn,1)
+			If ch="~q" And quotemode = False Then
+				startch = startch + 1
+				quotemode = True
+			Else If ch="~q" And quotemode = True Then
+				quotemode = False
+				remch = True
+			End If
+			If ch=" " And Not quotemode Then
+				parsedCmds = parsedCmds[..parsedCmds.Length+1]
+				Local tlen:Int = chn-startch
+				If remch tlen=tlen - 1
+				parsedCmds[parsedCmds.Length-1] = Mid(cmdprops,startch,tlen)
+				startch=chn+1
+				remch = False
+			End If
+		Next
+		parsedCmds = parsedCmds[..parsedCmds.Length+1]
+		Local tlen:Int = Len(cmdprops)-startch+1
+		If remch tlen=tlen-1
+		parsedCmds[parsedCmds.Length-1] = Mid(cmdprops,startch,tlen)
+		Return parsedCmds
+	End Function
+	
+	Function commandlineproperties()
+		Local CmdLineEntry:GtkEntry = GtkEntry.CreateFromHandle(Application.GetWidget("cmdpropsentry"))
+		CmdLineEntry.SetText(Settings.GetValue("CommandLine"))
+		frmCmdOpts.Show()
+	End Function
+
+	Function closePropsWindow:Byte()
+		Local CmdLineEntry:GtkEntry = GtkEntry.CreateFromHandle(Application.GetWidget("cmdpropsentry"))
+		Settings.SetValue("CommandLine",CmdLineEntry.GetText())
+		frmCmdOpts.Hide()
+		Return True
+	End Function
+'foldend
+
+Function DoDbgLog(Text:String)
+	If ReleaseVersion = 0 Print Text
+End Function
