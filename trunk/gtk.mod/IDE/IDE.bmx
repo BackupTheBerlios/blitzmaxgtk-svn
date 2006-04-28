@@ -770,7 +770,7 @@ End Function
 'command-line options
 'foldstart
 	Function parseCmdProps:String[](cmdprops:String)
-		DebugStop
+		'DebugStop
 		Local quotemode:Byte = False
 		Local startch:Byte = 1
 		Local parsedCmds:String[]
