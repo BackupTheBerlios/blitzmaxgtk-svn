@@ -31,7 +31,7 @@ Import "procmac.bmx"
 ?
 
 ' 0 = development, 1 = release, 2 = pre-release
-Const ReleaseVersion:Byte = 2
+Const ReleaseVersion:Byte = 0
 
 WriteStdOut "BMax-IDE "
 Select ReleaseVersion
@@ -109,6 +109,8 @@ frmMain.SetIconFromFile("idelogo.png")
 Global frmOptions:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmOptions"))
 
 Global frmCmdOpts:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmCmdOpts"))
+
+Global frmLogin:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmLogin"))
 
 ' Load the keywords #
 Global KeywordList:TList = New TList
@@ -767,6 +769,44 @@ Function split:Int[](InputString:String,Separator:String)
 	Return intarray
 End Function
 
+'module syncing options
+'foldstart
+	Function doSyncMods(Username:String, Password:String, ModuleServers:String)
+		If TProcLib.Running() Then
+			Scream("Bitte beenden Sie zuerst den in der Konsole laufenden Prozess")
+			Return
+		End if
+		Local smArgs:String[5]
+		smArgs[0] = "-u"
+		smArgs[1] = Username
+		smArgs[2] = "-p"
+		smArgs[3] = Password
+		smArgs[4] = ModuleServers
+		TProcLib.CreateProcess(bmxpath + "/bin/syncmods", smArgs)
+	End Function
+		
+	Function ShowSyncModsDialog()
+		Local txtUser:GtkEntry = GtkEntry.CreateFromHandle(Application.GetWidget("txtUser"))
+		txtUser.SetText(Settings.GetValue("SyncMods.Username"))
+		frmLogin.Show()
+	End Function
+	
+	Function closeLoginWindowNoDestroy:Byte()
+		frmLogin.Hide()
+		Return true
+	end Function
+	
+	Function closeLoginWindow:byte()
+		Local txtUser:GtkEntry = GtkEntry.CreateFromHandle(Application.GetWidget("txtUser"))
+		Local txtPass:GtkEntry = GtkEntry.CreateFromHandle(Application.GetWidget("txtPassword"))
+		Settings.SetValue("SyncMods.Username", txtUser.GetText())
+		frmLogin.Hide()
+		If Settings.GetValue("SyncMods.Servers") = "" then Settings.SetValue("SyncMods.Servers", "pub brl")
+		doSyncMods(Settings.GetValue("SyncMods.Username"), txtPass.GetText(), Settings.GetValue("SyncMods.Servers"))
+		Return true
+	end function
+'foldend
+
 'command-line options
 'foldstart
 	Function parseCmdProps:String[](cmdprops:String)
@@ -804,8 +844,13 @@ End Function
 		Local CmdLineEntry:GtkEntry = GtkEntry.CreateFromHandle(Application.GetWidget("cmdpropsentry"))
 		CmdLineEntry.SetText(Settings.GetValue("CommandLine"))
 		frmCmdOpts.Show()
-	End Function
+End Function
 
+	Function closePropsWindowNoDestroy:byte()
+		frmCmdOpts.Hide()
+		Return true
+	End Function
+	
 	Function closePropsWindow:Byte()
 		Local CmdLineEntry:GtkEntry = GtkEntry.CreateFromHandle(Application.GetWidget("cmdpropsentry"))
 		Settings.SetValue("CommandLine",CmdLineEntry.GetText())
