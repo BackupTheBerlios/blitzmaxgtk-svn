@@ -866,13 +866,23 @@ Function DoDbgLog(Text:String)
 	If ReleaseVersion = 0 Print Text
 End Function
 
-Function BuildModules()
+Function RebuildModules()
 	local bmkArgs:String[2]
 	bmkArgs[0] = "makemods"
 	bmkArgs[1] = "-a"
 	if TProcLib.Running() then
 		Scream "Bitte beenden Sie zuerst den momentan in der Konsole laufenden Prozess"
 	end if
+	TProcLib.Say("Starte das Kompilieren aller Module...")
 	TProcLib.CreateProcess(bmxpath+"/bin/bmk",bmkArgs)
 End Function
 
+Function BuildModules()
+	local bmkArgs:String[1]
+	bmkArgs[0] = "makemods"
+	if TProcLib.Running() then
+		Scream "Bitte beenden Sie zuerst den momentan in der Konsole laufenden Prozess"
+	end if
+	TProcLib.Say("Starte das Kompilieren geänderter Module...")
+	TProcLib.CreateProcess(bmxpath+"/bin/bmk",bmkArgs)
+end function

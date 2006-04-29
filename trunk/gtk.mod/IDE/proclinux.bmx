@@ -20,7 +20,7 @@ Import GTK.OOP
 Import BRL.StandardIO
 Include "procshape.bmx"
 
-const ChildExitedMessage:String = "Prozess beendet" + chr$(13)
+const ChildExitedMessage:String = "Prozess beendet"
 
 Type TProcLib Extends TProcShape
 	Global _widget:VteTerminal, _is_running:Byte=False, _scrollbar_widget:byte ptr, _box:GtkHBox
@@ -35,7 +35,7 @@ Type TProcLib Extends TProcShape
 
 		vte_terminal_set_color_background(_widget.Handle,GdkColor.MakeOutOfInts(255,255,255))
 		vte_terminal_set_color_foreground(_widget.Handle,GdkColor.MakeOutOfInts(0,0,0))
-		vte_terminal_set_font_from_string(_widget.Handle,"bitstream charter regular 9".ToCString())
+		vte_terminal_set_font_from_string(_widget.Handle,"monospace 9".ToCString())
 		_widget.show()
 		_widget.SignalConnect("child-exited",TProcLibChildExit)
 		' Scrollbar
@@ -53,10 +53,20 @@ Type TProcLib Extends TProcShape
 	Function Running:Byte()
 		Return _is_running
 	End Function
+
+	Function Say(Text:String)
+		local fText:String = chr$(10) + chr$(13) + _ISO_8859_1_To_UTF_8(Text) + chr$(10) + chr$(13)
+		vte_terminal_feed(_widget.Handle,fText.ToCString(),len(fText))
+	End Function
+
+	Function _ISO_8859_1_To_UTF_8:String(InputString:String)
+		Return String.FromCString(g_convert(InputString.ToCString(),-1,"UTF-8".ToCString(),"ISO-8859-1".ToCString(),Null,Null,Null))
+	End Function
 End Type
 
 Function TProcLibChildExit()
 	Print "child exit detected"
 	TProcLib._is_running = False
-	vte_terminal_feed(TProcLib._widget.Handle,ChildExitedMessage.ToCString(),len(ChildExitedMessage))
+	TProcLib.Say(ChildExitedMessage)
+	'vte_terminal_feed(TProcLib._widget.Handle,ChildExitedMessage.ToCString(),len(ChildExitedMessage))
 End Function
