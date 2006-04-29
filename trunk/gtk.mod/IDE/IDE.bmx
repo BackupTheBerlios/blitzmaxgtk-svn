@@ -776,12 +776,15 @@ End Function
 			Scream("Bitte beenden Sie zuerst den in der Konsole laufenden Prozess")
 			Return
 		End if
-		Local smArgs:String[5]
+		local smModServers:String[] = parseCmdProps(ModuleServers)
+		Local smArgs:String[4+smModServers.Length]
 		smArgs[0] = "-u"
 		smArgs[1] = Username
 		smArgs[2] = "-p"
 		smArgs[3] = Password
-		smArgs[4] = ModuleServers
+		for local i:int = 0 to smModServers.Length - 1
+			smArgs[4+i] = smModServers[i]	
+		next
 		TProcLib.CreateProcess(bmxpath + "/bin/syncmods", smArgs)
 	End Function
 		

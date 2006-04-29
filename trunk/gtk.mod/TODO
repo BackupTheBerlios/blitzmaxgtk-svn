@@ -1,9 +1,16 @@
 (done) - Disable currently unsopported menu items
-- Add size-resizable option to VTE-Terminal
+(done) - Add size-resizable option to VTE-Terminal
 (done) - Add custom fold-point support to BB-Lexer
 - Save before execute
 - Save old open folder
 (done) - Add F5 shortcut
-- Add menu option to compile without executing
+(done) - Add menu option to compile without executing
 (hopefully done) - remove license violations
 (buggy) - Add Auto-Indent to IDE
+- SyncMods Feature
+- File Recent
+- "Build GUI APP" Button
+(not possible) - Rename "Umwandeln"-Button to "Kompilieren"
+- Automatic save TempFiles if file wasn't saved before, when compiling
+- Compile-button in the Tool-Bar
+(in progress) - BMax-Help implementation
