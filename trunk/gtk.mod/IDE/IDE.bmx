@@ -53,6 +53,7 @@ Type TDocument
 	Field File:String
 	Field Label:GtkLabel
 	Field Scintilla:GtkScintilla
+	Field Hidden:byte
 End Type
 
 'Create document list
@@ -96,10 +97,25 @@ Application.ConnectSignals()
 
 ' Getting the main notebook
 Global Notebook:GtkNotebook = GtkNotebook.CreateFromHandle(Application.GetWidget("notebook3"))
-Global exp_compiler:Byte Ptr = Application.GetWidget("exp_compiler")
-Global T_emp:GtkContainer = New GtkContainer
-T_emp.Handle = exp_compiler
-TProcLib.Init(T_emp)
+'Global exp_compiler:Byte Ptr = Application.GetWidget("exp_compiler")
+'Global T_emp:GtkContainer = New GtkContainer
+
+'T_emp.Handle = exp_compiler
+AddTermPage()
+Function AddTermPage()
+	Local TempLabel:GtkLabel = GtkLabel.Create("Terminal")
+	TempLabel.show()
+	Notebook.AppendPage(TProcLib.Init(),TempLabel)
+	Local Document:TDocument = New TDocument
+	Document.Name = ""
+	Document.File = ""
+	Document.Label = TempLabel
+	Document.Scintilla = null
+	Document.Hidden = true
+	DocumentList.addLast(Document)
+	Notebook.ShowAll()
+End Function
+'TProcLib.Init(T_emp)
 
 Global BmxPath:String = BlitzMaxPath()
 
@@ -413,7 +429,7 @@ End Function
 Function tb_save_click()
 
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
-	If Document.File <> "" Then
+	If Document.File <> "" And not Document.hidden Then
 
 '		CreateFile(Document.File)
 		Local Stream:TStream = WriteStream(Document.File)
@@ -450,10 +466,11 @@ Function tb_save_click()
 End Function 
 
 Function mi_save_under_click()
+	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	If Document.hidden return
 	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD("Datei speichern",Null,GTK_FILE_CHOOSER_ACTION_SAVE,"gtk-save",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
 	dialog.SetLocalOnly(True)
 
-	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
 	If Document.File Then Dialog.SetFileName(Document.File)
 
 	If dialog.Run() = GTK_RESPONSE_OK Then
@@ -560,7 +577,7 @@ End Function
 
 Function mi_compile_click()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
-	If Document.File <> "" Then
+	If Document.File <> "" and not Document.hidden Then
 		Local argnum:Byte = 2
 		Local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
 		If Not quickbuild.GetActive() = True Then
@@ -582,6 +599,7 @@ Function mi_compile_click()
 			argnum = argnum + 1
 		EndIf
 		Targs[argnum] = StripExt(Document.File)
+		Notebook.SetCurrentPage(0)
 		TProcLib.Say("Kompiliere " + Document.File)
 		TProcLib.CreateProcess(bmxpath + "/bin/bmk",targs)
 	End If
@@ -589,7 +607,7 @@ End Function
 
 Function tb_run_click()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
-	If Document.File <> "" Then
+	If Document.File <> "" and not document.hidden Then
 		Local argnum:Byte = 3
 		'local argnum:byte = 2
 		Local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
@@ -622,6 +640,7 @@ Function tb_run_click()
 			argnum = argnum + 1
 		Next
 		'Targs[argnum] = StripExt(Document.File)
+		Notebook.SetCurrentPage(0)
 		TProcLib.Say("Kompiliere und starte " + Document.File)
 		TProcLib.CreateProcess(bmxpath + "/bin/bmk",targs)
 	End If
@@ -787,6 +806,7 @@ End Function
 		for local i:int = 0 to smModServers.Length - 1
 			smArgs[4+i] = smModServers[i]	
 		next
+		Notebook.SetCurrentPage(0)
 		TProcLib.Say("Synchronisiere Module")
 		TProcLib.CreateProcess(bmxpath + "/bin/syncmods", smArgs)
 	End Function
@@ -876,6 +896,7 @@ Function RebuildModules()
 	if TProcLib.Running() then
 		Scream "Bitte beenden Sie zuerst den momentan in der Konsole laufenden Prozess"
 	end if
+	Notebook.SetCurrentPage(0)
 	TProcLib.Say("Starte das Kompilieren aller Module...")
 	TProcLib.CreateProcess(bmxpath+"/bin/bmk",bmkArgs)
 End Function
@@ -886,6 +907,7 @@ Function BuildModules()
 	if TProcLib.Running() then
 		Scream "Bitte beenden Sie zuerst den momentan in der Konsole laufenden Prozess"
 	end if
+	Notebook.SetCurrentPage(0)
 	TProcLib.Say("Starte das Kompilieren geänderter Module...")
 	TProcLib.CreateProcess(bmxpath+"/bin/bmk",bmkArgs)
 end function

@@ -15,7 +15,8 @@ Rem
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 End Rem
 Type TProcShape Abstract
-	Function Init(TopWidget:GtkContainer) Abstract
+	'Function Init(TopWidget:GtkContainer) Abstract
+	Function Init:GtkWidget() Abstract
 	Function CreateProcess:Int(Path:String,ArgV:String[]) Abstract
 	Function ProcessRunning(pid:Int) Abstract
 	Function SendSignal(Signal:byte) abstract

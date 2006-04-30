@@ -33,10 +33,11 @@ End Extern
 Type TProcLib Extends TProcShape
 	Global _widget:VteTerminal, _is_running:Byte=False, _scrollbar_widget:byte ptr, _box:GtkHBox, _pid:Int
 
-	Function Init(TopWidget:GtkContainer)
+	'Function Init(TopWidget:GtkContainer)
+	Function Init:GtkWidget()
 		_box = GtkHBox.Create()
 		_box.Show()
-		TopWidget.add(_box)
+		
 		_widget = VteTerminal.Create()
 		_widget.SetSizeRequest(20,100)
 		_box.packstart(_widget,true,true)
@@ -51,6 +52,9 @@ Type TProcLib Extends TProcShape
 		gtk_widget_show(_scrollbar_widget)
 		local tmpwidget:GtkWidget = GtkWidget.CreateWidgetFromHandle(_scrollbar_widget)
 		_box.packend(tmpwidget,false,false)
+		local tmprWidget:GtkWidget = new GtkWidget
+		tmprWidget.Handle = _box.Handle
+		Return tmprWidget
 	End Function
 
 	Function CreateProcess:Int(Path:String,ArgV:String[])
