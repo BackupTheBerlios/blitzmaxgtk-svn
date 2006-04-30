@@ -582,6 +582,7 @@ Function mi_compile_click()
 			argnum = argnum + 1
 		EndIf
 		Targs[argnum] = StripExt(Document.File)
+		TProcLib.Say("Kompiliere " + Document.File)
 		TProcLib.CreateProcess(bmxpath + "/bin/bmk",targs)
 	End If
 End Function
@@ -621,6 +622,7 @@ Function tb_run_click()
 			argnum = argnum + 1
 		Next
 		'Targs[argnum] = StripExt(Document.File)
+		TProcLib.Say("Kompiliere und starte " + Document.File)
 		TProcLib.CreateProcess(bmxpath + "/bin/bmk",targs)
 	End If
 End Function
@@ -785,6 +787,7 @@ End Function
 		for local i:int = 0 to smModServers.Length - 1
 			smArgs[4+i] = smModServers[i]	
 		next
+		TProcLib.Say("Synchronisiere Module")
 		TProcLib.CreateProcess(bmxpath + "/bin/syncmods", smArgs)
 	End Function
 		
@@ -886,3 +889,12 @@ Function BuildModules()
 	TProcLib.Say("Starte das Kompilieren geänderter Module...")
 	TProcLib.CreateProcess(bmxpath+"/bin/bmk",bmkArgs)
 end function
+
+function killApp()
+	TProcLib.SendSignal(SIGKILL)
+end function
+
+function termApp()
+	TProcLib.SendSignal(SIGTERM)
+end function
+

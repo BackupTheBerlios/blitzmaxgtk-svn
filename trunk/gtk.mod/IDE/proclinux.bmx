@@ -22,8 +22,16 @@ Include "procshape.bmx"
 
 const ChildExitedMessage:String = "Prozess beendet"
 
+Const SIGTERM:byte = 15
+Const SIGKILL:byte = 9
+
+Extern "c"
+	Function _kill(Pid:int, signal:byte)="kill"
+End Extern
+
+
 Type TProcLib Extends TProcShape
-	Global _widget:VteTerminal, _is_running:Byte=False, _scrollbar_widget:byte ptr, _box:GtkHBox
+	Global _widget:VteTerminal, _is_running:Byte=False, _scrollbar_widget:byte ptr, _box:GtkHBox, _pid:Int
 
 	Function Init(TopWidget:GtkContainer)
 		_box = GtkHBox.Create()
@@ -47,7 +55,8 @@ Type TProcLib Extends TProcShape
 
 	Function CreateProcess:Int(Path:String,ArgV:String[])
 		_is_running = True
-		Return _widget.ForkCommand(Path,ArgV)
+		_pid = _widget.ForkCommand(Path,ArgV)
+		Return _pid
 	End Function
 
 	Function Running:Byte()
@@ -57,6 +66,11 @@ Type TProcLib Extends TProcShape
 	Function Say(Text:String)
 		local fText:String = chr$(10) + chr$(13) + _ISO_8859_1_To_UTF_8(Text) + chr$(10) + chr$(13)
 		vte_terminal_feed(_widget.Handle,fText.ToCString(),len(fText))
+	End Function
+	
+	Function SendSignal(Signal:byte)
+		If not _is_running return
+		_kill(_pid,Signal)
 	End Function
 
 	Function _ISO_8859_1_To_UTF_8:String(InputString:String)
