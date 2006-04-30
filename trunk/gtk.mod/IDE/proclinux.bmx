@@ -39,7 +39,7 @@ Type TProcLib Extends TProcShape
 		_box.Show()
 		
 		_widget = VteTerminal.Create()
-		_widget.SetSizeRequest(20,100)
+'		_widget.SetSizeRequest(20,100)
 		_box.packstart(_widget,true,true)
 
 		vte_terminal_set_color_background(_widget.Handle,GdkColor.MakeOutOfInts(255,255,255))

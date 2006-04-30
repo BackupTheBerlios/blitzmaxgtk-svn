@@ -103,16 +103,15 @@ Global Notebook:GtkNotebook = GtkNotebook.CreateFromHandle(Application.GetWidget
 'T_emp.Handle = exp_compiler
 AddTermPage()
 Function AddTermPage()
-	Local TempLabel:GtkLabel = GtkLabel.Create("Terminal")
-	TempLabel.show()
-	Notebook.AppendPage(TProcLib.Init(),TempLabel)
 	Local Document:TDocument = New TDocument
 	Document.Name = ""
 	Document.File = ""
-	Document.Label = TempLabel
+	Document.Label = null 
 	Document.Scintilla = null
 	Document.Hidden = true
 	DocumentList.addLast(Document)
+	Local termVbox:GtkVBox = GtkVBox.CreateFromHandle(Application.GetWidget("termVbox"))
+	termVbox.PackEnd(TProcLib.Init(),true,true)
 	Notebook.ShowAll()
 End Function
 'TProcLib.Init(T_emp)
