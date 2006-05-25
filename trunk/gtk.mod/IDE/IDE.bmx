@@ -101,6 +101,16 @@ Global Notebook:GtkNotebook = GtkNotebook.CreateFromHandle(Application.GetWidget
 'Global T_emp:GtkContainer = New GtkContainer
 
 'T_emp.Handle = exp_compiler
+AddHelpPage()
+Function AddHelpPage()
+	Local Document:TDocument = New TDocument
+	Document.Name = ""
+	Document.File = ""
+	Document.Label = null
+	Document.Scintilla = null
+	Document.Hidden = true
+	DocumentList.addLast(Document)
+End Function
 AddTermPage()
 Function AddTermPage()
 	Local Document:TDocument = New TDocument
@@ -598,7 +608,7 @@ Function mi_compile_click()
 			argnum = argnum + 1
 		EndIf
 		Targs[argnum] = StripExt(Document.File)
-		Notebook.SetCurrentPage(0)
+		Notebook.SetCurrentPage(1)
 		TProcLib.Say("Kompiliere " + Document.File)
 		TProcLib.CreateProcess(bmxpath + "/bin/bmk",targs)
 	End If
@@ -639,7 +649,7 @@ Function tb_run_click()
 			argnum = argnum + 1
 		Next
 		'Targs[argnum] = StripExt(Document.File)
-		Notebook.SetCurrentPage(0)
+		Notebook.SetCurrentPage(1)
 		TProcLib.Say("Kompiliere und starte " + Document.File)
 		TProcLib.CreateProcess(bmxpath + "/bin/bmk",targs)
 	End If
@@ -805,7 +815,7 @@ End Function
 		for local i:int = 0 to smModServers.Length - 1
 			smArgs[4+i] = smModServers[i]	
 		next
-		Notebook.SetCurrentPage(0)
+		Notebook.SetCurrentPage(1)
 		TProcLib.Say("Synchronisiere Module")
 		TProcLib.CreateProcess(bmxpath + "/bin/syncmods", smArgs)
 	End Function
@@ -869,7 +879,7 @@ End Function
 		Local CmdLineEntry:GtkEntry = GtkEntry.CreateFromHandle(Application.GetWidget("cmdpropsentry"))
 		CmdLineEntry.SetText(Settings.GetValue("CommandLine"))
 		frmCmdOpts.Show()
-End Function
+	End Function
 
 	Function closePropsWindowNoDestroy:byte()
 		frmCmdOpts.Hide()
@@ -895,7 +905,7 @@ Function RebuildModules()
 	if TProcLib.Running() then
 		Scream "Bitte beenden Sie zuerst den momentan in der Konsole laufenden Prozess"
 	end if
-	Notebook.SetCurrentPage(0)
+	Notebook.SetCurrentPage(1)
 	TProcLib.Say("Starte das Kompilieren aller Module...")
 	TProcLib.CreateProcess(bmxpath+"/bin/bmk",bmkArgs)
 End Function
@@ -906,7 +916,7 @@ Function BuildModules()
 	if TProcLib.Running() then
 		Scream "Bitte beenden Sie zuerst den momentan in der Konsole laufenden Prozess"
 	end if
-	Notebook.SetCurrentPage(0)
+	Notebook.SetCurrentPage(1)
 	TProcLib.Say("Starte das Kompilieren geänderter Module...")
 	TProcLib.CreateProcess(bmxpath+"/bin/bmk",bmkArgs)
 end function
