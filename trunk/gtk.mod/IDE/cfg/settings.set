@@ -39,6 +39,11 @@ Scintilla_CaretVisible:1
 Scintilla_SelectionBGColor:170,170,170
 Scintilla_TabWidth:2
 BlitzMax_Pfad:/home/bigmichi/Programme/BlitzMax
+/home/philipp/Zeug/Stuff/BlitzMax/mod/gtk.mod/IDE/IDE.bmx_have_foldinfo:yes
+/home/philipp/Zeug/Stuff/BlitzMax/mod/gtk.mod/IDE/IDE.bmx_foldinfo:0
+DebugBuild:1
+CommandLine:gymburk.dyndns.org 51234 1
+SyncMods.Username:nobody
 Scintilla_KeywordsFile:/home/bigmichi/Programme/BlitzMax/doc/bmxmods/commands.txt
 SyncMods.Username:Sektor333
 SyncMods.Servers:pub brl
