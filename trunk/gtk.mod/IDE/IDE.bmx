@@ -99,7 +99,7 @@ Application.ConnectSignals()
 Global Notebook:GtkNotebook = GtkNotebook.CreateFromHandle(Application.GetWidget("notebook3"))
 'Global exp_compiler:Byte Ptr = Application.GetWidget("exp_compiler")
 'Global T_emp:GtkContainer = New GtkContainer
-
+Global HelpBrowser:GtkMozEmbed = GtkMozEmbed.CreateFromHandle(Application.GetWidget("helpBrowser"))
 'T_emp.Handle = exp_compiler
 AddHelpPage()
 Function AddHelpPage()
@@ -136,6 +136,22 @@ Global frmOptions:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("
 Global frmCmdOpts:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmCmdOpts"))
 
 Global frmLogin:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmLogin"))
+
+InitHelpBrowser()
+Function InitHelpBrowser()
+	Local filepath:string = "file:///"
+	print "path: " + bmxpath + "/doc/index.html"
+	print "ftype: " + filetype(bmxpath + "/doc/index.html")
+	If (Settings.GetValue("HelpBrowser_URL") = "" or filetype(settings.getvalue("HelpBrowser_URL"))=0) and filetype(bmxpath + "/doc/index.html")=0 then
+		HelpBrowser.RenderData("<html><head><title>Fehler!</title></head><body><h1>Hilfe-URL nicht festgelegt!</h1></body></html>", "file:///error", "text/html")
+		Return
+	end if
+	If FileType(settings.getvalue("HelpBrowser_URL")) = 0 then
+		Settings.SetValue("HelpBrowser_URL", bmxpath+"/doc/index.html")
+	end if
+	filepath = filepath + Settings.GetValue("HelpBrowser_URL")
+	HelpBrowser.LoadURL(filepath)
+end function
 
 ' Load the keywords #
 Global KeywordList:TList = New TList
