@@ -1,4 +1,8 @@
 type GtkTreeIter
+<<<<<<< .mine
+	field stamp:short
+	field user_data:byte ptr, user_data2:byte ptr, user_data3:byte ptr
+=======
 	method new()
 		stamp = 0
 		user_data2 = null
@@ -6,6 +10,7 @@ type GtkTreeIter
 		user_data4 = null
 	end method
 	field stamp:int, user_data2:byte ptr, user_data3:byte ptr, user_data4:byte ptr
+>>>>>>> .r174
 end type
 
 const GTK_TREE_MODEL_ITERS_PERSIST:byte = 1

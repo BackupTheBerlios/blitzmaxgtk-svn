@@ -15,7 +15,7 @@ Rem
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 End Rem
 Extern
-	Function gtk_list_store_newv:Byte Ptr(n_columns:Int,types:Byte Ptr)="gtk_list_store_newv"
+	Function gtk_list_store_newv:Byte Ptr(n_columns:Short,types:Byte Ptr)="gtk_list_store_newv"
 	Function gtk_list_store_set_column_types(list_store:Byte Ptr,n_columns:Int,types:Byte Ptr)="gtk_list_store_set_column_types"
 	Function gtk_list_store_set_valist(list_store:Byte Ptr,iter:Byte Ptr,var_args:Byte Ptr)="gtk_list_store_set_valist"
 	Function gtk_list_store_set_value(list_store:Byte Ptr,iter:Byte Ptr,column:Int,value:Byte Ptr)="gtk_list_store_set_value"
