@@ -39,16 +39,9 @@ Scintilla_CaretVisible:1
 Scintilla_SelectionBGColor:170,170,170
 Scintilla_TabWidth:2
 BlitzMax_Pfad:/home/bigmichi/Programme/BlitzMax
-/home/philipp/Zeug/Stuff/BlitzMax/mod/gtk.mod/IDE/IDE.bmx_have_foldinfo:yes
-/home/philipp/Zeug/Stuff/BlitzMax/mod/gtk.mod/IDE/IDE.bmx_foldinfo:0
 DebugBuild:1
-CommandLine:gymburk.dyndns.org 51234 1
 SyncMods.Username:nobody
 Scintilla_KeywordsFile:/home/bigmichi/Programme/BlitzMax/doc/bmxmods/commands.txt
 SyncMods.Username:Sektor333
 SyncMods.Servers:pub brl
 QuickBuild:1
-/home/bigmichi/Projekte/BMax/VerwaltungsTool/sqlite_functions.bmx_have_foldinfo:yes
-/home/bigmichi/Projekte/BMax/VerwaltungsTool/sqlite_functions.bmx_foldinfo:14,21,63,105,128,147,185,227,239,251,266,293,321,379,403,427,451,478,489
-/home/bigmichi/Projekte/BMax/VerwaltungsTool/server.bmx_have_foldinfo:yes
-/home/bigmichi/Projekte/BMax/VerwaltungsTool/server.bmx_foldinfo:15,22,33,54,74,86,97,102,110,117
