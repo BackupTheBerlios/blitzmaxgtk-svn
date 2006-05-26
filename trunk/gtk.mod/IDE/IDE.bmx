@@ -124,6 +124,7 @@ Function AddTermPage()
 	termVbox.PackEnd(TProcLib.Init(),true,true)
 	Notebook.ShowAll()
 End Function
+'foldend
 'TProcLib.Init(T_emp)
 
 Global BmxPath:String = BlitzMaxPath()
@@ -153,7 +154,8 @@ Function InitHelpBrowser()
 	HelpBrowser.LoadURL(filepath)
 end function
 
-' Load the keywords #
+' Keywords laden
+'foldstart 
 Global KeywordList:TList = New TList
 If Settings.GetValue("Scintilla_KeywordsFile")="" And FileType(bmxpath+"/doc/bmxmods/commands.txt")<>0 Then
 	Scream("Keywords-Datei nicht festgelegt")
@@ -184,6 +186,7 @@ Else
 	EndIf
 EndIf
 
+
 ' Set status of debug-/quick-build-mode
 
 Local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
@@ -201,11 +204,6 @@ End Rem
 ' Adding the first page
 AddNBPage()
 
-'foldend
-
-' Sample for custom fold point
-'foldstart
-' Some shit here
 'foldend
 
 ' Main loop
@@ -527,68 +525,6 @@ Function mi_save_under_click()
 	dialog.Destroy()
 End Function 
 
-Function MIEinstellungenClick()
-	frmOptions.show()
-End Function
-
-Function frmOptions_show()
-	LoadScintillaOptions()
-
-End Function
-
-Function LoadScintillaOptions()
-
-Rem 'Hintergrund für Scintilla
-	Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
-		ColorButton_Scintilla_BG.setColorInt(ExtractR(Settings.GetValue("Scintilla_BGColor")),ExtractG(Settings.GetValue("Scintilla_BGColor")),ExtractB(Settings.GetValue("Scintilla_BGColor")))
-end rem
-Rem 'Marginwerte von Scintilla
-	Local Spinbutton_Scintilla_Margin0:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin0"))
-		Spinbutton_Scintilla_Margin0.SetValue(Int(Settings.GetValue("Scintilla_MarginWidth0")))
-	Local Spinbutton_Scintilla_Margin1:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin1"))
-		Spinbutton_Scintilla_Margin1.SetValue(Int(Settings.GetValue("Scintilla_MarginWidth1")))
-	Local Spinbutton_Scintilla_Margin2:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin2"))
-		Spinbutton_Scintilla_Margin2.SetValue(Int(Settings.GetValue("Scintilla_MarginWidth2")))
-end rem
-
-	Local Filechooserbutton_Scintilla_KeyWordsList:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("Filechooserbutton_Scintilla_KeyWordsList"))
-		Filechooserbutton_Scintilla_KeyWordsList.SetFileName(Settings.GetValue("Scintilla_KeywordsFile"))
-	
-
-End Function
-
-Function button_opttions_click()
-
-Rem 'Hintergrund und Margin von Scintilla
-	Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
-		Local FR:Int,FG:Int,FB:Int
-		ColorButton_Scintilla_BG.GetColorInt(Varptr(FR),Varptr(FG),Varptr(FB))
-		Settings.SetValue("Scintilla_BGColor",MakeColorString(FR,FG,FB))
-
-	Local Spinbutton_Scintilla_Margin0:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin0"))
-		Local MW0:Int =	Spinbutton_Scintilla_Margin0.GetValue()
-		Settings.SetValue("Scintilla_MarginWidth0",MW0)
-	Local Spinbutton_Scintilla_Margin1:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin1"))
-		Local MW1:Int =	Spinbutton_Scintilla_Margin1.GetValue()
-		Settings.SetValue("Scintilla_MarginWidth1",MW1)
-	Local Spinbutton_Scintilla_Margin2:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin2"))
-		Local MW2:Int =	Spinbutton_Scintilla_Margin2.GetValue()
-		Settings.SetValue("Scintilla_MarginWidth2",MW2)
-end rem
-
-	Local Filechooserbutton_Scintilla_KeyWordsList:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("Filechooserbutton_Scintilla_KeyWordsList"))
-		Settings.SetValue("Scintilla_KeywordsFile",Filechooserbutton_Scintilla_KeyWordsList.GetFileName())
-
-	Settings.SaveAllSettings()
-	UpdateAllScintillas()
-
-	frmOptions.hide()
-
-End Function
-
-Function button_options_abort()
-	frmOptions.hide()
-End Function
 
 Function mnu_quickbuild_toggled()
 	Local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
@@ -909,6 +845,73 @@ End Function
 		Return True
 	End Function
 'foldend
+
+'OptionsDialog
+'foldstart
+Function MIEinstellungenClick()
+	frmOptions.show()
+End Function
+
+Function frmOptions_show()
+	LoadScintillaOptions()
+
+End Function
+
+Function LoadScintillaOptions()
+
+Rem 'Hintergrund für Scintilla
+	Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
+		ColorButton_Scintilla_BG.setColorInt(ExtractR(Settings.GetValue("Scintilla_BGColor")),ExtractG(Settings.GetValue("Scintilla_BGColor")),ExtractB(Settings.GetValue("Scintilla_BGColor")))
+end rem
+Rem 'Marginwerte von Scintilla
+	Local Spinbutton_Scintilla_Margin0:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin0"))
+		Spinbutton_Scintilla_Margin0.SetValue(Int(Settings.GetValue("Scintilla_MarginWidth0")))
+	Local Spinbutton_Scintilla_Margin1:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin1"))
+		Spinbutton_Scintilla_Margin1.SetValue(Int(Settings.GetValue("Scintilla_MarginWidth1")))
+	Local Spinbutton_Scintilla_Margin2:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin2"))
+		Spinbutton_Scintilla_Margin2.SetValue(Int(Settings.GetValue("Scintilla_MarginWidth2")))
+end rem
+
+	Local Filechooserbutton_Scintilla_KeyWordsList:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("Filechooserbutton_Scintilla_KeyWordsList"))
+		Filechooserbutton_Scintilla_KeyWordsList.SetFileName(Settings.GetValue("Scintilla_KeywordsFile"))
+	
+
+End Function
+
+Function button_opttions_click()
+
+Rem 'Hintergrund und Margin von Scintilla
+	Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
+		Local FR:Int,FG:Int,FB:Int
+		ColorButton_Scintilla_BG.GetColorInt(Varptr(FR),Varptr(FG),Varptr(FB))
+		Settings.SetValue("Scintilla_BGColor",MakeColorString(FR,FG,FB))
+
+	Local Spinbutton_Scintilla_Margin0:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin0"))
+		Local MW0:Int =	Spinbutton_Scintilla_Margin0.GetValue()
+		Settings.SetValue("Scintilla_MarginWidth0",MW0)
+	Local Spinbutton_Scintilla_Margin1:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin1"))
+		Local MW1:Int =	Spinbutton_Scintilla_Margin1.GetValue()
+		Settings.SetValue("Scintilla_MarginWidth1",MW1)
+	Local Spinbutton_Scintilla_Margin2:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin2"))
+		Local MW2:Int =	Spinbutton_Scintilla_Margin2.GetValue()
+		Settings.SetValue("Scintilla_MarginWidth2",MW2)
+end rem
+
+	Local Filechooserbutton_Scintilla_KeyWordsList:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("Filechooserbutton_Scintilla_KeyWordsList"))
+		Settings.SetValue("Scintilla_KeywordsFile",Filechooserbutton_Scintilla_KeyWordsList.GetFileName())
+
+	Settings.SaveAllSettings()
+	UpdateAllScintillas()
+
+	frmOptions.hide()
+
+End Function
+
+Function button_options_abort()
+	frmOptions.hide()
+End Function
+'foldend
+
 
 Function DoDbgLog(Text:String)
 	If ReleaseVersion = 0 Print Text
