@@ -30,14 +30,14 @@ using namespace std;
 // Global, precompiled patterns (performance speedup because they don´t need to be recompiled every time)
 Pattern* pRem = NULL;
 Pattern* pEndRem = NULL;
-Pattern* pLongEndRem = NULL;
 Pattern* pLevelPlus = NULL;
 Pattern* pLevelMinus = NULL;
+Pattern* pOnlySpaces = NULL;
 
 static inline bool isIdentifier(char c)
 {
 	// Hmm... I could use regex here. But I don´t do that due to performance issues, and it works this way as well :)
-	return ((c >= '0' && c >= '9') || (c >= 'A' && c <= 'Z') || (c == '_') || (c >= 'a' && c <= 'z'));
+	return ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c == '_') || (c >= 'a' && c <= 'z'));
 }
 
 static inline bool isDecimalNumber(char c)
@@ -67,14 +67,14 @@ static inline void PrecompileBlitzMaxPatterns ()
 #endif
 	// ^\s*rem(b|$)
 	BMXPRECOMPPATTERN(pRem,"^\\s*rem(\\b.*|$)");
-	// ^\s*endrem(\s*|$)
-	BMXPRECOMPPATTERN(pEndRem,"^\\s*endrem(\\s*|$)");
-	// ^\s*end\srem(\s*|$)
-	BMXPRECOMPPATTERN(pLongEndRem,"^\\s*end\\srem(\\s*|$)");
-	// ^[\s]*(function|while|repeat|type|rem|foldstart).*$
-	BMXPRECOMPPATTERN(pLevelPlus,"^[\\s]*(function|while|repeat|type|rem|foldstart|for).*$");
-	// ^\s*(end\s*(function|type|rem)|foldend|until|forever|next).*$
-	BMXPRECOMPPATTERN(pLevelMinus,"^\\s*(end\\s*(function|type|rem)|foldend|until|forever|next).*$");
+	// ^\s*end[\s]?rem(\s*|$)
+	BMXPRECOMPPATTERN(pEndRem,"^\\s*end[\\s]?rem(\\s*|$)");
+	// ^[\s]*(function|while|repeat|type|rem|foldstart|select|for|method)(\s.*|$)
+	BMXPRECOMPPATTERN(pLevelPlus,"^[\\s]*(function|while|repeat|type|foldstart|select|for|method)(\\s.*|$)");
+	// ^[\s]*(end[\s]*(function|type|rem|select|method)|foldend|until|forever|next|wend)([\s].*|$)
+	BMXPRECOMPPATTERN(pLevelMinus,"^[\\s]*(end[\\s]*(function|type|select|method)|foldend|until|forever|next|wend)([\\s].*|$)");
+	// ^\s*$
+	BMXPRECOMPPATTERN(pOnlySpaces,"^\\s*$");
 #ifdef DEBUG
 	cout << "~PrecompileBlitzMaxPatterns()" << endl;
 #endif
@@ -157,7 +157,6 @@ static void ColouriseBlitzMaxDoc (
 					{
 						cout << "blubb" << endl;
 						sc.ChangeState(SCE_BM_KEYWORD);
-//						sc.SetState(SCE_BM_DEFAULT);
 					}
 					sc.SetState(SCE_BM_DEFAULT);
 				}
@@ -176,12 +175,6 @@ static void ColouriseBlitzMaxDoc (
 					if (pEndRem->matches(actline))
 					{
 						// Forward to the end of the line in order to get the endrem etc. colored right
-						unsigned int forwardNum = static_cast<unsigned int> (actline.length()); for(unsigned int i = 0; i <	forwardNum; i++) sc.Forward();
-						sc.SetState(SCE_BM_DEFAULT);
-					}
-					if (pLongEndRem->matches(actline))
-					{
-						// Forward to the end of the line in order to get the end rem etc. colored right
 						unsigned int forwardNum = static_cast<unsigned int> (actline.length()); for(unsigned int i = 0; i <	forwardNum; i++) sc.Forward();
 						sc.SetState(SCE_BM_DEFAULT);
 					}
@@ -236,17 +229,51 @@ static void FoldBlitzMaxDoc (
 	int line = styler.GetLine(startPos);
 	int level = styler.LevelAt(line);
 	int endPos = startPos + length;
+	int lineStartPos = startPos;
 	string actline;
+	int go = 0;
 	for (int i = startPos; i < endPos; i++)
 	{
 		char ch = styler.SafeGetCharAt(i);
-		if (ch == '\n' || ch == '\r')
+		if (ch == '\n')
 		{
-			if (level < 0) level = 0;
-			if (pLevelPlus->matches(actline)) level++;
-			if (pLevelMinus->matches(actline)) level--;
-			styler.SetLevel(line, level);
+		//	if (pOnlySpaces->matches(actline)) level |= SC_FOLDLEVELWHITEFLAG;
+			if (styler.StyleAt(lineStartPos) != SCE_BM_COMMENT)
+			{
+				if (styler.StyleAt(lineStartPos) == SCE_BM_MULTILINECOMMENT)
+				{
+					if (pRem->matches(actline))
+					{
+						level |= SC_FOLDLEVELHEADERFLAG;
+						go = 1;
+					}
+					if (pEndRem->matches(actline))
+					{
+						go = -1;
+					}
+					cout << endl;
+				} else {
+					if (pLevelPlus->matches(actline))
+					{
+						level |= SC_FOLDLEVELHEADERFLAG;
+						go = 1;
+					}
+					if (pLevelMinus->matches(actline))
+					{
+						go = -1;
+					}
+					cout << endl;
+				}
+			} else { go = 0; }
+			if (level != styler.LevelAt(line)) {
+				styler.SetLevel(line, level);
+			}
+			level += go;
 			line++;
+			lineStartPos = i+1;
+			level &= ~SC_FOLDLEVELHEADERFLAG;
+			level &= ~SC_FOLDLEVELWHITEFLAG;
+			go = 0;
 			actline = "";
 		} else {
 			actline = actline + ch;

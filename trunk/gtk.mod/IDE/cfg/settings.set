@@ -25,8 +25,8 @@ Scintilla_Font_IDENTIFIER_FontName:!bitstream charter
 Scintilla_Font_IDENTIFIER_FontSize:12
 Scintilla_Font_IDENTIFIER_FontColor:255,255,255
 Scintilla_Font_OPERATOR_FontName:!bitstream charter
-Scintilla_Font_OPERATOR_FontSize:12
-Scintilla_Font_OPERATOR_FontColor:0,0,255
+Scintilla_Font_OPERATOR_FontSize:14
+Scintilla_Font_OPERATOR_FontColor:200,200,200
 Scintilla_Font_ERROR_FontName:!bitstream charter
 Scintilla_Font_ERROR_FontSize:12
 Scintilla_Font_ERROR_FontColor:255,0,0

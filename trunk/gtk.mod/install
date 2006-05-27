@@ -7,62 +7,69 @@ if [ $LOGNAME = "root" ]; then
         exit 1
 fi
 echo "install: Configuring gtk.binding"
-cd binding.mod
+cd binding.mod > install.log
 echo "install: Running perl config script"
 export PKG_CONFIG_PATH=/usr/share/pkgconfig:/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/X11R6/lib/pkgconfig 
-./genconf
+./genconf >> ../install.log
 retval=$?
 if [ $retval -ne 0 ]; then
         echo "install: genconf returned $retval, exiting"
+	echo "install: For details see install.log"
         exit 1
 fi
 echo "install: Renaming files"
-mv binding.bmx binding_old.bmx
+mv binding.bmx binding_old.bmx >> ../install.log
 retval=$?
 if [ $retval -ne 0 ]; then
         echo "install: mv returned $retval, exiting"
+	echo "install: For details see install.log"
         exit 1
 fi
-mv binding_new.bmx binding.bmx
+mv binding_new.bmx binding.bmx >> ../install.log
 retval=$?
 if [ $retval -ne 0 ]; then
         echo "install: mv returned $retval, exiting"
+	echo "install: For details see install.log"
         exit 1
 fi
 echo "install: Running bmk to make module"
-../../../bin/bmk makemods gtk.binding
+../../../bin/bmk makemods gtk.binding >> ../install.log
 retval=$?
 if [ $retval -ne 0 ]; then
         echo
         echo "install: bmk returned $retval, exiting"
+	echo "install: For details see install.log"
         exit 1
 fi
-cd ..
+cd .. >> ./install.log
 echo "install: Configuring gtk.oop"
-cd oop.mod
+cd oop.mod >> install.log
 echo "install: Running bmk to make module"
-../../../bin/bmk makemods gtk.oop
+../../../bin/bmk makemods gtk.oop >> ../install.log
 retval=$?
 if [ $retval -ne 0 ]; then
 	echo
 	echo "install: bmk returned $retval, exiting"
+	echo "install: For details see install.log"
 	exit 1
 fi
-cd ..
+cd .. >> ../install.log
 echo "install: Configuring gtk.scintilla"
-cd scintilla.mod
+cd scintilla.mod >> install.log
 echo "install: Compiling libcppre"
-make -Cregexp
+make -Cregexp >> ../install.log
 retval=$?
 if [ $retval -ne 0 ]; then
 	echo "install: make returned $retval, exiting"
+	echo "install: For details see install.log"
 	exit 1
 fi
-echo "install: Compiling Scintilla"
-DEBUG=1 make -Cscintilla/gtk
+echo "install: Compiling Scintilla [go make some tea...]"
+make -Cscintilla/gtk >> ../install.log
 retval=$?
 if [ $retval -ne 0 ]; then
 	echo "install: make returned $retval, exiting"
+	echo "install: For details see install.log"
 	exit 1
 fi
 echo "install: Configuring"
@@ -73,21 +80,23 @@ if [ $retval -ne 0 ]; then
 	exit 1
 fi
 echo "install: Running bmk to make module"
-../../../bin/bmk makemods gtk.scintilla
+../../../bin/bmk makemods gtk.scintilla >> ../install.log
 retval=$?
 if [ $retval -ne 0 ]; then
 	echo
 	echo "install: bmk returned $retval, exiting"
+	echo "install: For details see install.log"
 	exit 1
 fi
-cd ..
+cd .. >> ../install.log
 echo "install: Configuring IDE"
-cd IDE
-../../../bin/bmk makeapp -r IDE.bmx
+cd IDE >> install.log
+../../../bin/bmk makeapp IDE.bmx >> ../install.log
 retval=$?
 if [ $retval -ne 0 ]; then
 	echo
 	echo "install: bmk returned $retval, exiting"
+	echo "install: For details see install.log"
 	exit 1
 fi
 cd ..
