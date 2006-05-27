@@ -33,7 +33,6 @@ Import "procmac.bmx"
 ' 0 = development, 1 = release, 2 = pre-release
 Const ReleaseVersion:Byte = 2
 
-'foldstart 'Rechtliches zeugs
 WriteStdOut "BMax-IDE "
 Select ReleaseVersion
 	Case 0 
@@ -48,7 +47,6 @@ Print "BMax-IDE comes with ABSOLUTELY NO WARRANTY; For details"
 Print "look at 'Hilfe->Info'.  This is free software, and you are welcome"
 Print "to redistribute it under certain conditions; see COPYING"
 Print "for details."
-'foldend
 
 Type TDocument
 	Field Name:String
@@ -58,7 +56,6 @@ Type TDocument
 	Field Hidden:byte
 End Type
 
-'foldstart 'Alles was zum laden und anzeigen gebraucht wird + Start der Anwendung
 'Create document list
 Global DocumentList:TList = New TList
 
@@ -102,7 +99,7 @@ Application.ConnectSignals()
 Global Notebook:GtkNotebook = GtkNotebook.CreateFromHandle(Application.GetWidget("notebook3"))
 'Global exp_compiler:Byte Ptr = Application.GetWidget("exp_compiler")
 'Global T_emp:GtkContainer = New GtkContainer
-Global HelpBrowser:GtkMozEmbed
+Global HelpBrowser:GtkHtml
 ' T_emp.Handle = exp_compiler
 AddHelpPage()
 Function AddHelpPage()
@@ -136,7 +133,6 @@ Global frmMain:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frm
 frmMain.SetIconFromFile("idelogo.png")
 
 Global frmOptions:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmOptions"))
-LoadScintillaOptions()
 
 Global frmCmdOpts:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmCmdOpts"))
 
@@ -145,22 +141,17 @@ Global recentList:TList = New TList
 InitHelpBrowser()
 Function InitHelpBrowser()
 	local helpvbox:GtkVBox = GtkVBox.CreateFromHandle(Application.GetWidget("HelpVBox"))
-	'HelpBrowser = GtkMozEmbed.Create()
-	'HelpBrowser.SetCompPath("/usr/lib/mozilla-firefox")
-	'HelpBrowser.Show()
-	'helpvbox.PackEnd(HelpBrowser,true,true)
-	Local filepath:string = "file:///"
-	print "path: " + bmxpath + "/doc/index.html"
-	print "ftype: " + filetype(bmxpath + "/doc/index.html")
+	HelpBrowser = GtkHtml.Create()
+	HelpBrowser.Show()
+	helpvbox.PackEnd(HelpBrowser,true,true)
 	If (Settings.GetValue("HelpBrowser_URL") = "" or filetype(settings.getvalue("HelpBrowser_URL"))=0) and filetype(bmxpath + "/doc/index.html")=0 then
-		HelpBrowser.RenderData("<html><head><title>Fehler!</title></head><body><h1>Hilfe-URL nicht festgelegt!</h1></body></html>", "file:///error", "text/html")
+	'	HelpBrowser.RenderData("<html><head><title>Fehler!</title></head><body><h1>Hilfe-URL nicht festgelegt!</h1></body></html>", "file:///error", "text/html")
 		Return
 	end if
 	If FileType(settings.getvalue("HelpBrowser_URL")) = 0 then
 		Settings.SetValue("HelpBrowser_URL", bmxpath+"/doc/index.html")
 	end if
-	filepath = filepath + Settings.GetValue("HelpBrowser_URL")
-	'HelpBrowser.LoadURL(filepath)
+	HelpBrowser_LoadFile(Settings.GetValue("HelpBrowser_URL"))
 end function
 
 ' Keywords laden
@@ -217,7 +208,6 @@ AddNBPage()
 
 ' Main loop
 GTKUtil.Main()
-'foldend
 
 ' Function to close the editor, called in several places
 Function IDEClose()
@@ -455,6 +445,7 @@ EndIf
 endrem
 	Document.Scintilla.EmptyUndoBuffer()
 end function
+
 
 Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD(ISO_8859_1_To_UTF_8("Datei öffnen"),Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-open",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
@@ -774,8 +765,6 @@ Function split:Int[](InputString:String,Separator:String)
 	Return intarray
 End Function
 
-'foldstart 'dialoge
-
 'module syncing options
 'foldstart
 	Function doSyncMods(Username:String, Password:String, ModuleServers:String)
@@ -873,93 +862,75 @@ End Function
 
 'OptionsDialog
 'foldstart
+Function MIEinstellungenClick()
+	frmOptions.show()
+End Function
 
-	Function MIEinstellungenClick()
-		'Ladefenster öffnen
-		frmOptions.show()
-	End Function
+Function frmOptions_show()
+	LoadScintillaOptions()
 
-	Function LoadScintillaOptions()
+End Function
 
-	Rem 'Hintergrund für Scintilla
-		Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
-			ColorButton_Scintilla_BG.setColorInt(ExtractR(Settings.GetValue("Scintilla_BGColor")),ExtractG(Settings.GetValue("Scintilla_BGColor")),ExtractB(Settings.GetValue("Scintilla_BGColor")))
-	end rem
-	Rem 'Marginwerte von Scintilla
-		Local Spinbutton_Scintilla_Margin0:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin0"))
-			Spinbutton_Scintilla_Margin0.SetValue(Int(Settings.GetValue("Scintilla_MarginWidth0")))
-		Local Spinbutton_Scintilla_Margin1:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin1"))
-			Spinbutton_Scintilla_Margin1.SetValue(Int(Settings.GetValue("Scintilla_MarginWidth1")))
-		Local Spinbutton_Scintilla_Margin2:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin2"))
-			Spinbutton_Scintilla_Margin2.SetValue(Int(Settings.GetValue("Scintilla_MarginWidth2")))
-	end rem
+Function LoadScintillaOptions()
 
-		'BlitzMax Pfad in ChooserButtonladen
-		Local Filechooserbutton_Scintilla_BM_Pfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fc_options_bmpfad"))
-			Filechooserbutton_Scintilla_BM_Pfad.SetFileName(Settings.GetValue("BlitzMax_Pfad"))
-		
-		'Keywords in ChooserButton laden
-		Local Filechooserbutton_Scintilla_KeyWordsList:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fc_options_keywords"))
-			Filechooserbutton_Scintilla_KeyWordsList.SetFileName(Settings.GetValue("Scintilla_KeywordsFile"))
+Rem 'Hintergrund für Scintilla
+	Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
+		ColorButton_Scintilla_BG.setColorInt(ExtractR(Settings.GetValue("Scintilla_BGColor")),ExtractG(Settings.GetValue("Scintilla_BGColor")),ExtractB(Settings.GetValue("Scintilla_BGColor")))
+end rem
+Rem 'Marginwerte von Scintilla
+	Local Spinbutton_Scintilla_Margin0:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin0"))
+		Spinbutton_Scintilla_Margin0.SetValue(Int(Settings.GetValue("Scintilla_MarginWidth0")))
+	Local Spinbutton_Scintilla_Margin1:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin1"))
+		Spinbutton_Scintilla_Margin1.SetValue(Int(Settings.GetValue("Scintilla_MarginWidth1")))
+	Local Spinbutton_Scintilla_Margin2:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin2"))
+		Spinbutton_Scintilla_Margin2.SetValue(Int(Settings.GetValue("Scintilla_MarginWidth2")))
+end rem
 
-	End Function
+	Local Filechooserbutton_Scintilla_KeyWordsList:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("Filechooserbutton_Scintilla_KeyWordsList"))
+		Filechooserbutton_Scintilla_KeyWordsList.SetFileName(Settings.GetValue("Scintilla_KeywordsFile"))
+	
 
-	Function button_opttions_apply()
+End Function
 
-		'BlitzMax Pfad aus ChooserButton lesen und speicher
-		Local Filechooserbutton_Scintilla_BM_Pfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fc_options_bmpfad"))
-			Settings.SetValue("BlitzMax_Pfad",Filechooserbutton_Scintilla_BM_Pfad.GetFileName())
-			
-		'Keywords aus ChooserButton lesen und speicher
-		Local Filechooserbutton_Scintilla_KeyWordsList:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fc_options_keywords"))
-			Settings.SetValue("Scintilla_KeywordsFile",Filechooserbutton_Scintilla_KeyWordsList.GetFileName())
+Function button_opttions_click()
 
-	Rem 'Hintergrund und Margin von Scintilla
-		Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
-			Local FR:Int,FG:Int,FB:Int
-			ColorButton_Scintilla_BG.GetColorInt(Varptr(FR),Varptr(FG),Varptr(FB))
-			Settings.SetValue("Scintilla_BGColor",MakeColorString(FR,FG,FB))
+Rem 'Hintergrund und Margin von Scintilla
+	Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
+		Local FR:Int,FG:Int,FB:Int
+		ColorButton_Scintilla_BG.GetColorInt(Varptr(FR),Varptr(FG),Varptr(FB))
+		Settings.SetValue("Scintilla_BGColor",MakeColorString(FR,FG,FB))
 
-		Local Spinbutton_Scintilla_Margin0:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin0"))
-			Local MW0:Int =	Spinbutton_Scintilla_Margin0.GetValue()
-			Settings.SetValue("Scintilla_MarginWidth0",MW0)
-		Local Spinbutton_Scintilla_Margin1:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin1"))
-			Local MW1:Int =	Spinbutton_Scintilla_Margin1.GetValue()
-			Settings.SetValue("Scintilla_MarginWidth1",MW1)
-		Local Spinbutton_Scintilla_Margin2:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin2"))
-			Local MW2:Int =	Spinbutton_Scintilla_Margin2.GetValue()
-			Settings.SetValue("Scintilla_MarginWidth2",MW2)
+	Local Spinbutton_Scintilla_Margin0:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin0"))
+		Local MW0:Int =	Spinbutton_Scintilla_Margin0.GetValue()
+		Settings.SetValue("Scintilla_MarginWidth0",MW0)
+	Local Spinbutton_Scintilla_Margin1:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin1"))
+		Local MW1:Int =	Spinbutton_Scintilla_Margin1.GetValue()
+		Settings.SetValue("Scintilla_MarginWidth1",MW1)
+	Local Spinbutton_Scintilla_Margin2:GtkSpinButton = GtkSpinButton.CreateFromHandle(Application.GetWidget("spinbutton_Scintilla_Margin2"))
+		Local MW2:Int =	Spinbutton_Scintilla_Margin2.GetValue()
+		Settings.SetValue("Scintilla_MarginWidth2",MW2)
+end rem
 
+	Local Filechooserbutton_Scintilla_KeyWordsList:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("Filechooserbutton_Scintilla_KeyWordsList"))
+		Settings.SetValue("Scintilla_KeywordsFile",Filechooserbutton_Scintilla_KeyWordsList.GetFileName())
 
-		Local Filechooserbutton_Scintilla_KeyWordsList:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("Filechooserbutton_Scintilla_KeyWordsList"))
-			Settings.SetValue("Scintilla_KeywordsFile",Filechooserbutton_Scintilla_KeyWordsList.GetFileName())
+	Settings.SaveAllSettings()
+	UpdateAllScintillas()
 
-		Settings.SaveAllSettings()
-		UpdateAllScintillas()
+	frmOptions.hide()
 
-		frmOptions.hide()
-	end rem
-		frmOptions.Hide()
-	End Function
+End Function
 
-	Function button_options_abort()
-		frmOptions.Hide()
-	End Function
-
-	Function closeOptionsWindowNoDestroy:byte()
-		frmOptions.Hide()
-		Return true
-	End Function
-
+Function button_options_abort()
+	frmOptions.hide()
+End Function
 'foldend
 
-'foldend
 
 Function DoDbgLog(Text:String)
 	If ReleaseVersion = 0 Print Text
 End Function
 
-'foldstart compilereinstellungen
 Function RebuildModules()
 	local bmkArgs:String[2]
 	bmkArgs[0] = "makemods"
@@ -990,9 +961,7 @@ end function
 function termApp()
 	TProcLib.SendSignal(SIGTERM)
 end function
-'foldend
 
-'foldstart 'helpBrowser
 Function HelpBrowser_goPortal()
 End Function
 Function HelpBrowser_goBack()
@@ -1001,9 +970,18 @@ Function HelpBrowser_goForward()
 End Function
 Function HelpBrowser_goHome()
 End Function
-'foldend
+Function HelpBrowser_loadFile(File:String)
+	local stream:GtkHtmlStream = HelpBrowser.Begin()
+	local filestream:TStream = ReadStream(File)
+	if filestream = null or true then
+		HelpBrowser.write(stream,"<html><head><title>Fehler!</title></head><body><h1>Die Hilfe-Datei konnte nicht gefunden werden</h1></body>")
+		HelpBrowser.EndStream(stream,GTK_HTML_STREAM_ERROR)
+		return
+	endif
+	CloseStream(filestream)
+	HelpBrowser.EndStream(stream,GTK_HTML_STREAM_OK)
+end function
 
-'foldstart 'recentlist
 Function AddToRecentList(item:string)
 	If recentlist.contains(item) then
 		recentlist.remove(item)
@@ -1098,6 +1076,4 @@ function RecentListItemClicked2(label:byte ptr)
 	local realfile:String = string(recentlist.ValueAtIndex(theindex))
 	IDEOpenFile(realfile)
 end function
-
-'foldend
 

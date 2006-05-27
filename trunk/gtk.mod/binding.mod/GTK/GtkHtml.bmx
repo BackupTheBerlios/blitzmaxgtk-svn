@@ -81,6 +81,11 @@ extern
 	function gtk_html_drop_undo(html:byte ptr)
 	function gtk_html_get_url_at:byte ptr(html:byte ptr, x:int, y:int)
 	function gtk_html_get_cursor_url:byte ptr(htmL:byte ptr)
+		
+	function gtk_html_stream_new:byte ptr(htmL:byte ptr, type_func:byte ptr, write_func:byte ptr, close_func:byte ptr, user_data:byte ptr)
+	function gtk_html_stream_write(stream:byte ptr, buffer:byte ptr, size:int)
+	function gtk_html_stream_destroy(stream:byte ptr)
+	function gtk_html_stream_close(stream:byte ptr, status:int)
 end extern
 
 const GTK_HTML_FONT_STYLE_SHIFT_FIRST:int = 3

@@ -8,15 +8,61 @@ type GtkHTML extends GtkWidget
 	end function
 
 	method SetBase(URL:String)
-		gtk_html_set_base(handle, Url.toCString())
+		gtk_html_set_base(htmlhandle, Url.toCString())
 	end method
 	
 	method GetBase:String()
-		return String.FromCString(gtk_html_get_base(handle))
+		return String.FromCString(gtk_html_get_base(htmlhandle))
 	end method
 	
 	method LoadFromString(URI:String)
-		gtk_html_load_from_string(handle, URI.ToCString(), len(Uri))
+		gtk_html_load_from_string(htmlhandle, URI.ToCString(), len(Uri))
+	end method
+	
+	method Begin:GtkHtmlStream()
+		return GtkHtmlStream.CreateFromHandle(gtk_html_begin(htmlhandle))
+	end method
+	
+	method BeginFull:GtkHtmlStream(target_frame:string, content_type:string, flags:int)
+		return GtkHtmlStream.CreateFromHandle(gtk_html_begin_full(htmlhandle,target_frame.ToCString(),content_type.ToCString(),flags))
+	end method
+	
+	method write(stream:GtkHtmlStream, text:string)
+		gtk_html_write(htmlhandle,stream.handle,text.ToCString(),len(text))
+	end method
+	
+	method EndStream(stream:GtkHtmlStream, status:byte)
+		gtk_html_end(htmlhandle, stream.handle, status)
+	end method
+	
+	method Stop()
+		gtk_html_stop(htmlhandle)
+	end method
+end type
+
+type GtkHtmlStream extends GObject
+	function create:gtkHtmlstream(html:gtkhtml, type_func:byte ptr, write_func:byte ptr, close_func:byte ptr, user_data:byte ptr=null)
+		local tempstream:gtkhtmlstream = new gtkhtmlstream
+		tempstream.handle = gtk_html_stream_new(html.htmlhandle, type_func, write_func, close_func, user_data)
+		return tempstream
+	end function
+
+	function createfromhandle:gtkhtmlstream(handle:byte ptr)
+		local tempstream:gtkhtmlstream = new gtkhtmlstream
+		tempstream.Handle = handle
+		return tempstream
+	end function
+	
+	method Write(text:string)
+		gtk_html_stream_write(handle, text.ToCString(), len(text))
+	end method
+	
+	method Destroy()
+		gtk_html_stream_destroy(handle)
+	end method
+
+	method Close(status:byte)
+		gtk_html_stream_close(handle,status)
 	end method
 end type
 
