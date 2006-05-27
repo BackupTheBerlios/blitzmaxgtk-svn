@@ -30,7 +30,8 @@ Import BRL.Blitz
 Import GTK.OOP
 Import "config.bmx"
 Import "ScintillaConstants.bmx"
-Import "ScintillaLexerConstants.bmx"
+' All in the same file now
+'Import "ScintillaLexerConstants.bmx"
 
 Include "binding.bmx"
 Include "oop.bmx"
