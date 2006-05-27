@@ -15,6 +15,6 @@ Rem
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 End Rem
 Extern
-	Function gtk_file_chooser_dialog_new:Byte Ptr(title:Byte Ptr, parent:Byte Ptr, action:Int, first_button_text:Byte Ptr, first_button_response:Int, second_button_text:Byte Ptr=Null, second_button_response:Int=0, third_button_text:Byte Ptr=Null, third_button_response:Int=0)="gtk_file_chooser_dialog_new"
-	Function gtk_file_chooser_dialog_new_with_backend:Byte Ptr(title:Byte Ptr, parent:Byte Ptr, action:Byte Ptr, first_button_text:Byte Ptr, second_button_text:Byte Ptr)="gtk_file_chooser_dialog_new_with_backend"
+	Function gtk_file_chooser_dialog_new:Byte Ptr(title:Byte Ptr, parent:Byte Ptr, action:Int, first_button_text:Byte Ptr, first_button_response:Int, second_button_text:Byte Ptr=Null, second_button_response:Int=0, third_button_text:Byte Ptr=Null, third_button_response:Int=0, terminator:byte ptr)="gtk_file_chooser_dialog_new"
+	Function gtk_file_chooser_dialog_new_with_backend:Byte Ptr(title:Byte Ptr, parent:Byte Ptr, action:Byte Ptr, first_button_text:Byte Ptr, second_button_text:Byte Ptr, terminator:byte ptr)="gtk_file_chooser_dialog_new_with_backend"
 End Extern

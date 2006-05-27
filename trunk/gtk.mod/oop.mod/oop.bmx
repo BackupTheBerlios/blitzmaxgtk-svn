@@ -26,13 +26,14 @@ ModuleInfo "Author: bigmichi and phiker"
 
 Import GTK.Binding 
 Import BRL.Math
+Import BRL.StandardIO
 
-import "-I/usr/include/glib-2.0"
+'import "-I/usr/include/glib-2.0"
 'import "GValue.c"
 
-Extern
-	Function create_gvalue:byte ptr()
-End Extern
+'Extern
+'	Function create_gvalue:byte ptr()
+'End Extern
 
 Include "Glade.bmx"
 Include "GladeXML.bmx"

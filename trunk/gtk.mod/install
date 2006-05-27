@@ -51,8 +51,15 @@ fi
 cd ..
 echo "install: Configuring gtk.scintilla"
 cd scintilla.mod
+echo "install: Compiling libcppre"
+make -Cregexp
+retval=$?
+if [ $retval -ne 0 ]; then
+	echo "install: make returned $retval, exiting"
+	exit 1
+fi
 echo "install: Compiling Scintilla"
-make -Cscintilla/gtk
+DEBUG=1 make -Cscintilla/gtk
 retval=$?
 if [ $retval -ne 0 ]; then
 	echo "install: make returned $retval, exiting"
@@ -76,7 +83,7 @@ fi
 cd ..
 echo "install: Configuring IDE"
 cd IDE
-../../../bin/bmk makeapp IDE.bmx
+../../../bin/bmk makeapp -r IDE.bmx
 retval=$?
 if [ $retval -ne 0 ]; then
 	echo

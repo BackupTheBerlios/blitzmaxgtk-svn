@@ -1,4 +1,4 @@
-Scintilla_Lexer:67
+Scintilla_Lexer:78
 Scintilla_StyleBits:33
 Scintilla_MarginWidth0:35
 Scintilla_MarginWidth1:20
@@ -26,7 +26,7 @@ Scintilla_Font_IDENTIFIER_FontSize:12
 Scintilla_Font_IDENTIFIER_FontColor:255,255,255
 Scintilla_Font_OPERATOR_FontName:!bitstream charter
 Scintilla_Font_OPERATOR_FontSize:12
-Scintilla_Font_OPERATOR_FontColor:255,255,255
+Scintilla_Font_OPERATOR_FontColor:0,0,255
 Scintilla_Font_ERROR_FontName:!bitstream charter
 Scintilla_Font_ERROR_FontSize:12
 Scintilla_Font_ERROR_FontColor:255,0,0
@@ -41,8 +41,8 @@ Scintilla_TabWidth:2
 BlitzMax_Pfad:/home/bigmichi/Programme/BlitzMax
 DebugBuild:1
 SyncMods.Username:nobody
-Scintilla_KeywordsFile:/home/bigmichi/Programme/BlitzMax/doc/bmxmods/commands.txt
+Scintilla_KeywordsFile:/home/philipp/BlitzMax/doc/bmxmods/commands.txt
 SyncMods.Username:Sektor333
 SyncMods.Servers:pub brl
 QuickBuild:1
-HelpBrowser_URL:/home/bigmichi/Programme/BlitzMax/doc/index.html
+HelpBrowser_URL:/home/philipp/BlitzMax/doc/index.html

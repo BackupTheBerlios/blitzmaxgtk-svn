@@ -15,7 +15,10 @@ Rem
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 End Rem
 Type GtkDialog Extends GtkWindow
+	Field DialogHandle:byte ptr
 	Method Run:Int()
-		Return gtk_dialog_run(g_type_check_instance_cast(Handle,gtk_dialog_get_type()))
+		Print "GtkDialog.Run()"
+		Return gtk_dialog_run(DialogHandle)
+		Print "~~GtkDialog.Run()"
 	End Method
 End Type

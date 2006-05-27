@@ -25,8 +25,9 @@ Type GtkFileChooserDialog Extends GtkDialog
 		If secondbtntext <> "" SBText = secondbtntext.ToCString()
 		Local TBText:Byte Ptr = Null
 		If thirdbtntext <> "" TBText = thirdbtntext.ToCString()
-		Dialog.Handle = gtk_file_chooser_dialog_new(Title.ToCString(),PHandle,action,firstbtntext.ToCString(),firstbtnresponse,sbtext,secondbtnresponse,tbtext,thirdbtnresponse)
+		Dialog.Handle = gtk_file_chooser_dialog_new(Title.ToCString(),PHandle,action,firstbtntext.ToCString(),firstbtnresponse,sbtext,secondbtnresponse,tbtext,thirdbtnresponse, null)
 		Dialog.FCHandle = g_type_check_instance_cast(Dialog.Handle,gtk_file_chooser_get_type())
+		Dialog.DialogHandle = g_type_check_instance_cast(Dialog.Handle,gtk_dialog_get_type())
 		Return Dialog
 	End Function
 
@@ -34,6 +35,7 @@ Type GtkFileChooserDialog Extends GtkDialog
 		Local Dialog:GtkFileChooserDialog = New GtkFileChooserDialog
 		Dialog.Handle = Handle
 		Dialog.FCHandle = g_type_check_instance_cast(Dialog.Handle,gtk_file_chooser_get_type())
+		Dialog.DialogHandle = g_type_check_instance_cast(Dialog.Handle,gtk_dialog_get_type())
 		Return Dialog
 	End Function
 
