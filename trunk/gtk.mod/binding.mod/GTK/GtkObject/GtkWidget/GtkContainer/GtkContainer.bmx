@@ -21,7 +21,7 @@ Extern
 	'Function gtk_container_get_resize_mode:GtkResizeMode(container:Byte Ptr)="gtk_container_get_resize_mode"
 	'Function gtk_container_set_resize_mode(container:Byte Ptr,resize_mode:GtkResizeMode)="gtk_container_set_resize_mode"
 	'Function gtk_container_check_resize(container:Byte Ptr)="gtk_container_check_resize"
-	'Function gtk_container_foreach(container:Byte Ptr,callback:GtkCallback,callback_data:gpointer)="gtk_container_foreach"
+	Function gtk_container_foreach(container:Byte Ptr,callback:byte ptr,callback_data:byte ptr)="gtk_container_foreach"
 	'Function gtk_container_foreach_full(container:Byte Ptr,callback:GtkCallback,marshal:GtkCallbackMarshal,callback_data:gpointer,notify:GtkDestroyNotify)="gtk_container_foreach_full"
 	'Function gtk_container_get_children:Byte Ptr(container:Byte Ptr)="gtk_container_get_children"
 	'Function gtk_container_set_reallocate_redraws(container:Byte Ptr,needs_redraws:gboolean)="gtk_container_set_reallocate_redraws"

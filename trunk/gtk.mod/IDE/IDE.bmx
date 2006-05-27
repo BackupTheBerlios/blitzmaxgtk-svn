@@ -99,7 +99,7 @@ Application.ConnectSignals()
 Global Notebook:GtkNotebook = GtkNotebook.CreateFromHandle(Application.GetWidget("notebook3"))
 'Global exp_compiler:Byte Ptr = Application.GetWidget("exp_compiler")
 'Global T_emp:GtkContainer = New GtkContainer
-Global HelpBrowser:GtkMozEmbed = GtkMozEmbed.CreateFromHandle(Application.GetWidget("helpBrowser"))
+Global HelpBrowser:GtkMozEmbed
 ' T_emp.Handle = exp_compiler
 AddHelpPage()
 Function AddHelpPage()
@@ -137,9 +137,14 @@ Global frmOptions:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("
 Global frmCmdOpts:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmCmdOpts"))
 
 Global frmLogin:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmLogin"))
-
+Global recentList:TList = New TList
 InitHelpBrowser()
 Function InitHelpBrowser()
+	local helpvbox:GtkVBox = GtkVBox.CreateFromHandle(Application.GetWidget("HelpVBox"))
+	'HelpBrowser = GtkMozEmbed.Create()
+	'HelpBrowser.SetCompPath("/usr/lib/mozilla-firefox")
+	'HelpBrowser.Show()
+	'helpvbox.PackEnd(HelpBrowser,true,true)
 	Local filepath:string = "file:///"
 	print "path: " + bmxpath + "/doc/index.html"
 	print "ftype: " + filetype(bmxpath + "/doc/index.html")
@@ -151,7 +156,7 @@ Function InitHelpBrowser()
 		Settings.SetValue("HelpBrowser_URL", bmxpath+"/doc/index.html")
 	end if
 	filepath = filepath + Settings.GetValue("HelpBrowser_URL")
-	HelpBrowser.LoadURL(filepath)
+	'HelpBrowser.LoadURL(filepath)
 end function
 
 ' Keywords laden
@@ -186,7 +191,7 @@ Else
 	EndIf
 EndIf
 
-
+loadrecentlist()
 ' Set status of debug-/quick-build-mode
 
 Local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
@@ -212,6 +217,7 @@ GTKUtil.Main()
 ' Function to close the editor, called in several places
 Function IDEClose()
 	Settings.SaveAllSettings()
+	SaveRecentList()
 	GTKUtil.Quit()
 End Function
 
@@ -408,46 +414,54 @@ End Function
 
 'Buttons
 'foldstart
-Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
-	Print "OpenClick: GtkFileChooserDialog.CreateFCD()"
-	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD(ISO_8859_1_To_UTF_8("Datei öffnen"),Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-open",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
-	Print "OpenClick: dialog.SetLocalOnly()"
-	dialog.SetLocalOnly(True)
-	Print "OpenClick: Run()"
-	If dialog.Run() = GTK_RESPONSE_OK Then
-		Print "OpenClick: ReadStream()"
-		Local Stream:TStream = ReadStream(dialog.GetFilename())
-		If Stream=Null Then
-			Scream "Datei konnte nicht geladen werden"
-		EndIf
-		AddNBPage()
-		Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
-		Document.Label.SetText(StripDir(Dialog.GetFilename()))
-		Document.Name = StripDir(Dialog.GetFilename())
-		Document.File = Dialog.GetFilename()
-		Local FirstLine:Byte = True
-		While Not Eof(Stream)
-			Local ALine:String = Stream.ReadLine()
-			If Lower(Left(ALine,Len("'foldstart"))) = "'foldstart" Then ALine=Mid(ALine,2)
-			If Lower(Left(ALine,Len("'foldend"))) = "'foldend" Then ALine=Mid(ALine,2)
-			If FirstLine Document.Scintilla.AppendText(ALine) Else Document.Scintilla.AppendText("~n" + ALine)
-			firstline = False
-		Wend
-		If Settings.GetValue(Document.File + "_have_foldinfo") = "yes" Then
-			Local foldInfo:String = Settings.GetValue(Document.File + "_foldinfo")
-			Local lines:Int[] = split(foldInfo,",")
-			GTKUtil.SingleIteration()
-			For Local i:Int = 0 To lines.length-1
-				DoDbgLog "fold: " + lines[i]
-				GTKUtil.SingleIteration()
-				Document.Scintilla.ToggleFoldPoint(Lines[i])
-				GTKUtil.SingleIteration()
-			Next
-			GTKUtil.SingleIteration()
-		EndIf
-		Document.Scintilla.EmptyUndoBuffer()
+Function IDEOpenFile(File:String)
+	Local Stream:TStream = ReadStream(File)
+	If Stream=Null Then
+		Scream "Datei konnte nicht geladen werden"
 	EndIf
-	print "OpenClick: dialog.Destroy()"
+	AddToRecentList(File)
+	AddNBPage()
+	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	Document.Label.SetText(StripDir(File))
+	Document.Name = StripDir(File)
+	Document.File = File
+	Local FirstLine:Byte = True
+	While Not Eof(Stream)
+		Local ALine:String = Stream.ReadLine()
+		If Lower(Left(ALine,Len("'foldstart"))) = "'foldstart" Then ALine=Mid(ALine,2)
+		If Lower(Left(ALine,Len("'foldend"))) = "'foldend" Then ALine=Mid(ALine,2)
+		If FirstLine Document.Scintilla.AppendText(ALine) Else Document.Scintilla.AppendText("~n" + ALine)
+		firstline = False
+	Wend
+	rem
+	If Settings.GetValue(Document.File + "_have_foldinfo") = "yes" Then
+		Local foldInfo:String = Settings.GetValue(Document.File + "_foldinfo")
+		Local lines:Int[] = split(foldInfo,",")
+		GTKUtil.SingleIteration()
+		For Local i:Int = 0 To lines.length-1
+			DoDbgLog "fold: " + lines[i]
+			GTKUtil.SingleIteration()
+			Document.Scintilla.ToggleFoldPoint(Lines[i])
+			GTKUtil.SingleIteration()
+		Next
+		GTKUtil.SingleIteration()
+EndIf 
+
+endrem
+	Document.Scintilla.EmptyUndoBuffer()
+end function
+
+
+Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
+	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD(ISO_8859_1_To_UTF_8("Datei öffnen"),Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-open",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
+	Local lastpath:String
+	If FileType(Settings.GetValue("LastOpenDir")) <> 2 then lastpath = "" else lastpath = Settings.GetValue("LastOpenDir")
+	If lastpath <> "" dialog.SetCurrentFolder(lastpath)
+	dialog.SetLocalOnly(True)
+	If dialog.Run() = GTK_RESPONSE_OK Then
+		Settings.SetValue("LastOpenDir", dialog.GetCurrentFolder())
+		IDEOpenFile(dialog.GetFileName())
+	EndIf
 	dialog.Destroy()
 End Function
 
@@ -462,6 +476,7 @@ Function tb_save_click()
 		If Stream=Null Then
 			Scream "Datei konnte nicht gespeichert werden"
 		EndIf
+		AddToRecentList(Document.file)
 		Local foldinfo:String = ""
 		For Local ZI:Int = 0 To Document.Scintilla.GetLineCount()-1
 			Local TL:String =Document.Scintilla.GetLine(ZI)
@@ -495,17 +510,21 @@ Function mi_save_under_click()
 	If Document.hidden return
 	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD("Datei speichern",Null,GTK_FILE_CHOOSER_ACTION_SAVE,"gtk-save",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
 	dialog.SetLocalOnly(True)
+	local lastpath:string
+	If FileType(Settings.GetValue("LastSaveDir")) <> 2 then lastpath = "" else lastpath = Settings.GetValue("LastSaveDir")
+	if lastpath <> "" dialog.SetCurrentFolder(lastpath)
 
 	If Document.File Then Dialog.SetFileName(Document.File)
 
 	If dialog.Run() = GTK_RESPONSE_OK Then
-
+		Settings.SetValue("LastSaveDir", Dialog.GetCurrentFolder())
 '		CreateFile(dialog.GetFilename())
 		Local Stream:TStream = WriteStream(dialog.GetFilename())
 
 		If Stream=Null Then
 			Scream "Datei konnte nicht gespeichert werden"
 		EndIf
+		AddToRecentList(dialog.GetFilename())
 		Document.File = Dialog.GetFileName()
 		Document.Name = StripDir(Document.File)
 		Document.Label.SetText(Document.Name)
@@ -946,5 +965,109 @@ end function
 
 function termApp()
 	TProcLib.SendSignal(SIGTERM)
+end function
+
+Function HelpBrowser_goPortal()
+End Function
+Function HelpBrowser_goBack()
+End Function
+Function HelpBrowser_goForward()
+End Function
+Function HelpBrowser_goHome()
+End Function
+
+Function AddToRecentList(item:string)
+	If recentlist.contains(item) then
+		recentlist.remove(item)
+	endif
+	recentlist.addfirst(item)
+	if settings.getvalue("RecentList_Size") = "" then settings.setvalue("RecentList_Size","10")
+	while recentlist.count() > int(settings.getvalue("RecentList_Size"))
+		recentlist.removelast()
+	wend
+	UpdateRecentList()
+End Function
+
+Function UpdateRecentList()
+	local recentmenu:GtkMenu = GtkMenu.CreateFromHandle(Application.GetWidget("last_files_menu"))
+	recentmenu.foreach(DeleteRecentItem,recentmenu.Handle)
+	local i:int = 1
+	for local recentitem:string = eachin recentlist
+		local tmpitem:GtkMenuItem = GtkMenuItem.CreateWithLabel(i + ". " + stripdir(recentitem))
+		tmpitem.show()
+		tmpitem.SignalConnect("activate", RecentListItemClicked)
+		recentmenu.append(tmpitem)
+		i:+1
+	next
+	if recentlist.count()>0 enablerecentitem()
+end function
+
+function deleterecentitem(widget:byte ptr, data:byte ptr)
+	local tmpwidget:GtkWidget = New GtkWidget
+	tmpwidget.Handle = widget
+	local tmpmenu:GtkMenu = GtkMenu.CreateFromHandle(Data)
+	tmpmenu.Remove(tmpwidget)
+end function
+
+function SaveRecentList()
+	local rstream:TStream = WriteStream("cfg/recent.lst")
+	if rstream = null then
+		Scream("Konnte cfg/recent.lst nicht öffnen")
+	endif
+	for local rentry:string = eachin recentlist
+		rstream.WriteLine(rentry)
+	next
+	CloseStream(rstream)
+end function
+
+function loadrecentlist()
+	local rstream:TStream = ReadStream("cfg/recent.lst")
+	if rstream = null then
+		print "(IDE.bmx) Warning: Couldn´t load cfg/recent.lst"
+		DisableRecentItem()
+		return
+	endif
+	while not rstream.eof()
+		local actline:string = rstream.ReadLine()
+		recentlist.addLast(actline)
+	wend
+	if recentlist.count() = 0 then
+		disablerecentitem()
+	else
+		updaterecentlist()
+	endif
+	if settings.getvalue("RecentList_Size") = "" then settings.setvalue("RecentList_Size","10")
+	while recentlist.count() > int(settings.getvalue("RecentList_Size"))
+		recentlist.removelast()
+	wend
+end function
+
+function disablerecentitem()
+	local recentmenu:GtkMenuItem = GtkMenuItem.CreateFromHandle(Application.GetWidget("last_files_item"))
+	recentmenu.SetSensitive(false)
+end function
+
+function enablerecentitem()
+	local recentmenu:GtkMenuItem = GtkMenuItem.CreateFromHandle(Application.GetWidget("last_files_item"))
+	recentmenu.SetSensitive(true)
+end function
+
+function RecentListItemClicked(menuitem:byte ptr)
+	local tempitem:GtkMenuItem = GtkMenuItem.CreateFromHandle(menuitem)
+	tempitem.foreach(RecentListItemClicked2)
+end function
+
+function RecentListItemClicked2(label:byte ptr)
+	local templabel:GtkLabel = GtkLabel.CreateFromHandle(label)
+	local text:string = templabel.gettext()
+	local tmpindex:int = instr(text, ".")
+	if tmpindex = 0 then
+		print "(IDE.bmx) Warning: Couldn´t find . in label text"
+		return
+	endif
+	local tmpstr:String = mid(text,0,tmpindex)
+	local theindex:int = int(tmpstr)-1
+	local realfile:String = string(recentlist.ValueAtIndex(theindex))
+	IDEOpenFile(realfile)
 end function
 

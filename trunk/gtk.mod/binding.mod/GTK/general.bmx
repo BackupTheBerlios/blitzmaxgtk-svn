@@ -39,8 +39,10 @@ Extern
 	Function gtk_grab_get_current:Byte Ptr()="gtk_grab_get_current"
 	Function gtk_grab_remove(widget:Byte Ptr)="gtk_grab_remove"
 	'Function gtk_init_add
-
-
+	function gtk_menu_item_get_type:byte ptr()
+	function gtk_item_get_type:byte ptr()
+	function gtk_menu_get_type:byte ptr()
+	function gtk_menu_shell_get_type:byte ptr()
 End Extern
 
 'Enumeration GtkPackType

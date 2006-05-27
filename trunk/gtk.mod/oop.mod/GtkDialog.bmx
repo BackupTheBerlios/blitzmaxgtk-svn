@@ -17,8 +17,6 @@ End Rem
 Type GtkDialog Extends GtkWindow
 	Field DialogHandle:byte ptr
 	Method Run:Int()
-		Print "GtkDialog.Run()"
 		Return gtk_dialog_run(DialogHandle)
-		Print "~~GtkDialog.Run()"
 	End Method
 End Type

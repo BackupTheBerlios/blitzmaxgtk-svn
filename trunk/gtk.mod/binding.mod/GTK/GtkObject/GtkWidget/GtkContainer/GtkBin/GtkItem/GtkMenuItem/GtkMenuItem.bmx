@@ -25,7 +25,7 @@ Extern
 	Function gtk_menu_item_select(menu_item:Byte Ptr)="gtk_menu_item_select"
 	Function gtk_menu_item_deselect(menu_item:Byte Ptr)="gtk_menu_item_deselect"
 	Function gtk_menu_item_activate(menu_item:Byte Ptr)="gtk_menu_item_activate"
-	Function gtk_menu_item_toggle_size_request(menu_item:Byte Ptr,requisition:Byte Ptr)="gtk_menu_item_toggle_size_request"
+	Function gtk_menu_item_toggle_size_request(menu_item:Byte Ptr,requisition:Int Ptr)="gtk_menu_item_toggle_size_request"
 	Function gtk_menu_item_toggle_size_allocate(menu_item:Byte Ptr,allocation:int)="gtk_menu_item_toggle_size_allocate"
 	Function gtk_menu_item_get_right_justified:Byte(menu_item:Byte Ptr)="gtk_menu_item_get_right_justified"
 	Function gtk_menu_item_get_submenu:Byte Ptr(menu_item:Byte Ptr)="gtk_menu_item_get_submenu"

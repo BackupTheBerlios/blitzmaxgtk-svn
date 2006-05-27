@@ -62,7 +62,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkImageMenuItem" id="wieder_öffnen1">
+		    <widget class="GtkImageMenuItem" id="last_files_item">
 		      <property name="visible">True</property>
 		      <property name="label" translatable="yes">Wieder öffnen...</property>
 		      <property name="use_underline">True</property>
@@ -80,15 +80,7 @@
 		      </child>
 
 		      <child>
-			<widget class="GtkMenu" id="wieder_öffnen1_menu">
-
-			  <child>
-			    <widget class="GtkMenuItem" id="datei1">
-			      <property name="visible">True</property>
-			      <property name="label" translatable="yes">Datei1</property>
-			      <property name="use_underline">True</property>
-			    </widget>
-			  </child>
+			<widget class="GtkMenu" id="last_files_menu">
 			</widget>
 		      </child>
 		    </widget>
@@ -635,11 +627,11 @@
 	  <property name="show_tabs">True</property>
 	  <property name="show_border">True</property>
 	  <property name="tab_pos">GTK_POS_TOP</property>
-	  <property name="scrollable">False</property>
-	  <property name="enable_popup">False</property>
+	  <property name="scrollable">True</property>
+	  <property name="enable_popup">True</property>
 
 	  <child>
-	    <widget class="GtkVBox" id="vbox5">
+	    <widget class="GtkVBox" id="HelpVBox">
 	      <property name="visible">True</property>
 	      <property name="homogeneous">False</property>
 	      <property name="spacing">0</property>
@@ -724,18 +716,7 @@
 	      </child>
 
 	      <child>
-		<widget class="Custom" id="helpBrowser">
-		  <property name="visible">True</property>
-		  <property name="creation_function">gtk_moz_embed_new</property>
-		  <property name="int1">0</property>
-		  <property name="int2">0</property>
-		  <property name="last_modification_time">Thu, 25 May 2006 14:57:55 GMT</property>
-		</widget>
-		<packing>
-		  <property name="padding">0</property>
-		  <property name="expand">True</property>
-		  <property name="fill">True</property>
-		</packing>
+		<placeholder/>
 	      </child>
 
 	      <child>

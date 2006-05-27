@@ -25,7 +25,7 @@
 
 using namespace std;
 
-#define BMXPRECOMPPATTERN(x,y) { if(x == NULL) { cout << "Precompiling pattern: " << y << endl; x = Pattern::compile(y, Pattern::CASE_INSENSITIVE); if(x == NULL) { cerr << "Couldn´t compile pattern!" << endl; return; } } }
+#define BMXPRECOMPPATTERN(x,y) { if(x == NULL) { x = Pattern::compile(y, Pattern::CASE_INSENSITIVE); if(x == NULL) { cerr << "Couldn´t compile pattern!" << endl; return; } } }
 
 // Global, precompiled patterns (performance speedup because they don´t need to be recompiled every time)
 Pattern* pRem = NULL;
@@ -33,6 +33,8 @@ Pattern* pEndRem = NULL;
 Pattern* pLevelPlus = NULL;
 Pattern* pLevelMinus = NULL;
 Pattern* pOnlySpaces = NULL;
+Pattern* pExtern = NULL;
+Pattern* pEndExtern = NULL;
 
 static inline bool isIdentifier(char c)
 {
@@ -62,22 +64,20 @@ static inline bool isBinNumber(char c)
 
 static inline void PrecompileBlitzMaxPatterns ()
 {
-#ifdef DEBUG
-	cout << "PrecompileBlitzMaxPatterns()" << endl;
-#endif
-	// ^\s*rem(b|$)
-	BMXPRECOMPPATTERN(pRem,"^\\s*rem(\\b.*|$)");
-	// ^\s*end[\s]?rem(\s*|$)
-	BMXPRECOMPPATTERN(pEndRem,"^\\s*end[\\s]?rem(\\s*|$)");
+	// ^\s*rem(\s.*|$)
+	BMXPRECOMPPATTERN(pRem,"^\\s*rem(\\s.*|$)");
+	// ^\s*end\s*rem(\s*|$)
+	BMXPRECOMPPATTERN(pEndRem,"^\\s*end\\s*rem(\\s*|$)");
 	// ^[\s]*(function|while|repeat|type|rem|foldstart|select|for|method)(\s.*|$)
 	BMXPRECOMPPATTERN(pLevelPlus,"^[\\s]*(function|while|repeat|type|foldstart|select|for|method)(\\s.*|$)");
 	// ^[\s]*(end[\s]*(function|type|rem|select|method)|foldend|until|forever|next|wend)([\s].*|$)
 	BMXPRECOMPPATTERN(pLevelMinus,"^[\\s]*(end[\\s]*(function|type|select|method)|foldend|until|forever|next|wend)([\\s].*|$)");
 	// ^\s*$
 	BMXPRECOMPPATTERN(pOnlySpaces,"^\\s*$");
-#ifdef DEBUG
-	cout << "~PrecompileBlitzMaxPatterns()" << endl;
-#endif
+	// ^\s*extern(\s.*|$)
+	BMXPRECOMPPATTERN(pExtern,"^\\s*extern(\\s.*|$)");
+	// ^\s*end\s*extern(\s*|$)
+	BMXPRECOMPPATTERN(pEndExtern,"^\\s*end\\s*extern(\\s*|$)");
 }
 
 static void ColouriseBlitzMaxDoc (
@@ -90,7 +90,6 @@ static void ColouriseBlitzMaxDoc (
 
 	StyleContext sc(startPos, length, initStyle, styler);
 	string actline = "";
-	char startch = 0;
 	for (; sc.More(); sc.Forward()) {
 		if (sc.atLineStart)
 		{
@@ -146,16 +145,8 @@ static void ColouriseBlitzMaxDoc (
 				{
 					char s[1000];
 					sc.GetCurrentLowered(s, sizeof(s));
-					if (startch != 0)
-					{
-						cout << "blabla" << endl;
-						memmove(&s[1], &s[0], sizeof(s));
-						s[0] = startch;
-					}
-					cout << "length: " << strlen(s) << ", value: " << s << endl;
 					if (keywordlists[0]->InList(s))
 					{
-						cout << "blubb" << endl;
 						sc.ChangeState(SCE_BM_KEYWORD);
 					}
 					sc.SetState(SCE_BM_DEFAULT);
@@ -171,11 +162,22 @@ static void ColouriseBlitzMaxDoc (
 				
 			case SCE_BM_MULTILINECOMMENT:
 				// Only perform the pattern match at the beginning of the line, due to performance reasons
-				if (sc.atLineStart) {
+				if (sc.atLineStart)
+				{
 					if (pEndRem->matches(actline))
 					{
 						// Forward to the end of the line in order to get the endrem etc. colored right
 						unsigned int forwardNum = static_cast<unsigned int> (actline.length()); for(unsigned int i = 0; i <	forwardNum; i++) sc.Forward();
+						sc.SetState(SCE_BM_DEFAULT);
+					}
+				}
+				break;
+				
+			case SCE_BM_EXTERN:
+				if (sc.atLineStart)
+				{
+					if (pEndExtern->matches(actline))
+					{
 						sc.SetState(SCE_BM_DEFAULT);
 					}
 				}
@@ -212,6 +214,8 @@ static void ColouriseBlitzMaxDoc (
 				if (pRem->matches(actline))
 				{
 					sc.SetState(SCE_BM_MULTILINECOMMENT);
+				} else if (pExtern->matches(actline)) {
+					sc.SetState(SCE_BM_EXTERN);
 				}
 			}
 		}
@@ -238,7 +242,7 @@ static void FoldBlitzMaxDoc (
 		if (ch == '\n')
 		{
 		//	if (pOnlySpaces->matches(actline)) level |= SC_FOLDLEVELWHITEFLAG;
-			if (styler.StyleAt(lineStartPos) != SCE_BM_COMMENT)
+			if (styler.StyleAt(lineStartPos) != SCE_BM_COMMENT && styler.StyleAt(lineStartPos) != SCE_BM_EXTERN)
 			{
 				if (styler.StyleAt(lineStartPos) == SCE_BM_MULTILINECOMMENT)
 				{
@@ -251,7 +255,6 @@ static void FoldBlitzMaxDoc (
 					{
 						go = -1;
 					}
-					cout << endl;
 				} else {
 					if (pLevelPlus->matches(actline))
 					{
@@ -262,7 +265,6 @@ static void FoldBlitzMaxDoc (
 					{
 						go = -1;
 					}
-					cout << endl;
 				}
 			} else { go = 0; }
 			if (level != styler.LevelAt(line)) {

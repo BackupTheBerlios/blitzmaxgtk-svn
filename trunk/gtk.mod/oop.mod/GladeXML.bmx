@@ -41,3 +41,4 @@ Type GladeXML
 		Return glade_xml_get_widget(mHandle,Name.ToCString())
 	End Method
 End Type
+

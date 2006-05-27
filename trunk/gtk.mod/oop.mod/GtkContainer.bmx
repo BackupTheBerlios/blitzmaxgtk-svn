@@ -18,4 +18,12 @@ Type GtkContainer Extends GtkWidget
 	Method Add(Widget:GtkWidget)
 		gtk_container_add(Handle,Widget.Handle)
 	End Method
+	
+	Method Remove(Widget:GtkWidget)
+		gtk_container_remove(Handle,Widget.Handle)
+	end method
+	
+	Method ForEach(callback:byte ptr, callback_data:byte ptr=null)
+		gtk_container_foreach(Handle, callback, callback_data)
+	end method
 End Type
