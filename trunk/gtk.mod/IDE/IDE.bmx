@@ -99,6 +99,7 @@ Glade.Init()
 Global Application:GladeXML = GladeXML.Create("ide.glade")
 Application.ConnectSignals()
 
+Global ActualHelpBrowserPath:String = ""
 
 ' Getting the main notebook
 Global Notebook:GtkNotebook = GtkNotebook.CreateFromHandle(Application.GetWidget("notebook3"))
@@ -150,6 +151,8 @@ Function InitHelpBrowser()
 	local helpvbox:GtkVBox = GtkVBox.CreateFromHandle(Application.GetWidget("HelpVBox"))
 	HelpBrowser = GtkHtml.Create()
 	HelpBrowser.Show()
+	HelpBrowser.SignalConnect("url_requested",HelpBrowser_fileRequest)
+	HelpBrowser.SignalConnect("link_clicked",HelpBrowser_linkClicked)
 	helpvbox.PackEnd(HelpBrowser,true,true)
 	If (Settings.GetValue("HelpBrowser_URL") = "" or filetype(settings.getvalue("HelpBrowser_URL"))=0) and filetype(bmxpath + "/doc/index.html")=0 then
 	'	HelpBrowser.RenderData("<html><head><title>Fehler!</title></head><body><h1>Hilfe-URL nicht festgelegt!</h1></body></html>", "file:///error", "text/html")
@@ -494,7 +497,7 @@ Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotifi
 End Function
 'foldend
 
-'foldstart 'Farb Functionrn
+'foldstart 'Farb Funktionen
 Function MakeColorString:String(ColorR:Byte,ColorG:Byte,ColorB:Byte)
 	Return ColorR + "," + ColorG + "," + ColorB
 End Function
@@ -1070,7 +1073,7 @@ End Function
 'foldend
 'foldend
 
-'foldstart 'Compeliereinstellungen + Processkill
+'foldstart 'Kompiliereinstellungen + Processkill
 Function RebuildModules()
 	local bmkArgs:String[2]
 	bmkArgs[0] = "makemods"
@@ -1100,7 +1103,7 @@ function termApp()
 end function
 'foldend
 
-'foldstart 'HelpdBrowser
+'foldstart 'HelpBrowser
 Function HelpBrowser_goPortal()
 End Function
 Function HelpBrowser_goBack()
@@ -1112,15 +1115,56 @@ End Function
 Function HelpBrowser_loadFile(File:String)
 	local stream:GtkHtmlStream = HelpBrowser.Begin()
 	local filestream:TStream = ReadStream(File)
-	if filestream = null or true then
+	print "loading file: " + file
+	if filestream = null then
 		HelpBrowser.write(stream,"<html><head><title>Fehler!</title></head><body><h1>Die Hilfe-Datei konnte nicht gefunden werden</h1></body>")
 		HelpBrowser.EndStream(stream,GTK_HTML_STREAM_ERROR)
 		return
 	endif
+	ActualHelpBrowserPath = extractdir(file)
+	While not filestream.eof()
+		local actline:string = filestream.readline()
+		print actline
+		HelpBrowser.write(stream, actline +  "~n")
+	wend
 	CloseStream(filestream)
 	HelpBrowser.EndStream(stream,GTK_HTML_STREAM_OK)
 end function
+Function helpBrowser_fileRequest(html:byte ptr, curl:byte ptr, handle:byte ptr)
+	local url:string = string.fromCString(curl)
+	local stream:GtkHtmlStream = GtkHtmlStream.CreateFromHandle(handle)
+	print "requested: " + actualhelpbrowserpath + "/" + url
+	local filestream:TStream = ReadStream(ActualHelpBrowserPath + "/" + url)
+	if filestream =null then
+		HelpBrowser.EndStream(stream,GTK_HTML_STREAM_ERROR)
+		return
+	endif
+	while not filestream.eof()
+		HelpBrowser.write(stream, chr$(filestream.readbyte()))
+	wend
+	HelpBrowser.EndStream(stream,GTK_HTML_STREAM_OK)
+end function
+function helpBrowser_linkClicked(html:byte ptr, curl:byte ptr)
+	local url:string = string.fromcstring(curl)
+	print "clicked: " + url
+	if HasLeft(url,"http://") or HasLeft(url, "https://") or HasLeft(url, "mailto:") or HasLeft(url, "irc://") or HasLeft(url, "file:///") or HasLeft(url,"telnet://") then 
+		print "link ignored"
+		return
+	end if
+	local fallbackdir:String = currentdir()
+	changedir actualhelpbrowserpath
+	local realfilepath:string = realpath(url)
+	changedir fallbackdir
+	helpBrowser_loadFile(realfilepath)
+end function
 'foldend
+function HasLeft:byte(text:string, has:String)
+	if lower(left(text,len(has))) = lower(has) then
+		return true
+	else
+		return false
+	endif
+end function
 
 'foldstart 'RecentList
 Function AddToRecentList(item:string)
@@ -1129,7 +1173,7 @@ Function AddToRecentList(item:string)
 	endif
 	recentlist.addfirst(item)
 	if settings.getvalue("RecentList_Size") = "" then settings.setvalue("RecentList_Size","10")
-	while recentlist.count() > int(settings.getvalue("RecentList_Size"))
+	while recentlist.count() >= int(settings.getvalue("RecentList_Size"))
 		recentlist.removelast()
 	wend
 	UpdateRecentList()
@@ -1180,7 +1224,7 @@ function loadrecentlist()
 		updaterecentlist()
 	endif
 	if settings.getvalue("RecentList_Size") = "" then settings.setvalue("RecentList_Size","10")
-	while recentlist.count() > int(settings.getvalue("RecentList_Size"))
+	while recentlist.count() >= int(settings.getvalue("RecentList_Size"))
 		recentlist.removelast()
 	wend
 end function
