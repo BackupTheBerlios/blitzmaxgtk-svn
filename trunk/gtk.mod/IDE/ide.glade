@@ -1575,6 +1575,7 @@
 		      <property name="active">True</property>
 		      <property name="inconsistent">False</property>
 		      <property name="draw_indicator">True</property>
+		      <signal name="toggled" handler="bb_button_options_favorits" last_modification_time="Sun, 28 May 2006 09:17:09 GMT"/>
 		    </widget>
 		    <packing>
 		      <property name="type">label_item</property>

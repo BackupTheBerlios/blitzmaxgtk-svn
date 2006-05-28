@@ -920,7 +920,15 @@ End Function
 		SpinButton_RecentList_Size.SetValue(int(Settings.GetValue("RecentList_Size")))
 			
 		'Standardpfade aktivieren/deaktivieren
-		CheckButton_favorits.SetActive(Byte(Settings.GetValue("Favorit_On")))
+		Local FO:Byte = Byte(Settings.GetValue("Favorit_On"))
+		CheckButton_favorits.SetActive(FO)
+		If FO then
+			Filechooserbutton_LoadPfad.SetSensitive(True)
+			Filechooserbutton_SavePfad.SetSensitive(True)
+		else
+			Filechooserbutton_LoadPfad.SetSensitive(False)
+			Filechooserbutton_SavePfad.SetSensitive(False)
+		end if
 			
 		'Standard Pfad(SPEICHERN) in ChooserButton laden
 		Filechooserbutton_SavePfad.SetFileName(Settings.GetValue("FavoritSave"))
@@ -1009,6 +1017,21 @@ End Function
 			else
 				SpinButton_RecentList_Size.SetSensitive(False)
 				Button_Recentlist_History.SetSensitive(False)
+			end if
+	end Function
+
+	Function button_options_favorits()
+		Local CheckButton_favorits:GtkCheckButton = GtkCheckButton.CreateCBFromHandle(Application.GetWidget("cb_options_favorits"))
+		Local Filechooserbutton_LoadPfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_load"))
+		Local Filechooserbutton_SavePfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_save"))
+
+			Local RO:Byte =CheckButton_favorits.GetActive()
+			If RO then
+				Filechooserbutton_LoadPfad.SetSensitive(True)
+				Filechooserbutton_SavePfad.SetSensitive(True)
+			else
+				Filechooserbutton_LoadPfad.SetSensitive(False)
+				Filechooserbutton_SavePfad.SetSensitive(False)
 			end if
 	end Function
 
