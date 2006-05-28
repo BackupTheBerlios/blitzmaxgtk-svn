@@ -105,7 +105,8 @@ Global ActualHelpBrowserPath:String = ""
 Global Notebook:GtkNotebook = GtkNotebook.CreateFromHandle(Application.GetWidget("notebook3"))
 'Global exp_compiler:Byte Ptr = Application.GetWidget("exp_compiler")
 'Global T_emp:GtkContainer = New GtkContainer
-Global HelpBrowser:GtkHtml
+'Global HelpBrowser:GtkHtml
+Global HelpBrowser:GtkMozEmbed
 ' T_emp.Handle = exp_compiler
 AddHelpPage()
 Function AddHelpPage()
@@ -147,12 +148,18 @@ Global frmCmdOpts:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("
 Global frmLogin:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmLogin"))
 Global recentList:TList = New TList
 InitHelpBrowser()
+
 Function InitHelpBrowser()
 	local helpvbox:GtkVBox = GtkVBox.CreateFromHandle(Application.GetWidget("HelpVBox"))
+	rem
 	HelpBrowser = GtkHtml.Create()
 	HelpBrowser.Show()
 	HelpBrowser.SignalConnect("url_requested",HelpBrowser_fileRequest)
 	HelpBrowser.SignalConnect("link_clicked",HelpBrowser_linkClicked)
+	HelpBrowser.SetAllowFrameset(true)
+	end rem
+	HelpBrowser = GtkMozEmbed.Create()
+	HelpBrowser.Show()
 	helpvbox.PackEnd(HelpBrowser,true,true)
 	If (Settings.GetValue("HelpBrowser_URL") = "" or filetype(settings.getvalue("HelpBrowser_URL"))=0) and filetype(bmxpath + "/doc/index.html")=0 then
 	'	HelpBrowser.RenderData("<html><head><title>Fehler!</title></head><body><h1>Hilfe-URL nicht festgelegt!</h1></body></html>", "file:///error", "text/html")
@@ -161,7 +168,8 @@ Function InitHelpBrowser()
 	If FileType(settings.getvalue("HelpBrowser_URL")) = 0 then
 		Settings.SetValue("HelpBrowser_URL", bmxpath+"/doc/index.html")
 	end if
-	HelpBrowser_LoadFile(Settings.GetValue("HelpBrowser_URL"))
+	HelpBrowser.LoadURL("file://" + Settings.GetValue("HelpBrowser_URL"))
+	'HelpBrowser_LoadFile(Settings.GetValue("HelpBrowser_URL"))
 end function
 
 ' Keywords laden
@@ -1104,6 +1112,7 @@ end function
 'foldend
 
 'foldstart 'HelpBrowser
+
 Function HelpBrowser_goPortal()
 End Function
 Function HelpBrowser_goBack()
@@ -1112,8 +1121,9 @@ Function HelpBrowser_goForward()
 End Function
 Function HelpBrowser_goHome()
 End Function
+rem
 Function HelpBrowser_loadFile(File:String)
-	local stream:GtkHtmlStream = HelpBrowser.Begin()
+	local stream:GtkHtmlStream = HelpBrowser.BeginContent("text/html; charset=iso-8859-1")
 	local filestream:TStream = ReadStream(File)
 	print "loading file: " + file
 	if filestream = null then
@@ -1134,15 +1144,23 @@ Function helpBrowser_fileRequest(html:byte ptr, curl:byte ptr, handle:byte ptr)
 	local url:string = string.fromCString(curl)
 	local stream:GtkHtmlStream = GtkHtmlStream.CreateFromHandle(handle)
 	print "requested: " + actualhelpbrowserpath + "/" + url
+	writestdout "opening file... "
 	local filestream:TStream = ReadStream(ActualHelpBrowserPath + "/" + url)
 	if filestream =null then
+		print "failed, returning GTK_HTML_STREAM_ERROR"
 		HelpBrowser.EndStream(stream,GTK_HTML_STREAM_ERROR)
 		return
 	endif
+	print "Success!"
+	Writestdout "Writing to stream..."
 	while not filestream.eof()
+		writestdout "."
 		HelpBrowser.write(stream, chr$(filestream.readbyte()))
 	wend
+	print " Ready."
+	print "Sending GTK_HTML_STREAM_OK"
 	HelpBrowser.EndStream(stream,GTK_HTML_STREAM_OK)
+	print "OK"
 end function
 function helpBrowser_linkClicked(html:byte ptr, curl:byte ptr)
 	local url:string = string.fromcstring(curl)
@@ -1157,7 +1175,6 @@ function helpBrowser_linkClicked(html:byte ptr, curl:byte ptr)
 	changedir fallbackdir
 	helpBrowser_loadFile(realfilepath)
 end function
-'foldend
 function HasLeft:byte(text:string, has:String)
 	if lower(left(text,len(has))) = lower(has) then
 		return true
@@ -1165,6 +1182,8 @@ function HasLeft:byte(text:string, has:String)
 		return false
 	endif
 end function
+end rem
+'foldend
 
 'foldstart 'RecentList
 Function AddToRecentList(item:string)

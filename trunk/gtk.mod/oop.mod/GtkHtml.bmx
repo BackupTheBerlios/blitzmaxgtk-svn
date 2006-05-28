@@ -23,6 +23,10 @@ type GtkHTML extends GtkWidget
 		return GtkHtmlStream.CreateFromHandle(gtk_html_begin(htmlhandle))
 	end method
 	
+	Method BeginContent:GtkHtmlStream(ContentType:string)
+		return GtkHtmlStream.CreateFromHandle(gtk_html_begin_content(htmlhandle, ContentType.ToCString()))
+	end method
+	
 	method BeginFull:GtkHtmlStream(target_frame:string, content_type:string, flags:int)
 		return GtkHtmlStream.CreateFromHandle(gtk_html_begin_full(htmlhandle,target_frame.ToCString(),content_type.ToCString(),flags))
 	end method
@@ -37,6 +41,14 @@ type GtkHTML extends GtkWidget
 	
 	method Stop()
 		gtk_html_stop(htmlhandle)
+	end method
+	
+	method SetAllowFrameset(allowFrameset:byte)
+		gtk_html_set_allow_frameset(htmlhandle,allowframeset)
+	end method
+	
+	method GetAllowFrameset:byte()
+		return gtk_html_get_allow_frameset(htmlhandle)
 	end method
 end type
 

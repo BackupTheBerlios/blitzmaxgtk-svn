@@ -2216,210 +2216,22 @@ Classic</property>
   </child>
 </widget>
 
-<widget class="GtkWindow" id="window1">
-  <property name="border_width">5</property>
-  <property name="title" translatable="yes">Kommandozeilen-Optionen</property>
-  <property name="type">GTK_WINDOW_TOPLEVEL</property>
-  <property name="window_position">GTK_WIN_POS_MOUSE</property>
-  <property name="modal">True</property>
-  <property name="resizable">False</property>
+<widget class="GtkAboutDialog" id="frmAbout">
+  <property name="visible">True</property>
   <property name="destroy_with_parent">False</property>
-  <property name="icon_name">gtk-properties</property>
-  <property name="decorated">True</property>
-  <property name="skip_taskbar_hint">False</property>
-  <property name="skip_pager_hint">False</property>
-  <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
-  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
-  <property name="focus_on_map">True</property>
-  <property name="urgency_hint">True</property>
-  <signal name="delete_event" handler="bb_closePropsWindowNoDestroy" last_modification_time="Fri, 28 Apr 2006 19:52:24 GMT"/>
-  <signal name="destroy_event" handler="bb_closePropsWindowNoDestroy" last_modification_time="Fri, 28 Apr 2006 19:52:29 GMT"/>
+  <property name="name" translatable="yes">BlitzMax-IDE 0.2</property>
+  <property name="copyright" translatable="yes">(c) 2005-2006 Michael Sytko und Philipp Kerling</property>
+  <property name="comments" translatable="yes">Entwickler-Version</property>
+  <property name="license" translatable="yes">GNU GPL</property>
+  <property name="wrap_license">False</property>
+  <property name="website">http://ide-devel.coding-industry.de/</property>
+  <property name="website_label" translatable="yes">BlitzMax-IDE Homepage</property>
+  <property name="authors">Philipp Kerling aka phiker
+Michael Sytko aka bigmichi
 
-  <child>
-    <widget class="GtkVBox" id="vbox8">
-      <property name="visible">True</property>
-      <property name="homogeneous">False</property>
-      <property name="spacing">0</property>
-
-      <child>
-	<widget class="GtkLabel" id="label60">
-	  <property name="visible">True</property>
-	  <property name="label" translatable="yes">_Kommandozeilen-Parameter für Programme</property>
-	  <property name="use_underline">True</property>
-	  <property name="use_markup">False</property>
-	  <property name="justify">GTK_JUSTIFY_LEFT</property>
-	  <property name="wrap">False</property>
-	  <property name="selectable">False</property>
-	  <property name="xalign">0.5</property>
-	  <property name="yalign">0.5</property>
-	  <property name="xpad">137</property>
-	  <property name="ypad">0</property>
-	  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-	  <property name="width_chars">-1</property>
-	  <property name="single_line_mode">False</property>
-	  <property name="angle">0</property>
-	</widget>
-	<packing>
-	  <property name="padding">0</property>
-	  <property name="expand">False</property>
-	  <property name="fill">False</property>
-	</packing>
-      </child>
-
-      <child>
-	<widget class="GtkEntry" id="entry1">
-	  <property name="visible">True</property>
-	  <property name="can_default">True</property>
-	  <property name="has_default">True</property>
-	  <property name="can_focus">True</property>
-	  <property name="has_focus">True</property>
-	  <property name="editable">True</property>
-	  <property name="visibility">True</property>
-	  <property name="max_length">0</property>
-	  <property name="text" translatable="yes"></property>
-	  <property name="has_frame">True</property>
-	  <property name="invisible_char">●</property>
-	  <property name="activates_default">False</property>
-	</widget>
-	<packing>
-	  <property name="padding">0</property>
-	  <property name="expand">False</property>
-	  <property name="fill">False</property>
-	</packing>
-      </child>
-
-      <child>
-	<widget class="GtkHSeparator" id="hseparator4">
-	  <property name="visible">True</property>
-	</widget>
-	<packing>
-	  <property name="padding">0</property>
-	  <property name="expand">False</property>
-	  <property name="fill">False</property>
-	</packing>
-      </child>
-
-      <child>
-	<widget class="GtkButton" id="button9">
-	  <property name="visible">True</property>
-	  <property name="can_focus">True</property>
-	  <property name="label">gtk-apply</property>
-	  <property name="use_stock">True</property>
-	  <property name="relief">GTK_RELIEF_NORMAL</property>
-	  <property name="focus_on_click">True</property>
-	  <signal name="clicked" handler="bb_closePropsWindow" last_modification_time="Wed, 26 Apr 2006 16:16:17 GMT"/>
-	</widget>
-	<packing>
-	  <property name="padding">0</property>
-	  <property name="expand">False</property>
-	  <property name="fill">False</property>
-	</packing>
-      </child>
-    </widget>
-  </child>
-</widget>
-
-<widget class="GtkWindow" id="window2">
-  <property name="border_width">5</property>
-  <property name="title" translatable="yes">Kommandozeilen-Optionen</property>
-  <property name="type">GTK_WINDOW_TOPLEVEL</property>
-  <property name="window_position">GTK_WIN_POS_MOUSE</property>
-  <property name="modal">True</property>
-  <property name="resizable">False</property>
-  <property name="destroy_with_parent">False</property>
-  <property name="icon_name">gtk-properties</property>
-  <property name="decorated">True</property>
-  <property name="skip_taskbar_hint">False</property>
-  <property name="skip_pager_hint">False</property>
-  <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
-  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
-  <property name="focus_on_map">True</property>
-  <property name="urgency_hint">True</property>
-  <signal name="delete_event" handler="bb_closePropsWindowNoDestroy" last_modification_time="Fri, 28 Apr 2006 19:52:24 GMT"/>
-  <signal name="destroy_event" handler="bb_closePropsWindowNoDestroy" last_modification_time="Fri, 28 Apr 2006 19:52:29 GMT"/>
-
-  <child>
-    <widget class="GtkVBox" id="vbox9">
-      <property name="visible">True</property>
-      <property name="homogeneous">False</property>
-      <property name="spacing">0</property>
-
-      <child>
-	<widget class="GtkLabel" id="label61">
-	  <property name="visible">True</property>
-	  <property name="label" translatable="yes">_Kommandozeilen-Parameter für Programme</property>
-	  <property name="use_underline">True</property>
-	  <property name="use_markup">False</property>
-	  <property name="justify">GTK_JUSTIFY_LEFT</property>
-	  <property name="wrap">False</property>
-	  <property name="selectable">False</property>
-	  <property name="xalign">0.5</property>
-	  <property name="yalign">0.5</property>
-	  <property name="xpad">137</property>
-	  <property name="ypad">0</property>
-	  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-	  <property name="width_chars">-1</property>
-	  <property name="single_line_mode">False</property>
-	  <property name="angle">0</property>
-	</widget>
-	<packing>
-	  <property name="padding">0</property>
-	  <property name="expand">False</property>
-	  <property name="fill">False</property>
-	</packing>
-      </child>
-
-      <child>
-	<widget class="GtkEntry" id="entry2">
-	  <property name="visible">True</property>
-	  <property name="can_default">True</property>
-	  <property name="has_default">True</property>
-	  <property name="can_focus">True</property>
-	  <property name="has_focus">True</property>
-	  <property name="editable">True</property>
-	  <property name="visibility">True</property>
-	  <property name="max_length">0</property>
-	  <property name="text" translatable="yes"></property>
-	  <property name="has_frame">True</property>
-	  <property name="invisible_char">●</property>
-	  <property name="activates_default">False</property>
-	</widget>
-	<packing>
-	  <property name="padding">0</property>
-	  <property name="expand">False</property>
-	  <property name="fill">False</property>
-	</packing>
-      </child>
-
-      <child>
-	<widget class="GtkHSeparator" id="hseparator5">
-	  <property name="visible">True</property>
-	</widget>
-	<packing>
-	  <property name="padding">0</property>
-	  <property name="expand">False</property>
-	  <property name="fill">False</property>
-	</packing>
-      </child>
-
-      <child>
-	<widget class="GtkButton" id="button10">
-	  <property name="visible">True</property>
-	  <property name="can_focus">True</property>
-	  <property name="label">gtk-apply</property>
-	  <property name="use_stock">True</property>
-	  <property name="relief">GTK_RELIEF_NORMAL</property>
-	  <property name="focus_on_click">True</property>
-	  <signal name="clicked" handler="bb_closePropsWindow" last_modification_time="Wed, 26 Apr 2006 16:16:17 GMT"/>
-	</widget>
-	<packing>
-	  <property name="padding">0</property>
-	  <property name="expand">False</property>
-	  <property name="fill">False</property>
-	</packing>
-      </child>
-    </widget>
-  </child>
+Wir danken ganz herzlich den Entwicklern von Linux, GTK und Scintilla, ohne die dieses Programm nicht möglich gewesen wäre!</property>
+  <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">translator-credits</property>
+  <property name="logo">idelogo.png</property>
 </widget>
 
 </glade-interface>

@@ -13,6 +13,7 @@ extern
 	function gtk_html_select_all(gtkhtml:byte ptr)
 	function gtk_html_request_paste:int(gtkhtml:byte ptr, selection:byte ptr, ttype:int, time:long, as_cite:byte)
 	function gtk_html_begin:byte ptr(gtkhtml:byte ptr)
+	function gtk_html_begin_content:byte ptr(gtkhtml:byte ptr, contenttype:byte ptr)
 	function gtk_html_begin_full:byte ptr(gtkhtml:byte ptr, target_frame:byte ptr, content_type:byte ptr, flags:int)
 	function gtk_html_write(html:byte ptr, handle:byte ptr, buffer:byte ptr, size:int)
 	function gtk_html_end(html:byte ptr, handle: byte ptr, status:int)
