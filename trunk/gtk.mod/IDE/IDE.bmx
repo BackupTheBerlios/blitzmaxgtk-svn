@@ -136,6 +136,7 @@ Global BmxPath:String = BlitzMaxPath()
 
 Global frmMain:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmMain"))
 frmMain.SetIconFromFile("idelogo.png")
+Options_Load_by_first_Start()
 
 Global frmOptions:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmOptions"))
 LoadScintillaOptions
@@ -564,9 +565,18 @@ end function
 
 
 Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
+	Local Filechooserbutton_LoadPfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_load"))
+	Local FP:String = Filechooserbutton_LoadPfad.GetFileName()
+	
 	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD(ISO_8859_1_To_UTF_8("Datei öffnen"),Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-open",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
 	Local lastpath:String
-	If FileType(Settings.GetValue("LastOpenDir")) <> 2 then lastpath = "" else lastpath = Settings.GetValue("LastOpenDir")
+	
+	If FileType(Settings.GetValue("LastOpenDir")) <> 2 then 
+		If FileType(FP) <> 2 then lastpath = "/home" else lastpath = FP
+	else 
+		lastpath = Settings.GetValue("LastOpenDir")
+	end if 
+
 	If lastpath <> "" dialog.SetCurrentFolder(lastpath)
 	dialog.SetLocalOnly(True)
 	If dialog.Run() = GTK_RESPONSE_OK Then
@@ -617,12 +627,21 @@ Function tb_save_click()
 End Function 
 
 Function mi_save_under_click()
+	Local Filechooserbutton_SavePfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_save"))
+	Local FP:String = Filechooserbutton_SavePfad.GetFileName()
+	
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
 	If Document.hidden return
 	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD("Datei speichern",Null,GTK_FILE_CHOOSER_ACTION_SAVE,"gtk-save",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
 	dialog.SetLocalOnly(True)
 	local lastpath:string
-	If FileType(Settings.GetValue("LastSaveDir")) <> 2 then lastpath = "" else lastpath = Settings.GetValue("LastSaveDir")
+	
+	If FileType(Settings.GetValue("LastSaveDir")) <> 2 then 
+		If FileType(FP) <> 2 then lastpath = "/home" else lastpath = FP
+	else
+		lastpath = Settings.GetValue("LastSaveDir")
+	end if
+
 	if lastpath <> "" dialog.SetCurrentFolder(lastpath)
 
 	If Document.File Then Dialog.SetFileName(Document.File)
@@ -1034,6 +1053,19 @@ End Function
 				Filechooserbutton_SavePfad.SetSensitive(False)
 			end if
 	end Function
+
+	Function Options_Load_by_first_Start()
+		Local CheckButton_favorits:GtkCheckButton = GtkCheckButton.CreateCBFromHandle(Application.GetWidget("cb_options_favorits"))
+		Local Filechooserbutton_LoadPfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_load"))
+		Local Filechooserbutton_SavePfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_save"))
+
+			Local RO:Byte = Byte(Settings.GetValue("Favorit_On"))
+			If RO then
+				Settings.DelSetting("LastOpenDir")
+				Settings.DelSetting("LastSaveDir")
+				Settings.SaveAllSettings()
+			end if		
+	end function
 
 'foldend
 'foldend
