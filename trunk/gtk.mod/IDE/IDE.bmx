@@ -874,6 +874,18 @@ End Function
 
 	Function LoadScintillaOptions()
 
+		Local Filechooserbutton_Scintilla_BM_Pfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fc_options_bmpfad"))
+		Local Filechooserbutton_Scintilla_KeyWordsList:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fc_options_keywords"))
+
+		Local CheckButton_RecentList:GtkCheckButton = GtkCheckButton.CreateCBFromHandle(Application.GetWidget("cb_options_recentlist"))
+		Local SpinButton_RecentList_Size:GtkSpinButton= GtkSpinButton.CreateFromHandle(Application.GetWidget("sb_options_recentlist_size"))
+		Local Button_Recentlist_History:GtkButton = GtkButton.CreateFromHandle(Application.GetWidget("button_options_recentlist_history"))
+				
+		Local CheckButton_favorits:GtkCheckButton = GtkCheckButton.CreateCBFromHandle(Application.GetWidget("cb_options_favorits"))
+		Local Filechooserbutton_LoadPfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_load"))
+		Local Filechooserbutton_SavePfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_save"))
+
+
 	Rem 'Hintergrund für Scintilla
 		Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
 			ColorButton_Scintilla_BG.setColorInt(ExtractR(Settings.GetValue("Scintilla_BGColor")),ExtractG(Settings.GetValue("Scintilla_BGColor")),ExtractB(Settings.GetValue("Scintilla_BGColor")))
@@ -888,24 +900,33 @@ End Function
 	end rem
 
 		'BlitzMax Pfad in ChooserButtonladen
-		Local Filechooserbutton_Scintilla_BM_Pfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fc_options_bmpfad"))
-			Filechooserbutton_Scintilla_BM_Pfad.SetFileName(Settings.GetValue("BlitzMax_Pfad"))
+		Filechooserbutton_Scintilla_BM_Pfad.SetFileName(Settings.GetValue("BlitzMax_Pfad"))
 		
 		'Keywords in ChooserButton laden
-		Local Filechooserbutton_Scintilla_KeyWordsList:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fc_options_keywords"))
-			Filechooserbutton_Scintilla_KeyWordsList.SetFileName(Settings.GetValue("Scintilla_KeywordsFile"))
+		Filechooserbutton_Scintilla_KeyWordsList.SetFileName(Settings.GetValue("Scintilla_KeywordsFile"))
+			
+		'Recentlist aktivieren/deaktivieren
+		Local RO:Byte = Byte(Settings.GetValue("RecentList_On"))
+		CheckButton_RecentList.SetActive(RO)		
+		If RO then
+			SpinButton_RecentList_Size.SetSensitive(True)
+			Button_Recentlist_History.SetSensitive(True)
+		else
+			SpinButton_RecentList_Size.SetSensitive(False)
+			Button_Recentlist_History.SetSensitive(False)
+		end if
 			
 		'RecentList_size laden in Spinbutton
-		Local SpinButton_RecentList_Size:GtkSpinButton= GtkSpinButton.CreateFromHandle(Application.GetWidget("sb_options_recentlist_size"))
-			SpinButton_RecentList_Size.SetValue(int(Settings.GetValue("RecentList_Size")))
+		SpinButton_RecentList_Size.SetValue(int(Settings.GetValue("RecentList_Size")))
+			
+		'Standardpfade aktivieren/deaktivieren
+		CheckButton_favorits.SetActive(Byte(Settings.GetValue("Favorit_On")))
 			
 		'Standard Pfad(SPEICHERN) in ChooserButton laden
-		Local Filechooserbutton_SavePfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_save"))
-			Filechooserbutton_SavePfad.SetFileName(Settings.GetValue("FavoritSave"))
+		Filechooserbutton_SavePfad.SetFileName(Settings.GetValue("FavoritSave"))
 			
 		'Standard Pfad(LADEN) in ChooserButton laden
-		Local Filechooserbutton_LoadPfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_load"))
-			Filechooserbutton_LoadPfad.SetFileName(Settings.GetValue("FavoritLoad"))
+		Filechooserbutton_LoadPfad.SetFileName(Settings.GetValue("FavoritLoad"))
 			
 	End Function
 
@@ -918,7 +939,11 @@ End Function
 		'Keywords aus ChooserButton lesen und speichern
 		Local Filechooserbutton_Scintilla_KeyWordsList:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fc_options_keywords"))
 			Settings.SetValue("Scintilla_KeywordsFile",Filechooserbutton_Scintilla_KeyWordsList.GetFileName())
-			
+
+		'Recentlist aktiv?
+		Local CheckButton_RecentList:GtkCheckButton = GtkCheckButton.CreateCBFromHandle(Application.GetWidget("cb_options_recentlist"))
+			Settings.SetValue("RecentList_On",CheckButton_RecentList.GetActive())			
+
 		'RecentList_size aus Spinbutton lesen und speichern
 		Local SpinButton_RecentList_Size:GtkSpinButton= GtkSpinButton.CreateFromHandle(Application.GetWidget("sb_options_recentlist_size"))
 			Settings.SetValue("RecentList_Size",int(SpinButton_RecentList_Size.GetValue()))
@@ -967,6 +992,25 @@ End Function
 		frmOptions.Hide()
 		Return true
 	End Function
+
+
+
+	'Functionen über Widgets
+	
+	Function button_options_history()
+		Local CheckButton_RecentList:GtkCheckButton = GtkCheckButton.CreateCBFromHandle(Application.GetWidget("cb_options_recentlist"))
+		Local SpinButton_RecentList_Size:GtkSpinButton= GtkSpinButton.CreateFromHandle(Application.GetWidget("sb_options_recentlist_size"))
+		Local Button_Recentlist_History:GtkButton = GtkButton.CreateFromHandle(Application.GetWidget("button_options_recentlist_history"))
+		
+			Local RO:Byte =CheckButton_RecentList.GetActive()
+			If RO then
+				SpinButton_RecentList_Size.SetSensitive(True)
+				Button_Recentlist_History.SetSensitive(True)
+			else
+				SpinButton_RecentList_Size.SetSensitive(False)
+				Button_Recentlist_History.SetSensitive(False)
+			end if
+	end Function
 
 'foldend
 'foldend
