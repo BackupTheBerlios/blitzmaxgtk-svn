@@ -143,6 +143,8 @@ Options_Load_by_first_Start()
 Global frmOptions:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmOptions"))
 LoadScintillaOptions
 
+Global frmSkinScintilla:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmSkinScintilla"))
+
 Global frmCmdOpts:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmCmdOpts"))
 
 Global frmLogin:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmLogin"))
@@ -1024,12 +1026,22 @@ End Function
 		frmOptions.Hide()
 	End Function
 
+	Function button_options_styleeditor()
+		frmOptions.Hide()
+		frmSkinScintilla.show()
+	end Function
+
 	Function button_options_abort()
 		frmOptions.Hide()
 	End Function
 
 	Function closeOptionsWindowNoDestroy:byte()
 		frmOptions.Hide()
+		Return true
+	End Function
+
+	Function closeSkinWindowNoDestroy:byte()
+		frmSkinScintilla.Hide()
 		Return true
 	End Function
 
