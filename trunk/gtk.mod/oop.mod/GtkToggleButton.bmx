@@ -26,4 +26,12 @@ Type GtkToggleButton Extends GtkButton
 		TempButton.Handle = Handle
 		Return TempButton
 	End Function
+	
+	Method SetActive(Status:Byte)
+		gtk_toggle_button_set_active(Handle,Status)
+	End Method
+	
+	Method GetActive:Byte()
+		return gtk_toggle_button_get_active(Handle)
+	End Method
 End Type

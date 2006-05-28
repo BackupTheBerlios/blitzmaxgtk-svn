@@ -899,6 +899,14 @@ End Function
 		Local SpinButton_RecentList_Size:GtkSpinButton= GtkSpinButton.CreateFromHandle(Application.GetWidget("sb_options_recentlist_size"))
 			SpinButton_RecentList_Size.SetValue(int(Settings.GetValue("RecentList_Size")))
 			
+		'Standard Pfad(SPEICHERN) in ChooserButton laden
+		Local Filechooserbutton_SavePfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_save"))
+			Filechooserbutton_SavePfad.SetFileName(Settings.GetValue("FavoritSave"))
+			
+		'Standard Pfad(LADEN) in ChooserButton laden
+		Local Filechooserbutton_LoadPfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_load"))
+			Filechooserbutton_LoadPfad.SetFileName(Settings.GetValue("FavoritLoad"))
+			
 	End Function
 
 	Function button_opttions_apply()
@@ -913,7 +921,19 @@ End Function
 			
 		'RecentList_size aus Spinbutton lesen und speichern
 		Local SpinButton_RecentList_Size:GtkSpinButton= GtkSpinButton.CreateFromHandle(Application.GetWidget("sb_options_recentlist_size"))
-			Settings.SetValue("RecentList_Size",SpinButton_RecentList_Size.GetValue())
+			Settings.SetValue("RecentList_Size",int(SpinButton_RecentList_Size.GetValue()))
+		
+		'Sollen Standard Pfade benutzt werden?
+		Local CheckButton_favorits:GtkCheckButton = GtkCheckButton.CreateCBFromHandle(Application.GetWidget("cb_options_favorits"))
+			Settings.SetValue("Favorit_On",CheckButton_favorits.GetActive())
+			
+		'Standard Pfad(SPEICHERN) aus ChooserButton lesen und speichern
+		Local Filechooserbutton_SavePfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_save"))
+			Settings.SetValue("FavoritSave",Filechooserbutton_SavePfad.GetFileName())
+			
+		'Standard Pfad(LADEN) aus ChooserButton lesen und speichern
+		Local Filechooserbutton_LoadPfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_load"))
+			Settings.SetValue("FavoritLoad",Filechooserbutton_LoadPfad.GetFileName())
 
 	Rem 'Hintergrund und Margin von Scintilla
 		Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
