@@ -1,10 +1,23 @@
 #!/bin/sh
 echo "Automated installer for the BlitzMax GTK-modules"
 echo "(C) 2005-2006 by phiker"
-echo "install: Checking identity"
-if [ $LOGNAME = "root" ]; then
-        echo "install: Installing as root can potentially cause problems, please install as normal user"
-        exit 1
+if [ $# -ne 1 ]; then
+	echo "install: Usage:     ./install username:groupname"
+	echo
+	echo "install: username:  The user you want to use the GTK BlitzMax-modules as"
+	echo "install: groupname: The group you want to use the GTK BlitzMax-modules as" 
+	echo
+	echo "install: This script must be called as root."
+	echo "install: If you don´t know the values of username and groupname, please take the output of 'id -un' (as normal user) as username and 'id -gn' as groupname"
+	exit 2
+fi
+if [ ${#1} -lt 3 ]; then
+	echo "install: Please provide a valide username and groupname"
+	exit 2
+fi
+if [ $LOGNAME != "root" ]; then
+        echo "install: Please run this script as root"
+        exit 2
 fi
 echo "install: Configuring gtk.binding"
 cd binding.mod > install.log
@@ -100,5 +113,132 @@ if [ $retval -ne 0 ]; then
 	exit 1
 fi
 cd ..
+echo -n "install: Looking whether libgtkembedmoz.so is in /usr/lib... "
+ls /usr/lib/libgtkembedmoz.so > /dev/null 2> /dev/null
+retval=$?
+if [ $retval -ne 0 ]; then
+	echo "No"
+	echo -n "install: Looking whether libgtkembedmoz.so is in /usr/lib/mozilla-firefox... "
+	ls /usr/lib/mozilla-firefox/libgtkembedmoz.so > /dev/null 2> /dev/null
+	retvaltwo=$?
+	if [ $retvaltwo -ne 0 ]; then
+		echo "install: No"
+		echo -n "install: Looking whether libgtkembedmoz.so is in /usr/lib/mozilla... "
+		ls /usr/lib/mozilla/libgtkembedmoz.so > /dev/null 2> /dev/null
+		retvalthree=$?
+		if [ $retvalthree -ne 0 ]; then
+			echo "No"
+			echo "-----------------------------"
+			echo "install: WARNING!"
+			echo "install: Couldn´t find libgtkembedmoz.so in /usr/lib, /usr/lib/mozilla-firefox or /usr/lib/mozilla."
+			echo "install: Normally this is really really bad, but if you are lucky it simply works."
+			echo "install: Please don´t file any bugs if this message had appeared"
+			echo "-----------------------------"
+			echo -e -n '\a'
+			sleep 1
+			echo -e -n '\a'
+			sleep 1
+			echo -e -n '\a'
+			sleep 1
+		else
+			echo "Yes"
+			echo "install: Creating symlink from /usr/lib/mozilla/libgtkembedmoz.so to /usr/lib/libgtkembedmoz.so"
+			ln -s /usr/lib/mozilla/libgtkembedmoz.so /usr/lib/libgtkembedmoz.so
+			retvaltwo=$?
+			if [ $retvaltwo -ne 0 ]; then
+				echo "--------------------------"
+				echo "install: WARNING!"
+				echo "install: Creation of symlink failed!"
+				echo "install: Normally this is really really bad, but if you are lucky it simply works"
+				echo "--------------------------"
+				echo -e -n '\a'
+				sleep 2
+			fi
+		fi
+	else
+		echo "Yes"
+		echo "install: Creating symlink from /usr/lib/mozilla-firefox/libgtkembedmoz.so to /usr/lib/libgtkembedmoz.so"
+		ln -s /usr/lib/mozilla-firefox/libgtkembedmoz.so /usr/lib/libgtkembedmoz.so
+		retvaltwo=$?
+		if [ $retvaltwo -ne 0 ]; then
+			echo "----------------------------"
+			echo "install: WARNING!"
+			echo "install: Creation of symlink failed!"
+			echo "install: Normally this is really really bad, but if you are lucky it simply works"
+			echo "----------------------------"
+			echo -e -n '\a'
+			sleep 2
+		fi
+	fi
+else
+	echo "Yes"
+fi
+echo -n "install: Looking whether libxpcom.so is in /usr/lib... "
+ls /usr/lib/libxpcom.so > /dev/null 2> /dev/null
+retval=$?
+if [ $retval -ne 0 ]; then
+	echo "No"
+	echo -n "install: Looking whether libxpcom.so is in /usr/lib/mozilla-firefox... "
+	ls /usr/lib/mozilla-firefox/libxpcom.so > /dev/null 2> /dev/null
+	retvaltwo=$?
+	if [ $retvaltwo -ne 0 ]; then
+		echo "install: No"
+		echo -n "install: Looking whether libxpcom.so is in /usr/lib/mozilla... "
+		ls /usr/lib/mozilla/libxpcom.so > /dev/null 2> /dev/null
+		retvalthree=$?
+		if [ $retvalthree -ne 0 ]; then
+			echo "No"
+			echo "-----------------------------"
+			echo "install: WARNING!"
+			echo "install: Couldn´t find libxpcom.so in /usr/lib, /usr/lib/mozilla-firefox or /usr/lib/mozilla."
+			echo "install: Normally this is really really bad, but if you are lucky it simply works."
+			echo "install: Please don´t file any bugs if this message had appeared"
+			echo "-----------------------------"
+			echo -e -n '\a'
+			sleep 1
+			echo -e -n '\a'
+			sleep 1
+			echo -e -n '\a'
+			sleep 1
+		else
+			echo "Yes"
+			echo "install: Creating symlink from /usr/lib/mozilla/libxpcom.so to /usr/lib/libxpcom.so"
+			ln -s /usr/lib/mozilla/libxpcom.so /usr/lib/libxpcom.so
+			retvaltwo=$?
+			if [ $retvaltwo -ne 0 ]; then
+				echo "--------------------------"
+				echo "install: WARNING!"
+				echo "install: Creation of symlink failed!"
+				echo "install: Normally this is really really bad, but if you are lucky it simply works"
+				echo "--------------------------"
+				echo -e -n '\a'
+				sleep 2
+			fi
+		fi
+	else
+		echo "Yes"
+		echo "install: Creating symlink from /usr/lib/mozilla-firefox/libxpcom.so to /usr/lib/libxpcom.so"
+		ln -s /usr/lib/mozilla-firefox/libxpcom.so /usr/lib/libxpcom.so
+		retvaltwo=$?
+		if [ $retvaltwo -ne 0 ]; then
+			echo "----------------------------"
+			echo "install: WARNING!"
+			echo "install: Creation of symlink failed!"
+			echo "install: Normally this is really really bad, but if you are lucky it simply works"
+			echo "----------------------------"
+			echo -e -n '\a'
+			sleep 2
+		fi
+	fi
+else
+	echo "Yes"
+fi
 echo "install: Finished"
+echo "install: ChOwning all files to $1"
+chown -R $1 *
+retval=$?
+if [ $retval -ne 0 ]; then
+	echo "install: ChOwn failed"
+	echo "install: Perhaps you won´t be able to use the modules"
+fi
 echo "install: The IDE binary is at $(pwd)/IDE"

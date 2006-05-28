@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 print "genconf: Running pkg-config\n";
-if (!open(IN,"pkg-config --libs gtk+-2.0 gtk+-x11-2.0 glib-2.0 xcursor gthread-2.0 gmodule-2.0 libglade-2.0 xfixes gobject-2.0 vte mozilla-gtkmozembed |"))
+if (!open(IN,"pkg-config --libs gtk+-2.0 gtk+-x11-2.0 glib-2.0 xcursor gthread-2.0 gmodule-2.0 libglade-2.0 xfixes gobject-2.0 vte firefox-gtkmozembed |"))
 {
 	print "genconf: Couldn´t run pkg-config: $! $?\n";
 	exit 1;

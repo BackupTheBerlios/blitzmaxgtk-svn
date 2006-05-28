@@ -164,7 +164,7 @@ Function InitHelpBrowser()
 	HelpBrowser.Show()
 	helpvbox.PackEnd(HelpBrowser,true,true)
 	If (Settings.GetValue("HelpBrowser_URL") = "" or filetype(settings.getvalue("HelpBrowser_URL"))=0) and filetype(bmxpath + "/doc/index.html")=0 then
-	'	HelpBrowser.RenderData("<html><head><title>Fehler!</title></head><body><h1>Hilfe-URL nicht festgelegt!</h1></body></html>", "file:///error", "text/html")
+		HelpBrowser.RenderData("<html><head><title>Fehler!</title></head><body><h1>Hilfe-URL nicht festgelegt und die Hilfedatei wurde nicht am Standardpfad (" + bmxpath + "/doc/index.html" + ") gefunden.</h1></body></html>", "file:///error", "text/html")
 		Return
 	end if
 	If FileType(settings.getvalue("HelpBrowser_URL")) = 0 then
