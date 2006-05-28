@@ -47,12 +47,9 @@ SyncMods.Servers:pub brl
 QuickBuild:1
 HelpBrowser_URL:/home/philipp/BlitzMax/doc/index.html
 /home/philipp/BlitzMax/mod/gtk.mod/IDE/IDE.bmx_have_foldinfo:yes
-/home/philipp/BlitzMax/mod/gtk.mod/IDE/IDE.bmx_foldinfo:0,36
+/home/philipp/BlitzMax/mod/gtk.mod/IDE/IDE.bmx_foldinfo:17,231,237,286,331,507,538,786,805,1083,1113,1114,1177,1187
 /home/philipp/BlitzMax/mod/gtk.mod/IDE/blablablubtest.bmx_have_foldinfo:yes
 /home/philipp/BlitzMax/mod/gtk.mod/IDE/blablablubtest.bmx_foldinfo:10,33,71,163
-HelpBrowser_URL:/home/bigmichi/Programme/BlitzMax/doc/index.html
+LastOpenDir:/home/philipp/BlitzMax/mod/gtk.mod
+LastSaveDir:/home/philipp/BlitzMax/mod/gtk.mod/oop.mod
 RecentList_Size:10
-FavoritLoad:/home/bigmichi/Projekte/BMax
-FavoritSave:/home/bigmichi/Projekte/BMax
-Favorit_On:1
-RecentList_On:1

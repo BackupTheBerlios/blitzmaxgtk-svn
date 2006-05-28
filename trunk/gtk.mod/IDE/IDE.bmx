@@ -129,7 +129,7 @@ Function AddTermPage()
 	DocumentList.addLast(Document)
 	Local termVbox:GtkVBox = GtkVBox.CreateFromHandle(Application.GetWidget("termVbox"))
 	termVbox.PackEnd(TProcLib.Init(),true,true)
-	Notebook.ShowAll()
+'	Notebook.ShowAll()
 End Function
 'foldend
 'TProcLib.Init(T_emp)
@@ -316,7 +316,9 @@ Function AddNBPage()
 	Document.Scintilla = TempScintilla
 	DocumentList.addLast(Document)
 	'Making active
-	Notebook.ShowAll()
+	'Notebook.ShowAll()
+	Document.Scintilla.Show()
+	Document.Label.Show()
 	Notebook.SetCurrentPage(Notebook.GetPagesCount()-1)
 	SetupScintilla(TempScintilla)
 	TempScintilla.SignalConnect("sci-notify",DoScintillaEvents)
