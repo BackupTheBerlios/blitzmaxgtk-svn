@@ -2217,7 +2217,6 @@ Classic</property>
 </widget>
 
 <widget class="GtkAboutDialog" id="frmAbout">
-  <property name="visible">True</property>
   <property name="destroy_with_parent">False</property>
   <property name="name" translatable="yes">BlitzMax-IDE 0.2</property>
   <property name="copyright" translatable="yes">(c) 2005-2006 Michael Sytko und Philipp Kerling</property>
