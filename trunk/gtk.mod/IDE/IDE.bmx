@@ -106,7 +106,7 @@ Global Notebook:GtkNotebook = GtkNotebook.CreateFromHandle(Application.GetWidget
 'Global exp_compiler:Byte Ptr = Application.GetWidget("exp_compiler")
 'Global T_emp:GtkContainer = New GtkContainer
 'Global HelpBrowser:GtkHtml
-Global HelpBrowser:GtkMozEmbed
+Global HelpBrowser:GtkMozEmbed, HelpBrowserLabel:GtkLabel, HelpBrowserProgress:GtkProgressBar
 ' T_emp.Handle = exp_compiler
 AddHelpPage()
 Function AddHelpPage()
@@ -150,6 +150,9 @@ Global frmCmdOpts:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("
 Global frmLogin:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmLogin"))
 Global recentList:TList = New TList
 InitHelpBrowser()
+extern
+	function gtk_label_set_justify(label:byte ptr, justify:int)
+end extern
 
 Function InitHelpBrowser()
 	local helpvbox:GtkVBox = GtkVBox.CreateFromHandle(Application.GetWidget("HelpVBox"))
@@ -162,7 +165,25 @@ Function InitHelpBrowser()
 	end rem
 	HelpBrowser = GtkMozEmbed.Create()
 	HelpBrowser.Show()
+	HelpBrowser.SignalConnect("link_message", HelpBrowser_linkMessage)
+	HelpBrowser.SignalConnect("js_status", HelpBrowser_JSStatus)
+	HelpBrowser.SignalConnect("progress", HelpBrowser_progressChanged)
+	HelpBrowser.SignalConnect("net_stop", HelpBrowser_ready)
+	local statusbox:GtkHBox = GtkHBox.Create()
+	helpbrowserlabel = GtkLabel.Create()
+	'gtk_label_set_justify(helpbrowserlabel.Handle, 2)
+	helpbrowserprogress  = GtkProgressBar.Create()
+	helpbrowserprogress.setsensitive(false)
+	statusbox.packend(helpbrowserprogress,false,false)
+	statusbox.PackEnd(helpbrowserlabel,true,false)
+		helpvbox.packend(statusbox,false,false)
 	helpvbox.PackEnd(HelpBrowser,true,true)
+	
+	helpbrowserlabel.show()
+	
+	helpbrowserprogress.show()
+
+	statusbox.show()
 	If (Settings.GetValue("HelpBrowser_URL") = "" or filetype(settings.getvalue("HelpBrowser_URL"))=0) and filetype(bmxpath + "/doc/index.html")=0 then
 		HelpBrowser.RenderData("<html><head><title>Fehler!</title></head><body><h1>Hilfe-URL nicht festgelegt und die Hilfedatei wurde nicht am Standardpfad (" + bmxpath + "/doc/index.html" + ") gefunden.</h1></body></html>", "file:///error", "text/html")
 		Return
@@ -1128,13 +1149,43 @@ end function
 'foldstart 'HelpBrowser
 
 Function HelpBrowser_goPortal()
+	HelpBrowser.LoadURL("http://www.blitzforum.de/")
 End Function
 Function HelpBrowser_goBack()
+	HelpBrowser.GoBack()
 End Function
 Function HelpBrowser_goForward()
+	HelpBrowser.GoForward()
 End Function
 Function HelpBrowser_goHome()
+	HelpBrowser.LoadURL(Settings.GetValue("HelpBrowser_URL"))
 End Function
+Function HelpBrowser_stopLoad()
+	HelpBrowser.stopLoad()
+end function
+Function HelpBrowser_Reload()
+	HelpBrowser.reload()
+end function
+Function HelpBrowser_linkMessage()
+	HelpBrowserLabel.SetText(HelpBrowser.GetLinkMessage())
+end function
+Function HelpBrowser_JSStatus()
+	HelpBrowserLabel.SetText(HelpBrowser.GetJSStatus())
+end function
+Function HelpBrowser_progressChanged(embed:byte ptr, StatusCur:int, StatusMax:int, data:byte ptr)
+	HelpBrowserProgress.SetSensitive(true)
+	HelpBrowserLabel.SetText("Lade... ")
+	If StatusMax < 1 then
+		HelpBrowserProgress.Pulse()
+	else
+		HelpBrowserProgress.SetFraction(float(StatusCur)/float(statusMax))
+	endif
+end function
+function HelpBrowser_ready()
+	HelpBrowserProgress.SetFraction(0)
+	HelpBrowserProgress.SetSensitive(false)
+	HelpBrowserLabel.SetText("Bereit")
+end function
 rem
 Function HelpBrowser_loadFile(File:String)
 	local stream:GtkHtmlStream = HelpBrowser.BeginContent("text/html; charset=iso-8859-1")

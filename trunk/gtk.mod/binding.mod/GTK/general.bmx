@@ -66,13 +66,25 @@ Const GTK_RESPONSE_NONE:Int = -1
 Const GTK_RESPONSE_REJECT:Int = -2
 Const GTK_RESPONSE_ACCEPT:Int = -3
 Const GTK_RESPONSE_DELETE_EVENT:Int = -4
-Const GTK_RESPONSE_OK = -5
-Const GTK_RESPONSE_CANCEL = -6
-Const GTK_RESPONSE_CLOSE = -7
-Const GTK_RESPONSE_YES = -8
-Const GTK_RESPONSE_NO = -9
-Const GTK_RESPONSE_APPLY = -10
-Const GTK_RESPONSE_HELP = -11
+Const GTK_RESPONSE_OK:int = -5
+Const GTK_RESPONSE_CANCEL:int = -6
+Const GTK_RESPONSE_CLOSE:int = -7
+Const GTK_RESPONSE_YES:int = -8
+Const GTK_RESPONSE_NO:int = -9
+Const GTK_RESPONSE_APPLY:int = -10
+Const GTK_RESPONSE_HELP:int = -11
+
+'Enumeration GtkProgressBarOrientation
+Const GTK_PROGRESS_LEFT_TO_RIGHT:Int = 0
+Const GTK_PROGRESS_RIGHT_TO_LEFT:int = 1
+const GTK_PROGRESS_BOTTOM_TO_TOP:int = 2
+const GTK_PROGRESS_TOP_TO_BOTTOM:Int = 3
+
+'Enumeration PangoEllipsizeMode
+Const PANGO_ELLIPSIZE_NONE:Int = 0
+const PANGO_ELLIPSIZE_START:int = 1
+const PANGO_ELLIPSIZE_MIDDLE:int = 2
+const PANGO_ELLIPSIZE_END:int = 3
 rem
 type GtkTreeIter
 	field stamp:int
