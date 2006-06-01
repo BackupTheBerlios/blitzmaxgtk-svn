@@ -23,6 +23,7 @@ Import GTK.Scintilla
 Import BRL.MaxUtil
 Import BRL.StandardIO
 Import "settings.bmx"
+Import "style.bmx"
 
 ?win32
 Import "procwin32.bmx"
@@ -141,9 +142,10 @@ frmMain.SetIconFromFile("idelogo.png")
 Options_Load_by_first_Start()
 
 Global frmOptions:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmOptions"))
-LoadScintillaOptions
+LoadScintillaOptions()
 
 Global frmSkinScintilla:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmSkinScintilla"))
+Stylemaker_by_first_Start()
 
 Global frmCmdOpts:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmCmdOpts"))
 
@@ -1061,13 +1063,6 @@ End Function
 		Return true
 	End Function
 
-	Function closeSkinWindowNoDestroy:byte()
-		frmSkinScintilla.Hide()
-		Return true
-	End Function
-
-
-
 	'Functionen über Widgets
 	
 	Function button_options_history()
@@ -1114,6 +1109,32 @@ End Function
 	end function
 
 'foldend
+
+'foldstart 'Style-Maker
+
+	Function closeSkinWindowNoDestroy:byte()
+		frmSkinScintilla.Hide()
+		Return true
+	End Function
+
+	'Functionen über Widgets
+	
+	Function Stylemaker_by_first_Start()
+		Local Frame_Vorschau:GtkFrame = GtkFrame.CreateFromHandle(Application.GetWidget("frame_style_vorschau"))
+		Local VScintilla:GtkScintilla = GtkScintilla.Create()
+			VScintilla.SetSizeRequest(700,500)
+			Frame_Vorschau.add(VScintilla)
+			VScintilla.show()
+			
+			Local Style:TStyle = New TStyle
+			Style.Save("test")
+			
+	end function
+
+'foldend
+
+
+'
 'foldend
 
 'foldstart 'Kompiliereinstellungen + Processkill
