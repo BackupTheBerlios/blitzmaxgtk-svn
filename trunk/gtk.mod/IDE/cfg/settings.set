@@ -1,38 +1,5 @@
-Scintilla_Lexer:78
-Scintilla_StyleBits:33
-Scintilla_MarginWidth0:35
-Scintilla_MarginWidth1:20
-Scintilla_MarginWidth2:0
 Scintilla_BGColor:22,58,80
-Scintilla_FoldingMargin_BGColor:42,78,100
 Scintilla_LineNumbers_BGColor:62,98,120
-Scintilla_Font_Default_FontName:!bitstream charter
-Scintilla_Font_Default_FontSize:12
-Scintilla_Font_Default_FontColor:238,238,238
-Scintilla_Font_COMMENT_FontName:!bitstream charter
-Scintilla_Font_COMMENT_FontSize:12
-Scintilla_Font_COMMENT_FontColor:177,231,235
-Scintilla_Font_NUMBER_FontName:!bitstream charter
-Scintilla_Font_NUMBER_FontSize:12
-Scintilla_Font_NUMBER_FontColor:51,255,221
-Scintilla_Font_KEYWORD_FontName:!bitstream charter
-Scintilla_Font_KEYWORD_FontSize:12
-Scintilla_Font_KEYWORD_FontColor:255,255,0
-Scintilla_Font_STRING_FontName:!bitstream charter
-Scintilla_Font_STRING_FontSize:12
-Scintilla_Font_STRING_FontColor:0,255,102
-Scintilla_Font_IDENTIFIER_FontName:!bitstream charter
-Scintilla_Font_IDENTIFIER_FontSize:12
-Scintilla_Font_IDENTIFIER_FontColor:255,255,255
-Scintilla_Font_OPERATOR_FontName:!bitstream charter
-Scintilla_Font_OPERATOR_FontSize:14
-Scintilla_Font_OPERATOR_FontColor:200,200,200
-Scintilla_Font_ERROR_FontName:!bitstream charter
-Scintilla_Font_ERROR_FontSize:12
-Scintilla_Font_ERROR_FontColor:255,0,0
-Scintilla_Font_LINENUMBER_FontName:!helvetica
-Scintilla_Font_LINENUMBER_FontSize:8
-Scintilla_Font_LINENUMBER_FontColor:255,255,255
 Scintilla_CaretColor:170,170,170
 Scintilla_CaretBGColor:48,51,102
 Scintilla_CaretVisible:1
@@ -46,20 +13,9 @@ SyncMods.Username:Sektor333
 SyncMods.Servers:pub brl
 QuickBuild:1
 HelpBrowser_URL:/home/bigmichi/Programme/BlitzMax/doc/index.html
-/home/philipp/BlitzMax/mod/gtk.mod/IDE/IDE.bmx_have_foldinfo:yes
-/home/philipp/BlitzMax/mod/gtk.mod/IDE/IDE.bmx_foldinfo:17,231,237,286,331,507,538,786,805,1083,1113,1114,1177,1187
-/home/philipp/BlitzMax/mod/gtk.mod/IDE/blablablubtest.bmx_have_foldinfo:yes
-/home/philipp/BlitzMax/mod/gtk.mod/IDE/blablablubtest.bmx_foldinfo:10,33,71,163
 LastOpenDir:/home/bigmichi/Programme/BlitzMax/mod/gtk.mod/IDE
-LastSaveDir:/home/philipp/BlitzMax/mod/gtk.mod/oop.mod
 RecentList_Size:10
-:<<<<<<< .mine
 RecentList_On:1
 Favorit_On:0
 FavoritSave:/home/bigmichi/Projekte/BMax
 FavoritLoad:/home/bigmichi/Projekte/BMax
-LastOpenDir:/home/bigmichi/Programme/BlitzMax/mod/gtk.mod/IDE
-/home/bigmichi/Programme/BlitzMax/mod/gtk.mod/IDE/IDE.bmx_have_foldinfo:yes
-/home/bigmichi/Programme/BlitzMax/mod/gtk.mod/IDE/IDE.bmx_foldinfo:0,17,38,53,55,93,111,121,233,239,288,335,511,542,790,810,851,903,908,974,1097,1127,1201
-:=======
-:>>>>>>> .r212

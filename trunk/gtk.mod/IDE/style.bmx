@@ -57,6 +57,7 @@ Type TStyle
 	Field MarginWidth0:Int = 35
 	Field MarginWidth1:Int = 20
 	Field MarginWidth2:Int = 0
+	Field Margin_BGColor:String = "42,78,100"
 	
 	Method Save(Name:string)
 		If FileType("cfg/styles/"+Name) = 1
@@ -89,6 +90,7 @@ Type TStyle
 			SaveFile.WriteLine("MarginWidth0:"+MarginWidth0)	
 			SaveFile.WriteLine("MarginWidth1:"+MarginWidth1)	
 			SaveFile.WriteLine("MarginWidth2:"+MarginWidth2)	
+			SaveFile.WriteLine("Margin_BGColor:"+Margin_BGColor)	
 
 		SaveFile.Close()
 	End Method
@@ -119,7 +121,8 @@ Type TStyle
 			MarginWidth0 = Int(Load_by_Name("MarginWidth0",LoadFile))
 			MarginWidth1 = Int(Load_by_Name("MarginWidth1",LoadFile))
 			MarginWidth2 = Int(Load_by_Name("MarginWidth2",LoadFile))
-			
+			Margin_BGColor = Load_by_Name("Margin_BGColor",LoadFile)
+
 		LoadFile.Close()
 	End Method
 	

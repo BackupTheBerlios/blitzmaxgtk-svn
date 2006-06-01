@@ -386,7 +386,6 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 	Scintilla.SetMarginType(1,SC_MARGIN_SYMBOL)
 	Scintilla.SetMarginMask(1,SC_MASK_FOLDERS)
 
-
 	Scintilla.SetMarginWidth(0,Style.MarginWidth0)
 	Scintilla.SetMarginWidth(1,Style.MarginWidth1)
 	Scintilla.SetMarginWidth(2,Style.MarginWidth2)
@@ -394,14 +393,12 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 	Scintilla.SetMarginSensitive(0,False)
 	Scintilla.SetMarginSensitive(1,True)
 	Scintilla.SetMarginSensitive(2,False)
+	
+	scintilla_send_message(Scintilla.Handle,SCI_SETFOLDMARGINCOLOUR,Byte Ptr(True),Byte Ptr(scintilla.encodecolor(ExtractR(Style.Margin_BGColor),extractg(Style.Margin_BGColor),extractB(Style.Margin_BGColor))))
+	scintilla_send_message(Scintilla.Handle,SCI_SETFOLDMARGINHICOLOUR,Byte Ptr(True),Byte Ptr(scintilla.encodecolor(ExtractR(Style.Margin_BGColor),extractg(Style.Margin_BGColor),extractB(Style.Margin_BGColor))))
 
-	scintilla_send_message(Scintilla.Handle,SCI_SETFOLDMARGINCOLOUR,Byte Ptr(True),Byte Ptr(scintilla.encodecolor(ExtractR(Settings.GetValue("Scintilla_FoldingMargin_BGColor")),extractg(Settings.GetValue("Scintilla_FoldingMargin_BGColor")),extractB(Settings.GetValue("Scintilla_FoldingMargin_BGColor")))))
-	scintilla_send_message(Scintilla.Handle,SCI_SETFOLDMARGINHICOLOUR,Byte Ptr(True),Byte Ptr(scintilla.encodecolor(ExtractR(Settings.GetValue("Scintilla_FoldingMargin_BGColor")),extractg(Settings.GetValue("Scintilla_FoldingMargin_BGColor")),extractB(Settings.GetValue("Scintilla_FoldingMargin_BGColor")))))
+	Scintilla.SetFont(STYLE_LINENUMBER, Style.Font_LINENUMBER.Name, Style.Font_LINENUMBER.Size, Style.Font_LINENUMBER.R, Style.Font_LINENUMBER.G, Style.Font_LINENUMBER.B)
 
-	Scintilla.SetFont(STYLE_LINENUMBER,Settings.GetValue("Scintilla_Font_LINENUMBER_FontName"),Int(Settings.GetValue("Scintilla_Font_LINENUMBER_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_LINENUMBER_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_LINENUMBER_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_LINENUMBER_FontColor")))
-	'Settings.SetValue("Scintilla_Font_LINENUMBER_FontName","!helvetica")
-	'Settings.SetValue("Scintilla_Font_LINENUMBER_FontSize","8")
-	'Settings.SetValue("Scintilla_Font_LINENUMBER_FontColor",MakeColorString($FF,$FF,$FF))
 	Scintilla.SetFontBGColor(STYLE_LINENUMBER,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),ExtractG(Settings.GetValue("Scintilla_LineNumbers_BGColor")),ExtractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")))
 	'Settings.SetValue("Scintilla_BGColor_LINENUMBER",MakeColorString($00,$50,$6E))
 	Scintilla.SetCaretColor(ExtractR(Settings.GetValue("Scintilla_CaretColor")),ExtractG(Settings.GetValue("Scintilla_CaretColor")),ExtractB(Settings.GetValue("Scintilla_CaretColor")))
