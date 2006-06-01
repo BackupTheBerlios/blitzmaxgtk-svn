@@ -1,0 +1,37 @@
+Lexer:78
+StyleBits:33
+BGColor:22,58,80
+Default_Name:!bitstream charter
+Default_Size:12
+Default_Color:238,238,238
+Comment_Name:!bitstream charter
+Comment_Size:12
+Comment_Color:177,231,235
+Number_Name:!bitstream charter
+Number_Size:12
+Number_Color:51,255,221
+Keyword_Name:!bitstream charter
+Keyword_Size:12
+Keyword_Color:255,255,0
+String_Name:!bitstream charter
+String_Size:12
+String_Color:0,255,102
+Identifier_Name:!bitstream charter
+Identifier_Size:12
+Identifier_Color:255,255,255
+Operator_Name:!bitstream charter
+Operator_Size:14
+Operator_Color:200,200,200
+Error_Name:!bitstream charter
+Error_Size:12
+Error_Color:255,0,0
+Linenumber_Name:!helvetica
+Linenumber_Size:8
+Linenumber_Color:255,255,255
+CaretColor:170,170,170
+CaretBG:48,51,102
+CaretVisible:1
+SelectionBGColor:170,170,170
+MarginWidth0:35
+MarginWidth1:20
+MarginWidth2:0
