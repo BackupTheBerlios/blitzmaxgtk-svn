@@ -243,7 +243,6 @@ Function SetupScintilla(Style:TStyle,Scintilla:GtkScintilla)
 	'DoDbgLog "setupscin" 
  
 	Scintilla.SetLexer(Style.Lexer)
-	print Style.Lexer
 	Scintilla.SetStyleBits(Style.StyleBits)
 	Scintilla.SetBGColor(ExtractR(Style.BGColor), ExtractG(Style.BGColor),ExtractB(Style.BGColor))
 	
