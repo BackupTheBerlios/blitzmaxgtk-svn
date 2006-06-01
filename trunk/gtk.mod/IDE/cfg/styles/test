@@ -28,6 +28,7 @@ Error_Color:255,0,0
 Linenumber_Name:!helvetica
 Linenumber_Size:8
 Linenumber_Color:255,255,255
+LineNumbers_BGColor:62,98,120
 CaretColor:170,170,170
 CaretBG:48,51,102
 CaretVisible:1
@@ -36,3 +37,4 @@ MarginWidth0:35
 MarginWidth1:20
 MarginWidth2:0
 Margin_BGColor:42,78,100
+TabWidth:2

@@ -72,27 +72,7 @@ Settings.LoadAllSettings()
 Global Style:TStyle = New TStyle
 Style.Load("test")
 
-'Note: If is handled specially
-Global AddTabList:TList = New TList
-AddTabList.addLast("for")
-AddTabList.addLast("type")
-AddTabList.addLast("extern")
-AddTabList.addLast("function")
-AddTabList.addLast("while")
-AddTabList.addLast("repeat")
 
-Global RemoveTabList:TList = New TList
-RemoveTabList.addLast("next")
-RemoveTabList.addLast("endtype")
-RemoveTabList.addLast("end type")
-RemoveTabList.addLast("endextern")
-RemoveTabList.addLast("end extern")
-RemoveTabList.addLast("endfunction")
-RemoveTabList.addLast("end function")
-RemoveTabList.addLast("until")
-RemoveTabList.addLast("forever")
-RemoveTabList.addLast("endif")
-RemoveTabList.addLast("end if")
 
 ' Initialization stuff
 'foldstart
@@ -201,36 +181,9 @@ Function InitHelpBrowser()
 end function
 
 ' Keywords laden
+LoadKeywords(Settings)
 'foldstart 
-Global KeywordList:TList = New TList
-If Settings.GetValue("Scintilla_KeywordsFile")="" And FileType(bmxpath+"/doc/bmxmods/commands.txt")<>0 Then
-	Scream("Keywords-Datei nicht festgelegt")
-Else
-	If FileType(settings.getvalue("Scintilla_KeywordsFile")) = 0 Then
-		If FileType(bmxpath+"/doc/bmxmods/commands.txt") = 0 Then
-			Scream("Keywords-Datei nicht festgelegt")
-		Else
-			Settings.SetValue("Scintilla_KeywordsFile",bmxpath+"/doc/bmxmods/commands.txt")
-		EndIf
-	EndIf
-	Local KeyWordsFile:TStream = ReadStream(Settings.GetValue("Scintilla_KeywordsFile"))
-	If KeyWordsFile = Null Then
-		Scream("Konnte Keywords-Datei nicht öffnen")
-	Else
-		While Not KeyWordsFile.EOF()
-			Local ALine:String = KeyWordsFile.ReadLine()
-			For Local i:Int = 1 To Len(ALine)
-				Local TempChar:String = Mid(ALine,i,1)
-				If TempChar ="(" Or TempChar=":" Or TempChar="|" Or TempChar="$" Or TempChar="[" Or TempChar="%" Or TempChar="#" Or TempChar="!" Or TempChar=" " Then
-					KeywordList.addLast(Lower(Left(ALine,i-1)))
-					i = Len(ALine)+1
-				EndIf
-			Next
-		Wend
-		KeywordList.addLast("foldstart")
-		KeywordList.addLast("foldend")
-	EndIf
-EndIf
+
 
 loadrecentlist()
 ' Set status of debug-/quick-build-mode
@@ -262,47 +215,6 @@ Function IDEClose()
 	SaveRecentList()
 	GTKUtil.Quit()
 End Function
-
-'foldstart 'Allgemeine Funktionen
-
-Function trimright:String(istring:String)
-	Local theend:Int = Len(istring)-1
-	For Local i:Int = Len(istring)-1 To 0 Step -1
-		If Mid(istring,i+1,1) = "~t" Or Mid(istring,i+1,1) = " " Then
-			theend = i
-		Else
-			Exit
-		EndIf
-	Next
-	DoDbgLog Left(istring,theend+1)
-	Return Left(istring,theend+1)
-End Function
-Function split:Int[](InputString:String,Separator:String)
-	Local intarray:Int[1]
-	If Instr(InputString,Separator) = 0 Then
-		intarray[0] = Int(inputstring)
-		Return intarray
-	EndIf
-	Local oldpos:Int
-	Local actpos:Int
-	While True
-		Local nextsep:Int = Instr(InputString,Separator,oldpos+1)
-		If nextsep = 0 Then
-			intarray = intarray[..actpos+1]
-			intarray[actpos] = Int(Mid(InputString,oldpos+1))
-			Exit
-		EndIf
-		intarray = intarray[..actpos+1]
-		intarray[actpos] = Int(Mid(InputString,oldpos+1,nextsep-oldpos))
-		oldpos = nextsep
-		actpos = actpos + 1
-	Wend
-	Return intarray
-End Function
-Function DoDbgLog(Text:String)
-	If ReleaseVersion = 0 Print Text
-End Function
-'foldend
 
 'foldstart 'Tabmanagment
 Function AddNBPage()
@@ -340,7 +252,7 @@ Function AddNBPage()
 	Document.Scintilla.Show()
 	Document.Label.Show()
 	Notebook.SetCurrentPage(Notebook.GetPagesCount()-1)
-	SetupScintilla(TempScintilla)
+	SetupScintilla(Style,TempScintilla)
 	TempScintilla.SignalConnect("sci-notify",DoScintillaEvents)
 End Function
 Function CloseTab(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
@@ -356,74 +268,10 @@ Function UpdateAllScintillas()
 	'DoDbgLog "upall"
 	'DoDbgLog "c: " + Notebook.GetPagesCount()
 	For Local i:Int = 2 To Notebook.GetPagesCount()-1
-		SetupScintilla(GtkScintilla.CreateFromHandle(Notebook.GetPage(i)))
+		SetupScintilla(Style,GtkScintilla.CreateFromHandle(Notebook.GetPage(i)))
 	Next
 End Function
-Function SetupScintilla(Scintilla:GtkScintilla)
-	If Scintilla=Null Then
-		DoDbgLog "something strange happened"
-		Return
-	EndIf
-	'DoDbgLog "setupscin" 
- 
-	Scintilla.SetLexer(Style.Lexer)
-	Scintilla.SetStyleBits(Style.StyleBits)
-	Scintilla.SetBGColor(ExtractR(Style.BGColor), ExtractG(Style.BGColor),ExtractB(Style.BGColor))
-	
-	Scintilla.SetFont(SCE_BM_DEFAULT, Style.Font_Default.Name, Style.Font_Default.Size, Style.Font_Default.R, Style.Font_Default.G, Style.Font_Default.B)
-	Scintilla.SetFont(SCE_BM_COMMENT, Style.Font_COMMENT.Name, Style.Font_COMMENT.Size, Style.Font_COMMENT.R, Style.Font_COMMENT.G, Style.Font_COMMENT.B)
-	Scintilla.SetFont(SCE_BM_MULTILINECOMMENT, Style.Font_COMMENT.Name, Style.Font_COMMENT.Size, Style.Font_COMMENT.R, Style.Font_COMMENT.G, Style.Font_COMMENT.B)
-	Scintilla.SetFont(SCE_BM_NUMBER, Style.Font_NUMBER.Name, Style.Font_NUMBER.Size, Style.Font_NUMBER.R, Style.Font_NUMBER.G, Style.Font_NUMBER.B)
-	Scintilla.SetFont(SCE_BM_KEYWORD, Style.Font_KEYWORD.Name, Style.Font_KEYWORD.Size, Style.Font_KEYWORD.R, Style.Font_KEYWORD.G, Style.Font_KEYWORD.B)
-	Scintilla.SetFont(SCE_BM_STRING, Style.Font_STRING.Name, Style.Font_STRING.Size, Style.Font_STRING.R, Style.Font_STRING.G, Style.Font_STRING.B)
-	Scintilla.SetFont(SCE_BM_IDENTIFIER, Style.Font_IDENTIFIER.Name, Style.Font_IDENTIFIER.Size, Style.Font_IDENTIFIER.R, Style.Font_IDENTIFIER.G, Style.Font_IDENTIFIER.B)
-	Scintilla.SetFont(SCE_BM_OPERATOR, Style.Font_OPERATOR.Name, Style.Font_OPERATOR.Size, Style.Font_OPERATOR.R, Style.Font_OPERATOR.G, Style.Font_OPERATOR.B)
 
-	Scintilla.SetFont(SCE_BM_BINNUMBER, Style.Font_NUMBER.Name, Style.Font_NUMBER.Size, Style.Font_NUMBER.R, Style.Font_NUMBER.G, Style.Font_NUMBER.B)
-	Scintilla.SetFont(SCE_BM_HEXNUMBER, Style.Font_NUMBER.Name, Style.Font_NUMBER.Size, Style.Font_NUMBER.R, Style.Font_NUMBER.G, Style.Font_NUMBER.B)
-	
-	Scintilla.SetMarginType(0,SC_MARGIN_NUMBER)
-	Scintilla.SetMarginType(1,SC_MARGIN_SYMBOL)
-	Scintilla.SetMarginMask(1,SC_MASK_FOLDERS)
-
-	Scintilla.SetMarginWidth(0,Style.MarginWidth0)
-	Scintilla.SetMarginWidth(1,Style.MarginWidth1)
-	Scintilla.SetMarginWidth(2,Style.MarginWidth2)
-
-	Scintilla.SetMarginSensitive(0,False)
-	Scintilla.SetMarginSensitive(1,True)
-	Scintilla.SetMarginSensitive(2,False)
-	
-	scintilla_send_message(Scintilla.Handle,SCI_SETFOLDMARGINCOLOUR,Byte Ptr(True),Byte Ptr(scintilla.encodecolor(ExtractR(Style.Margin_BGColor),extractg(Style.Margin_BGColor),extractB(Style.Margin_BGColor))))
-	scintilla_send_message(Scintilla.Handle,SCI_SETFOLDMARGINHICOLOUR,Byte Ptr(True),Byte Ptr(scintilla.encodecolor(ExtractR(Style.Margin_BGColor),extractg(Style.Margin_BGColor),extractB(Style.Margin_BGColor))))
-
-	Scintilla.SetFont(STYLE_LINENUMBER, Style.Font_LINENUMBER.Name, Style.Font_LINENUMBER.Size, Style.Font_LINENUMBER.R, Style.Font_LINENUMBER.G, Style.Font_LINENUMBER.B)
-
-	Scintilla.SetFontBGColor(STYLE_LINENUMBER,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),ExtractG(Settings.GetValue("Scintilla_LineNumbers_BGColor")),ExtractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")))
-	'Settings.SetValue("Scintilla_BGColor_LINENUMBER",MakeColorString($00,$50,$6E))
-	Scintilla.SetCaretColor(ExtractR(Settings.GetValue("Scintilla_CaretColor")),ExtractG(Settings.GetValue("Scintilla_CaretColor")),ExtractB(Settings.GetValue("Scintilla_CaretColor")))
-	'Settings.SetValue("Scintilla_CaretColor",MakeColorString($AA,$AA,$AA))
-	Scintilla.SetCaretLineBack(ExtractR(Settings.GetValue("Scintilla_CaretBGColor")),ExtractG(Settings.GetValue("Scintilla_CaretBGColor")),ExtractB(Settings.GetValue("Scintilla_CaretBGColor")))
-	'Settings.SetValue("Scintilla_CaretBGColor",MakeColorString($30,$33,$66))
-	Scintilla.SetCaretLineVisible(Int(Settings.GetValue("Scintilla_CaretVisible")))
-	'Settings.SetValue("Scintilla_CaretVisible","1")
-	Scintilla.SetSelectionBack(ExtractR(Settings.GetValue("Scintilla_SelectionBGColor")),ExtractG(Settings.GetValue("Scintilla_SelectionBGColor")),ExtractB(Settings.GetValue("Scintilla_SelectionBGColor")))
-	'Settings.SetValue("Scintilla_SelectionBGColor",MakeColorString($AA,$AA,$AA))
-	Scintilla.SetTabWidth(Int(Settings.GetValue("Scintilla_TabWidth")))
-	'Settings.SetValue("Scintilla_TabWidth","4")
-
-	Scintilla.SetProperty("fold","1")
-	Scintilla.SetProperty("fold.compact","0")
-	Scintilla.DefineMarker(SC_MARKNUM_FOLDEROPEN,SC_MARK_CIRCLEMINUS,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractg(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")),255,255,255)
-	Scintilla.DefineMarker(SC_MARKNUM_FOLDER,SC_MARK_CIRCLEPLUS,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractg(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")),255,255,255)
-	Scintilla.DefineMarker(SC_MARKNUM_FOLDERSUB,SC_MARK_VLINE,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractg(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")),255,255,255)
-	Scintilla.DefineMarker(SC_MARKNUM_FOLDERTAIL,SC_MARK_LCORNERCURVE,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractg(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")),255,255,255)
-	Scintilla.DefineMarker(SC_MARKNUM_FOLDEREND,SC_MARK_CIRCLEPLUSCONNECTED,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractg(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")),255,255,255)
-	Scintilla.DefineMarker(SC_MARKNUM_FOLDEROPENMID,SC_MARK_CIRCLEMINUSCONNECTED,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractg(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")),255,255,255)
-	Scintilla.DefineMarker(SC_MARKNUM_FOLDERMIDTAIL,SC_MARK_TCORNERCURVE,ExtractR(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractg(Settings.GetValue("Scintilla_LineNumbers_BGColor")),extractB(Settings.GetValue("Scintilla_LineNumbers_BGColor")),255,255,255)
-
-	Scintilla.SetKeywordList(0,KeywordList)
-End Function
 Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotification,GdkEvent:Byte Ptr)
 	Local TempScintilla:GtkScintilla = GtkScintilla.CreateFromHandle(Widget)
 	If notification.Code = SCN_MARGINCLICK Then
@@ -458,7 +306,7 @@ Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotifi
 						scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONSTART,Byte Ptr(scintilla_send_message(TempScintilla.Handle,SCI_POSITIONFROMLINE,Byte Ptr(prevline),Null)),Null)
 						scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONEND,Byte Ptr(scintilla_send_message(TempScintilla.Handle,SCI_GETLINEENDPOSITION,Byte Ptr(prevline),Null)),Null)
 						Local tabstring:String
-						For Local i:Int = 0 To tabcount-1
+						For Local i2:Int = 0 To tabcount-1
 							tabstring = tabstring + "~t"
 						Next
 						Local tstring:String = tabstring + prevtext
@@ -474,20 +322,20 @@ Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotifi
 				DoDbgLog "_DEBUG_: Special add statement if found"
 				tabcount = tabcount + 1
 			Else
-				For Local statement:String = EachIn AddTabList
-					If Lower(Left(prevtext,Len(statement))) = Lower(statement) Then
+				For Local statement2:String = EachIn AddTabList
+					If Lower(Left(prevtext,Len(statement2))) = Lower(statement2) Then
 						tabcount = tabcount + 1
-						DoDbgLog "_DEBUG_: Special add statement " + statement + " found"
+						DoDbgLog "_DEBUG_: Special add statement " + statement2 + " found"
 						Exit
 					EndIf
 				Next
 			End If
 			DoDbgLog "_DEBUG_: Adding " + tabcount + " tabs"
-			Local tabstring:String
-			For Local i:Int = 0 To tabcount-1
-				tabstring = tabstring + "~t"
+			Local tabstring2:String
+			For Local i3:Int = 0 To tabcount-1
+				tabstring2 = tabstring2 + "~t"
 			Next
-			TempScintilla.AddText(tabstring)
+			TempScintilla.AddText(tabstring2)
 		EndIf
 	EndIf
 	Local UndoItem:GtkWidget = GtkWidget.CreateWidgetFromHandle(Application.GetWidget("MenuItem_Undo"))
@@ -1059,8 +907,8 @@ End Function
 			VScintilla.SetSizeRequest(700,500)
 			Frame_Vorschau.add(VScintilla)
 			VScintilla.show()
-			
-
+			SetupScintilla(Style,VScintilla)
+			VScintilla.SignalConnect("sci-notify",DoScintillaEvents2)
 
 	end function
 
