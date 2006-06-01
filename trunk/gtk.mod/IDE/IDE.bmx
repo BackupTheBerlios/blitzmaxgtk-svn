@@ -72,7 +72,8 @@ Settings.LoadAllSettings()
 Global Style:TStyle = New TStyle
 Style.Load("test")
 
-
+' Keywords laden
+LoadKeywords(Settings)
 
 ' Initialization stuff
 'foldstart
@@ -180,8 +181,7 @@ Function InitHelpBrowser()
 	'HelpBrowser_LoadFile(Settings.GetValue("HelpBrowser_URL"))
 end function
 
-' Keywords laden
-LoadKeywords(Settings)
+
 'foldstart 
 
 
