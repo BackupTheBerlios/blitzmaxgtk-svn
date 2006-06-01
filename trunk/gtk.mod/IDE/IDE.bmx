@@ -69,6 +69,9 @@ Global DocumentList:TList = New TList
 Global Settings:TSettings = New TSettings
 Settings.LoadAllSettings()
 
+Global Style:TStyle = New TStyle
+Style.Load("test")
+
 'Note: If is handled specially
 Global AddTabList:TList = New TList
 AddTabList.addLast("for")
@@ -261,15 +264,7 @@ Function IDEClose()
 End Function
 
 'foldstart 'Allgemeine Funktionen
-Function Scream(What:String)
-	Local TMR:Byte Ptr= gtk_message_dialog_new(Null,0,GTK_MESSAGE_WARNING,GTK_BUTTONS_OK,"Warnung".ToCString())
-	gtk_message_dialog_format_secondary_text(TMR,ISO_8859_1_To_UTF_8(What).ToCString())
-	gtk_dialog_run(TMR)
-	gtk_widget_destroy(TMR)
-End Function
-Function ISO_8859_1_To_UTF_8:String(InputString:String)
-	Return String.FromCString(g_convert(InputString.ToCString(),-1,"UTF-8".ToCString(),"ISO-8859-1".ToCString(),Null,Null,Null))
-End Function
+
 Function trimright:String(istring:String)
 	Local theend:Int = Len(istring)-1
 	For Local i:Int = Len(istring)-1 To 0 Step -1
@@ -369,59 +364,32 @@ Function SetupScintilla(Scintilla:GtkScintilla)
 		DoDbgLog "something strange happened"
 		Return
 	EndIf
-	'DoDbgLog "setupscin"
-
-	Scintilla.SetLexer(Int(Settings.GetValue("Scintilla_Lexer")))
-	'Settings.SetValue("Scintilla_Lexer",SCLEX_BLITZMAX)
-	Scintilla.SetStyleBits(Int(Settings.GetValue("Scintilla_StyleBits")))
-	'Settings.SetValue("Scintilla_StyleBits",STYLE_LINENUMBER)	
-
-	Scintilla.SetBGColor(ExtractR(Settings.GetValue("Scintilla_BGColor")),ExtractG(Settings.GetValue("Scintilla_BGColor")),ExtractB(Settings.GetValue("Scintilla_BGColor")))
-	'Settings.SetValue("Scintilla_BGColor",MakeColorString($00,$50,$6E))
+	'DoDbgLog "setupscin" 
+ 
+	Scintilla.SetLexer(Style.Lexer)
+	Scintilla.SetStyleBits(Style.StyleBits)
+	Scintilla.SetBGColor(ExtractR(Style.BGColor), ExtractG(Style.BGColor),ExtractB(Style.BGColor))
 	
-	Scintilla.SetFont(SCE_BM_DEFAULT,Settings.GetValue("Scintilla_Font_Default_FontName"),Int(Settings.GetValue("Scintilla_Font_Default_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_Default_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_Default_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_Default_FontColor")))
-	'Settings.SetValue("Scintilla_Font_Default_FontName","!bitstream charter")
-	'Settings.SetValue("Scintilla_Font_Default_FontSize","12")
-	'Settings.SetValue("Scintilla_Font_Default_FontColor",MakeColorString($EE,$EE,$EE))
-	Scintilla.SetFont(SCE_BM_COMMENT,Settings.GetValue("Scintilla_Font_COMMENT_FontName"),Int(Settings.GetValue("Scintilla_Font_COMMENT_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_COMMENT_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_COMMENT_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_COMMENT_FontColor")))
-	Scintilla.SetFont(SCE_BM_MULTILINECOMMENT,Settings.GetValue("Scintilla_Font_COMMENT_FontName"),Int(Settings.GetValue("Scintilla_Font_COMMENT_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_COMMENT_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_COMMENT_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_COMMENT_FontColor")))
-	'Settings.SetValue("Scintilla_Font_COMMENT_FontName","!bitstream charter")
-	'Settings.SetValue("Scintilla_Font_COMMENT_FontSize","12")
-	'Settings.SetValue("Scintilla_Font_COMMENT_FontColor",MakeColorString($B1,$E7,$EB))
-	Scintilla.SetFont(SCE_BM_NUMBER,Settings.GetValue("Scintilla_Font_NUMBER_FontName"),Int(Settings.GetValue("Scintilla_Font_NUMBER_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_NUMBER_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_NUMBER_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_NUMBER_FontColor")))
-	'Settings.SetValue("Scintilla_Font_NUMBER_FontName","!bitstream charter")
-	'Settings.SetValue("Scintilla_Font_NUMBER_FontSize","12")
-	'Settings.SetValue("Scintilla_Font_NUMBER_FontColor",MakeColorString($33,$FF,$DD))
-	Scintilla.SetFont(SCE_BM_KEYWORD,Settings.GetValue("Scintilla_Font_KEYWORD_FontName"),Int(Settings.GetValue("Scintilla_Font_KEYWORD_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_KEYWORD_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_KEYWORD_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_KEYWORD_FontColor")))
-	'Settings.SetValue("Scintilla_Font_KEYWORD_FontName","!bitstream charter")
-	'Settings.SetValue("Scintilla_Font_KEYWORD_FontSize","12")
-	'Settings.SetValue("Scintilla_Font_KEYWORD_FontColor",MakeColorString($FF,$FF,$00))
-	Scintilla.SetFont(SCE_BM_STRING,Settings.GetValue("Scintilla_Font_STRING_FontName"),Int(Settings.GetValue("Scintilla_Font_STRING_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_STRING_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_STRING_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_STRING_FontColor")))
-	'Settings.SetValue("Scintilla_Font_STRING_FontName","!bitstream charter")
-	'Settings.SetValue("Scintilla_Font_STRING_FontSize","12")
-	'Settings.SetValue("Scintilla_Font_STRING_FontColor",MakeColorString($00,$FF,$66))
-	Scintilla.SetFont(SCE_BM_IDENTIFIER,Settings.GetValue("Scintilla_Font_IDENTIFIER_FontName"),Int(Settings.GetValue("Scintilla_Font_IDENTIFIER_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_IDENTIFIER_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_IDENTIFIER_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_IDENTIFIER_FontColor")))
-	'Settings.SetValue("Scintilla_Font_IDENTIFIER_FontName","!bitstream charter")
-	'Settings.SetValue("Scintilla_Font_IDENTIFIER_FontSize","12")
-	'Settings.SetValue("Scintilla_Font_IDENTIFIER_FontColor",MakeColorString($FF,$FF,$FF))
-	Scintilla.SetFont(SCE_BM_OPERATOR,Settings.GetValue("Scintilla_Font_OPERATOR_FontName"),Int(Settings.GetValue("Scintilla_Font_OPERATOR_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_OPERATOR_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_OPERATOR_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_OPERATOR_FontColor")),1)
-	'Settings.SetValue("Scintilla_Font_OPERATOR_FontName","!bitstream charter")
-	'Settings.SetValue("Scintilla_Font_OPERATOR_FontSize","12")
-	'Settings.SetValue("Scintilla_Font_OPERATOR_FontColor",MakeColorString($FF,$FF,$FF))
-	Scintilla.SetFont(SCE_BM_BINNUMBER,Settings.GetValue("Scintilla_Font_NUMBER_FontName"),Int(Settings.GetValue("Scintilla_Font_NUMBER_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_NUMBER_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_NUMBER_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_NUMBER_FontColor")),1)
-	Scintilla.SetFont(SCE_BM_HEXNUMBER,Settings.GetValue("Scintilla_Font_NUMBER_FontName"),Int(Settings.GetValue("Scintilla_Font_NUMBER_FontSize")),ExtractR(Settings.GetValue("Scintilla_Font_NUMBER_FontColor")),ExtractG(Settings.GetValue("Scintilla_Font_NUMBER_FontColor")),ExtractB(Settings.GetValue("Scintilla_Font_NUMBER_FontColor")),1)
+	Scintilla.SetFont(SCE_BM_DEFAULT, Style.Font_Default.Name, Style.Font_Default.Size, Style.Font_Default.R, Style.Font_Default.G, Style.Font_Default.B)
+	Scintilla.SetFont(SCE_BM_COMMENT, Style.Font_COMMENT.Name, Style.Font_COMMENT.Size, Style.Font_COMMENT.R, Style.Font_COMMENT.G, Style.Font_COMMENT.B)
+	Scintilla.SetFont(SCE_BM_MULTILINECOMMENT, Style.Font_COMMENT.Name, Style.Font_COMMENT.Size, Style.Font_COMMENT.R, Style.Font_COMMENT.G, Style.Font_COMMENT.B)
+	Scintilla.SetFont(SCE_BM_NUMBER, Style.Font_NUMBER.Name, Style.Font_NUMBER.Size, Style.Font_NUMBER.R, Style.Font_NUMBER.G, Style.Font_NUMBER.B)
+	Scintilla.SetFont(SCE_BM_KEYWORD, Style.Font_KEYWORD.Name, Style.Font_KEYWORD.Size, Style.Font_KEYWORD.R, Style.Font_KEYWORD.G, Style.Font_KEYWORD.B)
+	Scintilla.SetFont(SCE_BM_STRING, Style.Font_STRING.Name, Style.Font_STRING.Size, Style.Font_STRING.R, Style.Font_STRING.G, Style.Font_STRING.B)
+	Scintilla.SetFont(SCE_BM_IDENTIFIER, Style.Font_IDENTIFIER.Name, Style.Font_IDENTIFIER.Size, Style.Font_IDENTIFIER.R, Style.Font_IDENTIFIER.G, Style.Font_IDENTIFIER.B)
+	Scintilla.SetFont(SCE_BM_OPERATOR, Style.Font_OPERATOR.Name, Style.Font_OPERATOR.Size, Style.Font_OPERATOR.R, Style.Font_OPERATOR.G, Style.Font_OPERATOR.B)
+
+	Scintilla.SetFont(SCE_BM_BINNUMBER, Style.Font_NUMBER.Name, Style.Font_NUMBER.Size, Style.Font_NUMBER.R, Style.Font_NUMBER.G, Style.Font_NUMBER.B)
+	Scintilla.SetFont(SCE_BM_HEXNUMBER, Style.Font_NUMBER.Name, Style.Font_NUMBER.Size, Style.Font_NUMBER.R, Style.Font_NUMBER.G, Style.Font_NUMBER.B)
 	
 	Scintilla.SetMarginType(0,SC_MARGIN_NUMBER)
 	Scintilla.SetMarginType(1,SC_MARGIN_SYMBOL)
 	Scintilla.SetMarginMask(1,SC_MASK_FOLDERS)
 
 
-	Scintilla.SetMarginWidth(0,Int(Settings.GetValue("Scintilla_MarginWidth0")))
-	'Settings.SetValue("Scintilla_MarginWidth0",35)
-	Scintilla.SetMarginWidth(1,Int(Settings.GetValue("Scintilla_MarginWidth1")))
-	'Settings.SetValue("Scintilla_MarginWidth1",20)
-	Scintilla.SetMarginWidth(2,Int(Settings.GetValue("Scintilla_MarginWidth2")))
-	'Settings.SetValue("Scintilla_MarginWidth2",0)
+	Scintilla.SetMarginWidth(0,Style.MarginWidth0)
+	Scintilla.SetMarginWidth(1,Style.MarginWidth1)
+	Scintilla.SetMarginWidth(2,Style.MarginWidth2)
 
 	Scintilla.SetMarginSensitive(0,False)
 	Scintilla.SetMarginSensitive(1,True)
@@ -530,37 +498,6 @@ Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotifi
 	If TempScintilla.CanUndo() Then UndoItem.SetSensitive(True) Else UndoItem.SetSensitive(False)
 	If TempScintilla.CanRedo() Then RedoItem.SetSensitive(True) Else RedoItem.SetSensitive(False)
 End Function
-'foldend
-
-'foldstart 'Farb Funktionen
-Function MakeColorString:String(ColorR:Byte,ColorG:Byte,ColorB:Byte)
-	Return ColorR + "," + ColorG + "," + ColorB
-End Function
-
-Function ExtractR:Byte(Text:String)
-	Local CPos:Int = Instr(Text,",")
-	If CPos = -1 Scream "Fehler beim Lesen der Farbe"
-	Return Byte(Left(Text,CPos-1))
-End Function
-
-Function ExtractG:Byte(Text:String)
-	Local CPos:Int = Instr(Text,",")
-	If CPos = -1 Scream "Fehler beim Lesen der Farbe"
-	Local CSPos:Int = Instr(Text,",",CPos+1)
-	If CSPos = -1 Scream "Fehler beim Lesen der Farbe"
-	Return Byte(Mid(Text,CPos+1,CSPos-CPos-1))
-End Function
-
-Function ExtractB:Byte(Text:String)
-	Local CPos:Int = Instr(Text,",")
-	If CPos = -1 Scream "Fehler beim Lesen der Farbe"
-	Local CSPos:Int = Instr(Text,",",CPos+1)
-	If CSPos = -1 Scream "Fehler beim Lesen der Farbe"
-	Local CTPos:Int = Instr(Text,",",CSPos+1)
-	If CTPos = -1 Scream "Fehler beim Lesen der Farbe"
-	Return Byte(Mid(Text,CSPos+1,CTPos-CSPos-1))
-End Function
-
 'foldend
 
 'foldstart 'Buttons
@@ -1126,9 +1063,8 @@ End Function
 			Frame_Vorschau.add(VScintilla)
 			VScintilla.show()
 			
-			Local Style:TStyle = New TStyle
-			Style.Save("test")
-			
+
+
 	end function
 
 'foldend
