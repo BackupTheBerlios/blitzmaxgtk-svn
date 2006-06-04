@@ -27,6 +27,7 @@ Const SIGKILL:byte = 9
 
 Extern "c"
 	Function _kill(Pid:int, signal:byte)="kill"
+	Function vte_terminal_set_background_transparent(terminal:byte ptr, transparent:byte)
 End Extern
 
 
@@ -41,10 +42,11 @@ Type TProcLib Extends TProcShape
 		_widget = VteTerminal.Create()
 '		_widget.SetSizeRequest(20,100)
 		_box.packstart(_widget,true,true)
-
+		
 		vte_terminal_set_color_background(_widget.Handle,GdkColor.MakeOutOfInts(255,255,255))
 		vte_terminal_set_color_foreground(_widget.Handle,GdkColor.MakeOutOfInts(0,0,0))
 		vte_terminal_set_font_from_string(_widget.Handle,"monospace 9".ToCString())
+		vte_terminal_set_background_transparent(_widget.Handle, true)
 		_widget.show()
 		_widget.SignalConnect("child-exited",TProcLibChildExit)
 		' Scrollbar

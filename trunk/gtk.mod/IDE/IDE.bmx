@@ -363,6 +363,7 @@ Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotifi
 	Else If notification.Code = SCN_CHARADDED Then
 		DoDbgLog "_DEBUG_: CHARADD: " + notification.ch
 		If Not ((notification.ch>=Asc("0") And notification.ch<=Asc("9")) Or (notification.ch>=Asc("A") And notification.ch<=Asc("Z")) Or (notification.ch = Asc("_")) Or (notification.ch>=Asc("a") And notification.ch<=Asc("z"))) Then
+			print "mod"
 			Local prevselstart:Int = scintilla_send_message(TempScintilla.Handle,SCI_GETSELECTIONSTART,Null,Null)
 			Local prevselend:Int  = scintilla_send_message(TempScintilla.Handle,SCI_GETSELECTIONEND,Null,Null)
 			Local linenum:Int = TempScintilla.GetLineFromPosition(TempScintilla.GetCurrentPosition())
@@ -374,8 +375,7 @@ Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotifi
 			scintilla_send_message(TempScintilla.Handle,SCI_REPLACESEL,Null,ActLine.ToCString())
 			scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONSTART,Byte Ptr(prevselstart),Null)
 			scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONEND,Byte Ptr(prevselend),Null)
-		End If
-
+		EndIf
 		If notification.ch = 10 Then
 			DoDbgLog "_DEBUG_: NOTIFICATION.CH IS 10, checking tab state of previous line"
 			Local prevline:Int = TempScintilla.GetLineFromPosition(TempScintilla.GetCurrentPosition()) -1
