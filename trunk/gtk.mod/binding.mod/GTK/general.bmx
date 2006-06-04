@@ -43,6 +43,10 @@ Extern
 	function gtk_item_get_type:byte ptr()
 	function gtk_menu_get_type:byte ptr()
 	function gtk_menu_shell_get_type:byte ptr()
+	
+	
+	Function pango_font_description_from_string:Byte Ptr(Str:Byte Ptr)
+	Function pango_font_description_get_family:byte Ptr(Name:Byte ptr)
 End Extern
 
 'Enumeration GtkPackType

@@ -26,4 +26,14 @@ Type GtkFontButton Extends GtkButton
 		TempButton.Handle = Handle
 		Return TempButton
 	End Function
+	
+	Method GetFontName:String()
+	       Return String.FromCString(gtk_font_button_get_font_name(Handle))
+	End Method
+	
+	Method GetFontFamily:String()
+	       local fontdescr:byte ptr = pango_font_description_from_string(GetFontName())
+	       return string.fromcstring(pango_font_description_get_family(fontdescr))
+	End Method
+	
 End Type

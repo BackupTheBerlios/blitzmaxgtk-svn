@@ -23,6 +23,7 @@ Import GTK.Scintilla
 Import BRL.MaxUtil
 Import BRL.StandardIO
 Import "settings.bmx"
+Import "style.bmx"
 
 ?win32
 Import "procwin32.bmx"
@@ -31,7 +32,7 @@ Import "proclinux.bmx"
 ?mac
 Import "procmac.bmx"
 ?
-Include "style.bmx"
+
 ' 0 = development, 1 = release, 2 = pre-release
 Const ReleaseVersion:Byte = 0
 
@@ -73,8 +74,60 @@ Global Settings:TSettings = New TSettings
 Settings.LoadAllSettings()
 Global Style:TStyle = New TStyle
 Style.Load("test")
+
+
+'Note: If is handled specially
+Global AddTabList:TList = New TList
+AddTabList.addLast("for")
+AddTabList.addLast("type")
+AddTabList.addLast("extern")
+AddTabList.addLast("function")
+AddTabList.addLast("while")
+AddTabList.addLast("repeat")
+
+Global RemoveTabList:TList = New TList
+RemoveTabList.addLast("next")
+RemoveTabList.addLast("endtype")
+RemoveTabList.addLast("end type")
+RemoveTabList.addLast("endextern")
+RemoveTabList.addLast("end extern")
+RemoveTabList.addLast("endfunction")
+RemoveTabList.addLast("end function")
+RemoveTabList.addLast("until")
+RemoveTabList.addLast("forever")
+RemoveTabList.addLast("endif")
+RemoveTabList.addLast("end if")
+
+
 ' Keywords laden
-LoadKeywords(Settings)
+Global KeywordList:TList = New TList
+Global RealKeywordList:TList = New TList
+If Settings.GetValue("Scintilla_KeywordsFile")="" Then
+	Scream("Keywords-Datei nicht festgelegt")
+Else
+	Local KeyWordsFile:TStream = ReadStream(Settings.GetValue("Scintilla_KeywordsFile"))
+	If KeyWordsFile = Null Then
+		Scream("Konnte Keywords-Datei nicht öffnen")
+	Else
+		While Not KeyWordsFile.EOF()
+			Local ALine:String = KeyWordsFile.ReadLine()
+			For Local i:Int = 1 To Len(ALine)
+				Local TempChar:String = Mid(ALine,i,1)
+				If TempChar ="(" Or TempChar=":" Or TempChar="|" Or TempChar="$" Or TempChar="[" Or TempChar="%" Or TempChar="#" Or TempChar="!" Or TempChar=" " Then
+					KeywordList.addLast(Lower(Left(ALine,i-1)))
+					RealKeywordList.addLast(Left(ALine,i-1))
+					i = Len(ALine)+1
+				EndIf
+			Next
+		Wend
+		KeywordList.addLast("foldstart")
+		KeywordList.addLast("foldend")
+		RealKeywordList.addLast("FoldStart")
+		RealKeywordList.addLast("FoldEnd")
+	EndIf
+EndIf
+
+
 ' Loading interface
 Global Application:GladeXML = GladeXML.Create("ide.glade")
 Application.ConnectSignals()
@@ -125,6 +178,7 @@ LoadScintillaOptions()
 
 Global frmSkinScintilla:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmSkinScintilla"))
 Stylemaker_by_first_Start()
+Global VScintilla:GtkScintilla 
 
 Global frmCmdOpts:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmCmdOpts"))
 
@@ -267,6 +321,69 @@ Function UpdateAllScintillas()
 	Next
 End Function
 
+Function SetupScintilla(Style:TStyle,Scintilla:GtkScintilla)
+	If Scintilla=Null Then
+		DoDbgLog "something strange happened"
+		Return
+	EndIf
+	'DoDbgLog "setupscin" 
+ 
+	
+	Scintilla.SetLexer(Style.Lexer)
+	Scintilla.SetStyleBits(Style.StyleBits)
+	Scintilla.SetBGColor(ExtractR(Style.BGColor), ExtractG(Style.BGColor),ExtractB(Style.BGColor))
+	
+	Scintilla.SetFont(SCE_BM_DEFAULT, Style.Font_Default.Name, Style.Font_Default.Size, Style.Font_Default.R, Style.Font_Default.G, Style.Font_Default.B)
+	Scintilla.SetFont(SCE_BM_COMMENT, Style.Font_COMMENT.Name, Style.Font_COMMENT.Size, Style.Font_COMMENT.R, Style.Font_COMMENT.G, Style.Font_COMMENT.B)
+	Scintilla.SetFont(SCE_BM_MULTILINECOMMENT, Style.Font_COMMENT.Name, Style.Font_COMMENT.Size, Style.Font_COMMENT.R, Style.Font_COMMENT.G, Style.Font_COMMENT.B)
+	Scintilla.SetFont(SCE_BM_NUMBER, Style.Font_NUMBER.Name, Style.Font_NUMBER.Size, Style.Font_NUMBER.R, Style.Font_NUMBER.G, Style.Font_NUMBER.B)
+	Scintilla.SetFont(SCE_BM_KEYWORD, Style.Font_KEYWORD.Name, Style.Font_KEYWORD.Size, Style.Font_KEYWORD.R, Style.Font_KEYWORD.G, Style.Font_KEYWORD.B)
+	Scintilla.SetFont(SCE_BM_STRING, Style.Font_STRING.Name, Style.Font_STRING.Size, Style.Font_STRING.R, Style.Font_STRING.G, Style.Font_STRING.B)
+	Scintilla.SetFont(SCE_BM_IDENTIFIER, Style.Font_IDENTIFIER.Name, Style.Font_IDENTIFIER.Size, Style.Font_IDENTIFIER.R, Style.Font_IDENTIFIER.G, Style.Font_IDENTIFIER.B)
+	Scintilla.SetFont(SCE_BM_OPERATOR, Style.Font_OPERATOR.Name, Style.Font_OPERATOR.Size, Style.Font_OPERATOR.R, Style.Font_OPERATOR.G, Style.Font_OPERATOR.B)
+
+	Scintilla.SetFont(SCE_BM_BINNUMBER, Style.Font_NUMBER.Name, Style.Font_NUMBER.Size, Style.Font_NUMBER.R, Style.Font_NUMBER.G, Style.Font_NUMBER.B)
+	Scintilla.SetFont(SCE_BM_HEXNUMBER, Style.Font_NUMBER.Name, Style.Font_NUMBER.Size, Style.Font_NUMBER.R, Style.Font_NUMBER.G, Style.Font_NUMBER.B)
+	
+	Scintilla.SetMarginType(0,SC_MARGIN_NUMBER)
+	Scintilla.SetMarginType(1,SC_MARGIN_SYMBOL)
+	Scintilla.SetMarginMask(1,SC_MASK_FOLDERS)
+
+	Scintilla.SetMarginWidth(0,Style.MarginWidth0)
+	Scintilla.SetMarginWidth(1,Style.MarginWidth1)
+	Scintilla.SetMarginWidth(2,Style.MarginWidth2)
+
+	Scintilla.SetMarginSensitive(0,False)
+	Scintilla.SetMarginSensitive(1,True)
+	Scintilla.SetMarginSensitive(2,False)
+	
+	scintilla_send_message(Scintilla.Handle,SCI_SETFOLDMARGINCOLOUR,Byte Ptr(True),Byte Ptr(scintilla.encodecolor(ExtractR(Style.Margin_BGColor),extractg(Style.Margin_BGColor),extractB(Style.Margin_BGColor))))
+	scintilla_send_message(Scintilla.Handle,SCI_SETFOLDMARGINHICOLOUR,Byte Ptr(True),Byte Ptr(scintilla.encodecolor(ExtractR(Style.Margin_BGColor),extractg(Style.Margin_BGColor),extractB(Style.Margin_BGColor))))
+
+	Scintilla.SetFont(STYLE_LINENUMBER, Style.Font_LINENUMBER.Name, Style.Font_LINENUMBER.Size, Style.Font_LINENUMBER.R, Style.Font_LINENUMBER.G, Style.Font_LINENUMBER.B)
+	Scintilla.SetFontBGColor(STYLE_LINENUMBER,ExtractR(Style.LineNumbers_BGColor),ExtractG(Style.LineNumbers_BGColor),ExtractB(Style.LineNumbers_BGColor))
+	
+	Scintilla.SetCaretColor(ExtractR(Style.CaretColor),ExtractG(Style.CaretColor),ExtractB(Style.CaretColor))
+	Scintilla.SetCaretLineBack(ExtractR(Style.CaretBG),ExtractG(Style.CaretBG),ExtractB(Style.CaretBG))
+	Scintilla.SetCaretLineVisible(Int(Style.CaretVisible))
+	
+	Scintilla.SetSelectionBack(ExtractR(Style.SelectionBGColor),ExtractG(Style.SelectionBGColor),ExtractB(Style.SelectionBGColor))
+
+	Scintilla.SetTabWidth(Int(Style.TabWidth))
+
+	Scintilla.SetProperty("fold","1")
+	Scintilla.SetProperty("fold.compact","0")
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDEROPEN,SC_MARK_CIRCLEMINUS,ExtractR(Style.LineNumbers_BGColor),extractg(Style.LineNumbers_BGColor),extractB(Style.LineNumbers_BGColor),255,255,255)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDER,SC_MARK_CIRCLEPLUS,ExtractR(Style.LineNumbers_BGColor),extractg(Style.LineNumbers_BGColor),extractB(Style.LineNumbers_BGColor),255,255,255)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDERSUB,SC_MARK_VLINE,ExtractR(Style.LineNumbers_BGColor),extractg(Style.LineNumbers_BGColor),extractB(Style.LineNumbers_BGColor),255,255,255)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDERTAIL,SC_MARK_LCORNERCURVE,ExtractR(Style.LineNumbers_BGColor),extractg(Style.LineNumbers_BGColor),extractB(Style.LineNumbers_BGColor),255,255,255)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDEREND,SC_MARK_CIRCLEPLUSCONNECTED,ExtractR(Style.LineNumbers_BGColor),extractg(Style.LineNumbers_BGColor),extractB(Style.LineNumbers_BGColor),255,255,255)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDEROPENMID,SC_MARK_CIRCLEMINUSCONNECTED,ExtractR(Style.LineNumbers_BGColor),extractg(Style.LineNumbers_BGColor),extractB(Style.LineNumbers_BGColor),255,255,255)
+	Scintilla.DefineMarker(SC_MARKNUM_FOLDERMIDTAIL,SC_MARK_TCORNERCURVE,ExtractR(Style.LineNumbers_BGColor),extractg(Style.LineNumbers_BGColor),extractB(Style.LineNumbers_BGColor),255,255,255)
+
+	Scintilla.SetKeywordList(0,KeywordList)
+End Function
+
 Function STrim:String(ToTrim:String)
 	Local IsNotOnlyShit:Byte = False
 	For Local precheck:Int = 1 To Len(ToTrim)
@@ -363,7 +480,6 @@ Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotifi
 	Else If notification.Code = SCN_CHARADDED Then
 		DoDbgLog "_DEBUG_: CHARADD: " + notification.ch
 		If Not ((notification.ch>=Asc("0") And notification.ch<=Asc("9")) Or (notification.ch>=Asc("A") And notification.ch<=Asc("Z")) Or (notification.ch = Asc("_")) Or (notification.ch>=Asc("a") And notification.ch<=Asc("z"))) Then
-			print "mod"
 			Local prevselstart:Int = scintilla_send_message(TempScintilla.Handle,SCI_GETSELECTIONSTART,Null,Null)
 			Local prevselend:Int  = scintilla_send_message(TempScintilla.Handle,SCI_GETSELECTIONEND,Null,Null)
 			Local linenum:Int = TempScintilla.GetLineFromPosition(TempScintilla.GetCurrentPosition())
@@ -375,7 +491,8 @@ Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotifi
 			scintilla_send_message(TempScintilla.Handle,SCI_REPLACESEL,Null,ActLine.ToCString())
 			scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONSTART,Byte Ptr(prevselstart),Null)
 			scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONEND,Byte Ptr(prevselend),Null)
-		EndIf
+		End If
+
 		If notification.ch = 10 Then
 			DoDbgLog "_DEBUG_: NOTIFICATION.CH IS 10, checking tab state of previous line"
 			Local prevline:Int = TempScintilla.GetLineFromPosition(TempScintilla.GetCurrentPosition()) -1
@@ -999,21 +1116,96 @@ End Function
 	'Functionen über Widgets
 	
 	Function Stylemaker_by_first_Start()
+		
+		Local VStyle:TStyle = New TStyle
+		VStyle.Load("test")
+		
 		Local Frame_Vorschau:GtkFrame = GtkFrame.CreateFromHandle(Application.GetWidget("frame_style_vorschau"))
-		Local VScintilla:GtkScintilla = GtkScintilla.Create()
+		VScintilla = GtkScintilla.Create()
 			VScintilla.SetSizeRequest(700,500)
 			Frame_Vorschau.add(VScintilla)
 			VScintilla.show()
-			SetupScintilla(Style,VScintilla)
-			VScintilla.SignalConnect("sci-notify",DoScintillaEvents2)
+			SetupScintilla(VStyle,VScintilla)
+			VScintilla.SignalConnect("sci-notify",DoScintillaEvents)
 
+	End Function
+
+	Function StyleMaker_SetStyle()
+		Local cbBGColor:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("cbBGColor"))
+		Local fb_Stylemaker:GtkFontButton = GtkFontButton.CreateFromHandle(Application.GetWidget("fb_Stylemaker"))
+		
+		Local R,G,B
+			cbBGColor.GetColorInt(Varptr(R),Varptr(G),Varptr(B))
+		
+		Local FontArt:String fb_Stylemaker.GetFontFamily()
+		
+		
+		Local VStyle:TStyle = New TStyle
+		VStyle.BGColor = MakeColorString(R,G,B)
+		'VStyle.Font_Comment.Name = SSchrift
+		
+		
+		
+		SetupScintilla(VStyle,VScintilla)
 	End Function
 
 'foldend
 
 
-'
 'foldend
+
+
+'foldstart 'Allgemeine sachen
+Function Scream(What:String)
+	Local TMR:Byte Ptr= gtk_message_dialog_new(Null,0,GTK_MESSAGE_WARNING,GTK_BUTTONS_OK,"Warnung".ToCString())
+	gtk_message_dialog_format_secondary_text(TMR,ISO_8859_1_To_UTF_8(What).ToCString())
+	gtk_dialog_run(TMR)
+	gtk_widget_destroy(TMR)
+End Function
+Function ISO_8859_1_To_UTF_8:String(InputString:String)
+	Return String.FromCString(g_convert(InputString.ToCString(),-1,"UTF-8".ToCString(),"ISO-8859-1".ToCString(),Null,Null,Null))
+End Function
+Function trimright:String(istring:String)
+	Local theend:Int = Len(istring)-1
+	For Local i:Int = Len(istring)-1 To 0 Step -1
+		If Mid(istring,i+1,1) = "~t" Or Mid(istring,i+1,1) = " " Then
+			theend = i
+		Else
+			Exit
+		EndIf
+	Next
+	DoDbgLog Left(istring,theend+1)
+	Return Left(istring,theend+1)
+End Function
+Function split:Int[](InputString:String,Separator:String)
+	Local intarray:Int[1]
+	If Instr(InputString,Separator) = 0 Then
+		intarray[0] = Int(inputstring)
+		Return intarray
+	EndIf
+	Local oldpos:Int
+	Local actpos:Int
+	While True
+		Local nextsep:Int = Instr(InputString,Separator,oldpos+1)
+		If nextsep = 0 Then
+			intarray = intarray[..actpos+1]
+			intarray[actpos] = Int(Mid(InputString,oldpos+1))
+			Exit
+		EndIf
+		intarray = intarray[..actpos+1]
+		intarray[actpos] = Int(Mid(InputString,oldpos+1,nextsep-oldpos))
+		oldpos = nextsep
+		actpos = actpos + 1
+	Wend
+	Return intarray
+End Function
+
+Function DoDbgLog(Text:String)
+	'If ReleaseVersion = 0 Print Text
+End Function
+
+'foldend
+
 
 'foldstart 'Kompiliereinstellungen + Processkill
 Function RebuildModules()

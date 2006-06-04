@@ -1,15 +1,15 @@
 Scintilla_TabWidth:2
-BlitzMax_Pfad:/home/philipp/bmx
+BlitzMax_Pfad:/home/bigmichi/Programme/BlitzMax
 DebugBuild:1
 SyncMods.Username:nobody
-Scintilla_KeywordsFile:/home/philipp/bmx/doc/bmxmods/commands.txt
+Scintilla_KeywordsFile:/home/bigmichi/Programme/BlitzMax/doc/bmxmods/commands.txt
 SyncMods.Username:Sektor333
 SyncMods.Servers:pub brl
 QuickBuild:1
-HelpBrowser_URL:/home/philipp/bmx/doc/index.html
-LastOpenDir:/home/philipp/bmx/mod/gtk.mod/IDE
+HelpBrowser_URL:/home/bigmichi/Programme/BlitzMax/doc/index.html
+LastOpenDir:/home/bigmichi/bmx/mod/gtk.mod/IDE
 RecentList_Size:10
 RecentList_On:1
 Favorit_On:0
-FavoritSave:/home/philipp/bmx/mod/gtk.mod/IDE
-FavoritLoad:/home/philipp/bmx/mod/gtk.mod/IDE
+FavoritSave:/home/bigmichi/Programme/BlitzMax/mod/gtk.mod/IDE
+FavoritLoad:/home/bigmichi/Programme/BlitzMax/mod/gtk.mod/IDE
