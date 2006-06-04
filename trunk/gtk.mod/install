@@ -241,4 +241,6 @@ if [ $retval -ne 0 ]; then
 	echo "install: ChOwn failed"
 	echo "install: Perhaps you won´t be able to use the modules"
 fi
+echo "install: Removing tmp/ld.tmp"
+rm -f ../../tmp/ld.tmp
 echo "install: The IDE binary is at $(pwd)/IDE"

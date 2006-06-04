@@ -1,11 +1,11 @@
 #!/usr/bin/perl
 print "genconf: Looking for mozilla-gtkmozembed... ";
-my @output = qx(pkg-config --modversion mozilla-gtkmozembed);
+my @output = qx(pkg-config --modversion mozilla-gtkmozembed 2> /dev/null);
 my $mozpkg;
 if ($? != 0) {
 	print "not found\n";
 	print "genconf: Looking for firefox-gtkmozembed... ";
-	@output = qx(pkg-config --modversion firefox-gtkmozembed);
+	@output = qx(pkg-config --modversion firefox-gtkmozembed 2> /dev/null);
 	if ($? != 0) {
 		print "not found\n";
 		print "genconf: Please install either the Firefox or the Mozilla development package.\n";

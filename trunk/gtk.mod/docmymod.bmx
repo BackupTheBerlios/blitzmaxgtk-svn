@@ -122,7 +122,7 @@ Next
 Print "OK"
 WriteIndex(PrgDir+"/template.index.html","index.htm")
 For Local ActType:TType = EachIn Types
-	If Not (ActType.Methods.IsEmpty() And ActType.Functions.IsEmpty()) Then WriteType(PrgDir+"/template.type.html",ActType.Name + ".htm",Varptr ActType)
+	If Not (ActType.Methods.IsEmpty() And ActType.Functions.IsEmpty()) Then WriteType(PrgDir+"/template.type.html",ActType.Name + ".htm",ActType)
 Next
 ChangeDir "../../../../doc/bmxmods"
 WriteCommandList("commands.txt",Mid(ModtoDoc,Instr(ModtoDoc,"mod")))
@@ -166,7 +166,7 @@ Function WriteIndex(TemplatePath:String,FilePath:String)
 		InLineIfStart = -1
 		TokenList.Clear()
 		SedList.Clear()
-		SedLangTokens(Varptr TokenList,Varptr SedList)
+		SedLangTokens(TokenList,SedList)
 		Select Mode
 			Case MODE_NOTHING
 				TokenList.addLast("SITETITLE")
@@ -201,7 +201,7 @@ Function WriteIndex(TemplatePath:String,FilePath:String)
 		End Select
 		While True
 			Local Pos:Int, EPos:Int
-			Local Comment:String = GetNextComment(Varptr ActLine,True,Varptr Pos,Varptr EPos)
+			Local Comment:String = GetNextComment(ActLine,True,Varptr Pos,Varptr EPos)
 			If Comment = "-1" Then Exit
 			Local IfCondition:String = GetIfCondition(Comment)
 			If IfCondition <> "-1" Then
@@ -384,7 +384,7 @@ Function WriteIndex(TemplatePath:String,FilePath:String)
 									ActType = TType(Types.ValueAtIndex(ActIndex))
 									Template.Seek(PosBefore)
 									While True
-										Local ThrowMe:String = GetNextComment(Varptr ActLine,True)
+										Local ThrowMe:String = GetNextComment(ActLine,True)
 										If ThrowMe = "-1" Exit
 									Wend
 								EndIf
@@ -409,7 +409,7 @@ Function WriteIndex(TemplatePath:String,FilePath:String)
 									ActMethod = TMethod(Functions.ValueAtIndex(ActIndex))
 									Template.Seek(PosBefore)
 									While True
-										Local ThrowMe:String = GetNextComment(Varptr ActLine,True)
+										Local ThrowMe:String = GetNextComment(ActLine,True)
 										If ThrowMe = "-1" Exit
 									Wend
 								EndIf
@@ -434,7 +434,7 @@ Function WriteIndex(TemplatePath:String,FilePath:String)
 									ActParam = TParam(ActMethod.Params.ValueAtIndex(ActParamIndex))
 									Template.Seek(PosBeforeParam)
 									While True
-										Local ThrowMe:String = GetNextComment(Varptr ActLine,True)
+										Local ThrowMe:String = GetNextComment(ActLine,True)
 										If ThrowMe = "-1" Exit
 									Wend
 								EndIf
@@ -459,7 +459,7 @@ Function WriteIndex(TemplatePath:String,FilePath:String)
 									ActInfo = TModuleInfo(ModuleInfos.ValueAtIndex(ActIndex))
 									Template.Seek(PosBefore)
 									While True
-										Local ThrowMe:String = GetNextComment(Varptr ActLine,True)
+										Local ThrowMe:String = GetNextComment(ActLine,True)
 										If ThrowMe = "-1" Exit
 									Wend
 								EndIf							
@@ -481,7 +481,7 @@ Function WriteIndex(TemplatePath:String,FilePath:String)
 		If InLineIfStart <> -1 Then
 			ActLine = Left(ActLine,InLineIfStart)
 		EndIf
-		If Mode <> MODE_SKIP Then SedTokens(Varptr ActLine,Varptr TokenList,Varptr SedList)
+		If Mode <> MODE_SKIP Then SedTokens(ActLine,TokenList,SedList)
 		If Mode <> MODE_SKIP Then Index.WriteLine(ActLine)
 	Wend
 	If VerifiedIfLevel <> 0 Then 
@@ -491,7 +491,7 @@ Function WriteIndex(TemplatePath:String,FilePath:String)
 	EndIf
 End Function
 
-Function WriteType(TemplatePath:String,FilePath:String,TheType:TType Ptr)
+Function WriteType(TemplatePath:String,FilePath:String,TheType:TType)
 '	WriteStdout "Opening template file (" + TemplatePath + ")... "
 	Local Template:TStream = ReadStream(TemplatePath)
 	If Template = Null Then
@@ -514,7 +514,7 @@ Function WriteType(TemplatePath:String,FilePath:String,TheType:TType Ptr)
 	Local ActIndex:Int = 0, ActParamIndex:Int = 0
 	Local InLineIfStart:Int = 0
 	Local VerifiedIfLevel:Int = 0
-	Local ActType:TType = TheType[0], ActMethod:TMethod, ActParam:TParam, ActInfo:TModuleInfo
+	Local ActType:TType = TheType, ActMethod:TMethod, ActParam:TParam, ActInfo:TModuleInfo
 	Local TokenList:TList = New TList
 	Local SedList:TList   = New TList
 	While Not Template.EOF()
@@ -522,7 +522,7 @@ Function WriteType(TemplatePath:String,FilePath:String,TheType:TType Ptr)
 		InLineIfStart = -1
 		TokenList.Clear()
 		SedList.Clear()
-		SedLangTokens(Varptr TokenList,Varptr SedList)
+		SedLangTokens(TokenList, SedList)
 		Select Mode
 			Case MODE_NOTHING
 				TokenList.addLast("SITETITLE")
@@ -544,7 +544,7 @@ Function WriteType(TemplatePath:String,FilePath:String,TheType:TType Ptr)
 		End Select
 		While True
 			Local Pos:Int, EPos:Int
-			Local Comment:String = GetNextComment(Varptr ActLine,True,Varptr Pos,Varptr EPos)
+			Local Comment:String = GetNextComment(ActLine,True,Varptr Pos,Varptr EPos)
 			If Comment = "-1" Then Exit
 			Local IfCondition:String = GetIfCondition(Comment)
 			If IfCondition <> "-1" Then
@@ -726,7 +726,7 @@ Function WriteType(TemplatePath:String,FilePath:String,TheType:TType Ptr)
 									ActMethod = TMethod(ActType.Functions.ValueAtIndex(ActIndex))
 									Template.Seek(PosBefore)
 									While True
-										Local ThrowMe:String = GetNextComment(Varptr ActLine,True)
+										Local ThrowMe:String = GetNextComment(ActLine,True)
 										If ThrowMe = "-1" Exit
 									Wend
 								EndIf
@@ -751,7 +751,7 @@ Function WriteType(TemplatePath:String,FilePath:String,TheType:TType Ptr)
 									ActMethod = TMethod(ActType.Methods.ValueAtIndex(ActIndex))
 									Template.Seek(PosBefore)
 									While True
-										Local ThrowMe:String = GetNextComment(Varptr ActLine,True)
+										Local ThrowMe:String = GetNextComment(ActLine,True)
 										If ThrowMe = "-1" Exit
 									Wend
 								EndIf
@@ -777,7 +777,7 @@ Function WriteType(TemplatePath:String,FilePath:String,TheType:TType Ptr)
 									ActParam = TParam(ActMethod.Params.ValueAtIndex(ActParamIndex))
 									Template.Seek(PosBeforeParam)
 									While True
-										Local ThrowMe:String = GetNextComment(Varptr ActLine,True)
+										Local ThrowMe:String = GetNextComment(ActLine,True)
 										If ThrowMe = "-1" Exit
 									Wend
 								EndIf
@@ -804,7 +804,7 @@ Function WriteType(TemplatePath:String,FilePath:String,TheType:TType Ptr)
 		If InLineIfStart <> -1 Then
 			ActLine = Left(ActLine,InLineIfStart)
 		EndIf
-		If Mode <> MODE_SKIP Then SedTokens(Varptr ActLine,Varptr TokenList,Varptr SedList)
+		If Mode <> MODE_SKIP Then SedTokens(ActLine, TokenList, SedList)
 		If Mode <> MODE_SKIP Then TypeFile.WriteLine(ActLine)
 	Wend
 	If VerifiedIfLevel <> 0 Then 
@@ -829,60 +829,60 @@ Function GetIfCondition:String(ActLine:String)
 	Return Mid(ActLine,4)
 End Function
 
-Function GetNextComment:String(ActLine:String Ptr,DeleteIt:Byte=False,StartPos:Int Ptr=Null,EndPos:Int Ptr=Null)
-	Local Pos:Int = Instr(ActLine[0],"<!-- ")
+Function GetNextComment:String(ActLine:String Var,DeleteIt:Byte=False,StartPos:Int Ptr=Null,EndPos:Int Ptr=Null)
+	Local Pos:Int = Instr(ActLine,"<!-- ")
 	If Pos = 0 Then Return "-1"
-	Local Pos2:Int = Instr(ActLine[0]," -->",Pos+5)
+	Local Pos2:Int = Instr(ActLine," -->",Pos+5)
 	If Pos2 = 0 Then Return "-1"
-	Local RetString:String = Mid(ActLine[0],Pos+5,Pos2-Pos-5)
-	If DeleteIt Then ActLine[0] = Left(ActLine[0],Pos-1) + Mid(ActLine[0],Pos2+4)
+	Local RetString:String = Mid(ActLine,Pos+5,Pos2-Pos-5)
+	If DeleteIt Then ActLine = Left(ActLine,Pos-1) + Mid(ActLine,Pos2+4)
 	If StartPos <> Null Then StartPos[0] = Pos -1
 	If EndPos   <> Null Then EndPos  [0] = Pos
 	Return RetString
 End Function
 
-Function SedLangTokens:String(TokenList:TList Ptr,SedList:TList Ptr)
-	TokenList[0].AddLast("LANG_DESCRIPTION")
-	SedList[0].AddLast  (ResMan.Get("Description"))
-	TokenList[0].AddLast("LANG_TYPE")
-	SedList[0].AddLast  (ResMan.Get("Type"))
-	TokenList[0].AddLast("LANG_TYPES")
-	SedList[0].AddLast  (ResMan.Get("Types"))
-	TokenList[0].AddLast("LANG_FUNCTIONS")
-	SedList[0].AddLast  (ResMan.Get("Functions"))
-	TokenList[0].AddLast("LANG_RETURNTYPE")
-	SedList[0].AddLast  (ResMan.Get("ReturnType"))
-	TokenList[0].AddLast("LANG_PARAMTYPE")
-	SedList[0].AddLast  (ResMan.Get("ParamType"))
-	TokenList[0].AddLast("LANG_INFOS")
-	SedList[0].AddLast  (ResMan.Get("Infos"))
-	TokenList[0].AddLast("LANG_DEFAULTVAL")
-	SedList[0].AddLast  (ResMan.Get("DefaultValue"))
-	TokenList[0].AddLast("LANG_METHODS")
-	SedList[0].AddLast  (ResMan.Get("Methods"))
+Function SedLangTokens:String(TokenList:TList,SedList:TList)
+	TokenList.AddLast("LANG_DESCRIPTION")
+	SedList.AddLast  (ResMan.Get("Description"))
+	TokenList.AddLast("LANG_TYPE")
+	SedList.AddLast  (ResMan.Get("Type"))
+	TokenList.AddLast("LANG_TYPES")
+	SedList.AddLast  (ResMan.Get("Types"))
+	TokenList.AddLast("LANG_FUNCTIONS")
+	SedList.AddLast  (ResMan.Get("Functions"))
+	TokenList.AddLast("LANG_RETURNTYPE")
+	SedList.AddLast  (ResMan.Get("ReturnType"))
+	TokenList.AddLast("LANG_PARAMTYPE")
+	SedList.AddLast  (ResMan.Get("ParamType"))
+	TokenList.AddLast("LANG_INFOS")
+	SedList.AddLast  (ResMan.Get("Infos"))
+	TokenList.AddLast("LANG_DEFAULTVAL")
+	SedList.AddLast  (ResMan.Get("DefaultValue"))
+	TokenList.AddLast("LANG_METHODS")
+	SedList.AddLast  (ResMan.Get("Methods"))
 End Function
 
-Function SedTokens(ActLine:String Ptr,TheTokens:TList Ptr,SedWith:TList Ptr)
-	If TheTokens[0].Count() <> SedWith[0].Count() Then
+Function SedTokens(ActLine:String var,TheTokens:TList,SedWith:TList)
+	If TheTokens.Count() <> SedWith.Count() Then
 		Print "Something strange happened"
 		Return
 	EndIf
 	Local Pos:Int = 0,Pos2:Int = -2
 	While True
-		Pos = Instr(ActLine[0],"###",1)
+		Pos = Instr(ActLine,"###",1)
 		If Pos = 0 Then Exit
-		Pos2 = Instr(ActLine[0],"###",Pos+3)
+		Pos2 = Instr(ActLine,"###",Pos+3)
 		If Pos2 = 0 Then Exit
-		Local Token:String = Mid(ActLine[0],Pos+3,Pos2-Pos-3)
+		Local Token:String = Mid(ActLine,Pos+3,Pos2-Pos-3)
 		Local i:Int
-		For i = 0 To TheTokens[0].Count() - 1
-			Local TheToken:String = String(TheTokens[0].ValueAtIndex(i))
+		For i = 0 To TheTokens.Count() - 1
+			Local TheToken:String = String(TheTokens.ValueAtIndex(i))
 			If Token = TheToken Then
-				ActLine[0] = Left(ActLine[0],Pos-1) + String(SedWith[0].ValueAtIndex(i)) + Mid(ActLine[0],Pos2+3)
-				i = TheTokens[0].Count()+1
+				ActLine = Left(ActLine,Pos-1) + String(SedWith.ValueAtIndex(i)) + Mid(ActLine,Pos2+3)
+				i = TheTokens.Count()+1
 			EndIf
 		Next
-		If i = TheTokens[0].Count() Then
+		If i = TheTokens.Count() Then
 			Print "Unexpected token (" + Token + "), aborting"
 			Return
 		EndIf
@@ -890,7 +890,7 @@ Function SedTokens(ActLine:String Ptr,TheTokens:TList Ptr,SedWith:TList Ptr)
 End Function
 
 Function ProcessFile(FileName:String)
-	print "_DBG_ CurrDir: " + currentdir() + " _/DBG_"
+	'print "_DBG_ CurrDir: " + currentdir() + " _/DBG_"
 	Print "Analyzing: " + FileName
 	WriteStdout "Trying to open file... "
 	Local File:TStream
@@ -1053,7 +1053,7 @@ Function ProcessFile(FileName:String)
 				Local IncFile:String = SearchNextString(8,ActLine)
 				IncFile = Mid(IncFile,2,Len(IncFile)-2)
 				local olddir:string = currentdir()
-				print "_DBG_ olddir: " + olddir + " _/DBG"
+				'print "_DBG_ olddir: " + olddir + " _/DBG"
 				Print "Including " + IncFile
 				ProcessFile(IncFile)
 				changedir olddir
@@ -1068,7 +1068,7 @@ Function ProcessFile(FileName:String)
 				if lower(right(incfile,4)) = ".bmx" then
 					IncNum = IncNum + 1
 					local olddir:string = currentdir()
-					print "_DBG_ olddir: " + olddir + " _/DBG"
+					'print "_DBG_ olddir: " + olddir + " _/DBG"
 					print "Including " + IncFile
 					ProcessFile(IncFile)
 					changedir olddir
@@ -1315,31 +1315,31 @@ Function WriteCommandList(File:String,ModFolder:String)
 		FileDuo.WriteLine(TempType.Name + "|" + ModFolder + "#" + TempType.Name)
 		For Local k:Int = 0 To TempType.Methods.Count() - 1
 			Local TempMethod:TMethod = TMethod(TempType.Methods.ValueAtIndex(k))
-			FileDuo.WriteLine(DescribeForCmdList(Varptr(TempMethod),ModFolder))
+			FileDuo.WriteLine(DescribeForCmdList(TempMethod,ModFolder))
 		Next
 		For Local k:Int = 0 To TempType.Functions.Count() - 1
 			Local TempFunction:TMethod = TMethod(TempType.Functions.ValueAtIndex(k))
-			FileDuo.WriteLine(DescribeForCmdList(Varptr(TempFunction),ModFolder))
+			FileDuo.WriteLine(DescribeForCmdList(TempFunction,ModFolder))
 		Next
 	Next
 	For Local i:Int = 0 To Functions.Count()-1
 		Local TempFunction:TMethod = TMethod(Functions.ValueAtIndex(i))
-		FileDuo.WriteLine(DescribeForCmdList(Varptr(TempFunction),ModFolder))
+		FileDuo.WriteLine(DescribeForCmdList(TempFunction,ModFolder))
 	Next
 End Function
 
-Function DescribeForCmdList:String(TempMethod:TMethod Ptr,ModFolder:String)
+Function DescribeForCmdList:String(TempMethod:TMethod,ModFolder:String)
 	Local TString:String = ""
-	TString:+TempMethod[0].Name
-	If TempMethod[0].RetType <> "" TString:+":" + TempMethod[0].RetType
+	TString:+TempMethod.Name
+	If TempMethod.RetType <> "" TString:+":" + TempMethod.RetType
 	TString:+"( "
-	For Local k:Int = 0 To TempMethod[0].Params.Count() -1
-		Local TempParam:TParam = TParam(TempMethod[0].Params.ValueAtIndex(k))
+	For Local k:Int = 0 To TempMethod.Params.Count() -1
+		Local TempParam:TParam = TParam(TempMethod.Params.ValueAtIndex(k))
 		TString:+TempParam.Name + ":" + TempParam.PType
 		If TempParam.DefaultValue <> "" Then
 			TString:+"=" + TempParam.DefaultValue
 		EndIf
-		If k <> TempMethod[0].Params.Count()-1 TString:+","
+		If k <> TempMethod.Params.Count()-1 TString:+","
 	Next
 	TString:+" )"
 	TString:+"|" + ModFolder

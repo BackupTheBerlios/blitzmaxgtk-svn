@@ -1,8 +1,11 @@
+Rem
+Strict
 Import BRL.Filesystem
 Import BRL.Retro
 Import GTK.OOP
 Import GTK.Scintilla
 Import "settings.bmx"
+End Rem
 
 Type TSFont
 	Field Name:String
@@ -204,7 +207,9 @@ Function MakeColorString:String(ColorR:Byte,ColorG:Byte,ColorB:Byte)
 End Function
 
 Global KeywordList:TList = New TList
+Global RealKeywordList:TList = New TList
 Function LoadKeywords(Settings:TSettings)
+'Function LoadKeywords(bla:Object)
 	If Settings.GetValue("Scintilla_KeywordsFile")="" And FileType(bmxpath+"/doc/bmxmods/commands.txt")<>0 Then
 		Scream("Keywords-Datei nicht festgelegt")
 	Else
@@ -225,12 +230,15 @@ Function LoadKeywords(Settings:TSettings)
 					Local TempChar:String = Mid(ALine,i,1)
 					If TempChar ="(" Or TempChar=":" Or TempChar="|" Or TempChar="$" Or TempChar="[" Or TempChar="%" Or TempChar="#" Or TempChar="!" Or TempChar=" " Then
 						KeywordList.addLast(Lower(Left(ALine,i-1)))
+						RealKeywordList.addLast(left(ALine,i-1))
 						i = Len(ALine)+1
 					EndIf
 				Next
 			Wend
 			KeywordList.addLast("foldstart")
 			KeywordList.addLast("foldend")
+			RealKeywordList.addLast("FoldStart")
+			RealKeywordList.addLast("FoldEnd")
 		EndIf
 	EndIf
 End Function
@@ -366,7 +374,7 @@ Function DoScintillaEvents2(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotif
 End Function
 
 Function Scream(What:String)
-	Local TMR:Byte Ptr= gtk_message_dialog_new(Null,0,GTK_MESSAGE_WARNING,GTK_BUTTONS_OK,"Warnung".ToCString())
+	Local TMR:Byte Ptr = gtk_message_dialog_new(Null,0,GTK_MESSAGE_WARNING,GTK_BUTTONS_OK,"Warnung".ToCString())
 	gtk_message_dialog_format_secondary_text(TMR,ISO_8859_1_To_UTF_8(What).ToCString())
 	gtk_dialog_run(TMR)
 	gtk_widget_destroy(TMR)

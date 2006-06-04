@@ -23,7 +23,6 @@ Import GTK.Scintilla
 Import BRL.MaxUtil
 Import BRL.StandardIO
 Import "settings.bmx"
-Import "style.bmx"
 
 ?win32
 Import "procwin32.bmx"
@@ -32,18 +31,18 @@ Import "proclinux.bmx"
 ?mac
 Import "procmac.bmx"
 ?
-
+Include "style.bmx"
 ' 0 = development, 1 = release, 2 = pre-release
-Const ReleaseVersion:Byte = 2
+Const ReleaseVersion:Byte = 0
 
-WriteStdOut "BMax-IDE "
+WriteStdout "BMax-IDE "
 Select ReleaseVersion
 	Case 0 
-		writestdout "development"
+		WriteStdout "development"
 	Case 1
-		writestdout "release"
+		WriteStdout "release"
 	Case 2
-		writestdout "pre-release"
+		WriteStdout "pre-release"
 End Select
 Print " version, Copyright (C) 2005-2006 by bigmichi and phiker"
 Print "BMax-IDE comes with ABSOLUTELY NO WARRANTY; For details"
@@ -59,27 +58,23 @@ Type TDocument
 	Field File:String
 	Field Label:GtkLabel
 	Field Scintilla:GtkScintilla
-	Field Hidden:byte
+	Field Hidden:Byte
 End Type
 
 'Create document list
 Global DocumentList:TList = New TList
 
-'Load Settings
-Global Settings:TSettings = New TSettings
-Settings.LoadAllSettings()
-
-Global Style:TStyle = New TStyle
-Style.Load("test")
-
-' Keywords laden
-LoadKeywords(Settings)
 
 ' Initialization stuff
 'foldstart
 GTKUtil.Init()
 Glade.Init()
-
+Global Settings:TSettings = New TSettings
+Settings.LoadAllSettings()
+Global Style:TStyle = New TStyle
+Style.Load("test")
+' Keywords laden
+LoadKeywords(Settings)
 ' Loading interface
 Global Application:GladeXML = GladeXML.Create("ide.glade")
 Application.ConnectSignals()
@@ -98,9 +93,9 @@ Function AddHelpPage()
 	Local Document:TDocument = New TDocument
 	Document.Name = ""
 	Document.File = ""
-	Document.Label = null
-	Document.Scintilla = null
-	Document.Hidden = true
+	Document.Label = Null
+	Document.Scintilla = Null
+	Document.Hidden = True
 	DocumentList.addLast(Document)
 End Function
 AddTermPage()
@@ -108,12 +103,12 @@ Function AddTermPage()
 	Local Document:TDocument = New TDocument
 	Document.Name = ""
 	Document.File = ""
-	Document.Label = null 
-	Document.Scintilla = null
-	Document.Hidden = true
+	Document.Label = Null 
+	Document.Scintilla = Null
+	Document.Hidden = True
 	DocumentList.addLast(Document)
 	Local termVbox:GtkVBox = GtkVBox.CreateFromHandle(Application.GetWidget("termVbox"))
-	termVbox.PackEnd(TProcLib.Init(),true,true)
+	termVbox.PackEnd(TProcLib.Init(),True,True)
 '	Notebook.ShowAll()
 End Function
 'foldend
@@ -136,13 +131,13 @@ Global frmCmdOpts:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("
 Global frmLogin:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmLogin"))
 Global recentList:TList = New TList
 InitHelpBrowser()
-extern
-	function gtk_label_set_justify(label:byte ptr, justify:int)
-end extern
+Extern
+	Function gtk_label_set_justify(label:Byte Ptr, justify:Int)
+End Extern
 
 Function InitHelpBrowser()
-	local helpvbox:GtkVBox = GtkVBox.CreateFromHandle(Application.GetWidget("HelpVBox"))
-	rem
+	Local helpvbox:GtkVBox = GtkVBox.CreateFromHandle(Application.GetWidget("HelpVBox"))
+	Rem
 	HelpBrowser = GtkHtml.Create()
 	HelpBrowser.Show()
 	HelpBrowser.SignalConnect("url_requested",HelpBrowser_fileRequest)
@@ -155,31 +150,31 @@ Function InitHelpBrowser()
 	HelpBrowser.SignalConnect("js_status", HelpBrowser_JSStatus)
 	HelpBrowser.SignalConnect("progress", HelpBrowser_progressChanged)
 	HelpBrowser.SignalConnect("net_stop", HelpBrowser_ready)
-	local statusbox:GtkHBox = GtkHBox.Create()
+	Local statusbox:GtkHBox = GtkHBox.Create()
 	helpbrowserlabel = GtkLabel.Create()
 	'gtk_label_set_justify(helpbrowserlabel.Handle, 2)
 	helpbrowserprogress  = GtkProgressBar.Create()
-	helpbrowserprogress.setsensitive(false)
-	statusbox.packend(helpbrowserprogress,false,false)
-	statusbox.PackEnd(helpbrowserlabel,true,false)
-		helpvbox.packend(statusbox,false,false)
-	helpvbox.PackEnd(HelpBrowser,true,true)
+	helpbrowserprogress.setsensitive(False)
+	statusbox.packend(helpbrowserprogress,False,False)
+	statusbox.PackEnd(helpbrowserlabel,True,False)
+		helpvbox.packend(statusbox,False,False)
+	helpvbox.PackEnd(HelpBrowser,True,True)
 	
 	helpbrowserlabel.show()
 	
 	helpbrowserprogress.show()
 
 	statusbox.show()
-	If (Settings.GetValue("HelpBrowser_URL") = "" or filetype(settings.getvalue("HelpBrowser_URL"))=0) and filetype(bmxpath + "/doc/index.html")=0 then
+	If (Settings.GetValue("HelpBrowser_URL") = "" Or FileType(settings.getvalue("HelpBrowser_URL"))=0) And FileType(bmxpath + "/doc/index.html")=0 Then
 		HelpBrowser.RenderData("<html><head><title>Fehler!</title></head><body><h1>Hilfe-URL nicht festgelegt und die Hilfedatei wurde nicht am Standardpfad (" + bmxpath + "/doc/index.html" + ") gefunden.</h1></body></html>", "file:///error", "text/html")
 		Return
-	end if
-	If FileType(settings.getvalue("HelpBrowser_URL")) = 0 then
+	End If
+	If FileType(settings.getvalue("HelpBrowser_URL")) = 0 Then
 		Settings.SetValue("HelpBrowser_URL", bmxpath+"/doc/index.html")
-	end if
+	End If
 	HelpBrowser.LoadURL("file://" + Settings.GetValue("HelpBrowser_URL"))
 	'HelpBrowser_LoadFile(Settings.GetValue("HelpBrowser_URL"))
-end function
+End Function
 
 
 'foldstart 
@@ -272,6 +267,94 @@ Function UpdateAllScintillas()
 	Next
 End Function
 
+Function STrim:String(ToTrim:String)
+	Local IsNotOnlyShit:Byte = False
+	For Local precheck:Int = 1 To Len(ToTrim)
+		Local actch:String = Mid(ToTrim, precheck, 1)
+		If ((Asc(actch)>=Asc("0") And Asc(actch)<=Asc("9")) Or (Asc(actch)>=Asc("A") And Asc(actch)<=Asc("Z")) Or (actch = "_") Or (Asc(actch)>=Asc("a") And Asc(actch)<=Asc("z"))) Then
+			IsNotOnlyShit = True
+		EndIf
+	Next
+	If Not IsNotOnlyShit Return ""
+	For Local i:Int = 1 To Len(ToTrim)
+		Local actch:String = Mid(ToTrim,i,1)
+		If Not ((Asc(actch)>=Asc("0") And Asc(actch)<=Asc("9")) Or (Asc(actch)>=Asc("A") And Asc(actch)<=Asc("Z")) Or (actch = "_") Or (Asc(actch)>=Asc("a") And Asc(actch)<=Asc("z"))) Then
+			ToTrim =Mid(ToTrim,0,i-1) +Mid(ToTrim,i+1)
+			If i > 0 i:-1
+		Else
+			Exit
+		EndIf
+	Next
+	For Local i:Int = Len(ToTrim) To 1 Step -1
+		Local actch:String = Mid(ToTrim,i,1)
+		If Not ((Asc(actch)>=Asc("0") And Asc(actch)<=Asc("9")) Or (Asc(actch)>=Asc("A") And Asc(actch)<=Asc("Z")) Or (actch = "_") Or (Asc(actch)>=Asc("a") And Asc(actch)<=Asc("z"))) Then
+			ToTrim =Mid(ToTrim,0,i-1) +Mid(ToTrim,i+1)
+			If i > 0 i:+1
+		Else
+			Exit
+		EndIf
+	Next
+	Return ToTrim
+End Function
+
+Function GetLeftTrimmed:String(ToTrim:String)
+	Local lefttrimmed:String = ""
+	For Local i:Int = 1 To Len(ToTrim)
+		Local actch:String = Mid(ToTrim,i,1)
+		If Not ((Asc(actch)>=Asc("0") And Asc(actch)<=Asc("9")) Or (Asc(actch)>=Asc("A") And Asc(actch)<=Asc("Z")) Or (actch = "_") Or (Asc(actch)>=Asc("a") And Asc(actch)<=Asc("z"))) Then
+			lefttrimmed :+ actch
+		Else
+			Exit
+		EndIf
+	Next	
+	Return lefttrimmed
+End Function
+
+Function GetRightTrimmed:String(ToTrim:String)
+	Local righttrimmed:String = ""
+	For Local i:Int = Len(ToTrim) To 1 Step -1
+		Local actch:String = Mid(ToTrim,i,1)
+		If Not ((Asc(actch)>=Asc("0") And Asc(actch)<=Asc("9")) Or (Asc(actch)>=Asc("A") And Asc(actch)<=Asc("Z")) Or (actch = "_") Or (Asc(actch)>=Asc("a") And Asc(actch)<=Asc("z"))) Then
+			righttrimmed :+ actch
+		Else
+			Exit
+		EndIf
+	Next
+	Return righttrimmed
+End Function
+
+Function Keywordize:String(Text:String)
+	Local stringmode:Byte = False
+	Local lastpos:Int = 1
+	Local retstring:String = text
+	For Local i:Int = 1 To Len(Text)
+		Local actch:String =Mid(Text,i,1)
+		If actch = "~q" Then
+			stringmode = Not stringmode
+		Else If (Not ((Asc(actch)>=Asc("0") And Asc(actch)<=Asc("9")) Or (Asc(actch)>=Asc("A") And Asc(actch)<=Asc("Z")) Or (actch = "_") Or (Asc(actch)>=Asc("a") And Asc(actch)<=Asc("z")))) And Not stringmode
+			Local actselection:String = STrim(Mid(Text,lastpos,i-lastpos))
+			Local untrimmed:String = Mid(text,lastpos,i-lastpos)
+			Local pos:Int = 0
+			For Local tempstr:String = EachIn KeywordList
+				If tempstr = Lower(actselection) Then
+					Local newval:String = String(RealKeywordList.ValueAtIndex(pos))
+					retstring = Mid(retstring,1,lastpos-1) + GetLeftTrimmed(untrimmed) + newval + GetRightTrimmed(untrimmed) + Mid(retstring,i)
+					Exit
+				EndIf
+				pos:+1
+			Next
+			lastpos = i
+		EndIf
+	Next
+	If Asc(Right(retstring,1)) = 10 Or Asc(Right(retstring,1)) = 13 Then
+		retstring = Left(retstring, Len(retstring)-1)
+	EndIf
+	If Asc(Right(retstring,2)) = 10 And Asc(Right(retstring,1)) = 13 Then
+		retstring = Left(retstring, Len(retstring)-1)
+	EndIf
+	Return retstring
+End Function
+
 Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotification,GdkEvent:Byte Ptr)
 	Local TempScintilla:GtkScintilla = GtkScintilla.CreateFromHandle(Widget)
 	If notification.Code = SCN_MARGINCLICK Then
@@ -279,6 +362,20 @@ Function DoScintillaEvents(Widget:Byte Ptr,lParam:Byte Ptr,Notification:SCNotifi
 		TempScintilla.ToggleFoldPoint(TempScintilla.GetLineFromPosition(Notification.position))
 	Else If notification.Code = SCN_CHARADDED Then
 		DoDbgLog "_DEBUG_: CHARADD: " + notification.ch
+		If Not ((notification.ch>=Asc("0") And notification.ch<=Asc("9")) Or (notification.ch>=Asc("A") And notification.ch<=Asc("Z")) Or (notification.ch = Asc("_")) Or (notification.ch>=Asc("a") And notification.ch<=Asc("z"))) Then
+			Local prevselstart:Int = scintilla_send_message(TempScintilla.Handle,SCI_GETSELECTIONSTART,Null,Null)
+			Local prevselend:Int  = scintilla_send_message(TempScintilla.Handle,SCI_GETSELECTIONEND,Null,Null)
+			Local linenum:Int = TempScintilla.GetLineFromPosition(TempScintilla.GetCurrentPosition())
+			If (notification.ch = 10 Or notification.ch = 13) And linenum>0 Then linenum :- 1
+			Local ActLine:String = TempScintilla.GetLine(linenum)
+			scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONSTART,Byte Ptr(scintilla_send_message(TempScintilla.Handle,SCI_POSITIONFROMLINE,Byte Ptr(linenum),Null)),Null)
+			scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONEND,Byte Ptr(scintilla_send_message(TempScintilla.Handle,SCI_GETLINEENDPOSITION,Byte Ptr(linenum),Null)),Null)
+			ActLine = Keywordize(ActLine)
+			scintilla_send_message(TempScintilla.Handle,SCI_REPLACESEL,Null,ActLine.ToCString())
+			scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONSTART,Byte Ptr(prevselstart),Null)
+			scintilla_send_message(TempScintilla.Handle,SCI_SETSELECTIONEND,Byte Ptr(prevselend),Null)
+		End If
+
 		If notification.ch = 10 Then
 			DoDbgLog "_DEBUG_: NOTIFICATION.CH IS 10, checking tab state of previous line"
 			Local prevline:Int = TempScintilla.GetLineFromPosition(TempScintilla.GetCurrentPosition()) -1
@@ -365,7 +462,7 @@ Function IDEOpenFile(File:String)
 		If FirstLine Document.Scintilla.AppendText(ALine) Else Document.Scintilla.AppendText("~n" + ALine)
 		firstline = False
 	Wend
-	rem
+	Rem
 	If Settings.GetValue(Document.File + "_have_foldinfo") = "yes" Then
 		Local foldInfo:String = Settings.GetValue(Document.File + "_foldinfo")
 		Local lines:Int[] = split(foldInfo,",")
@@ -381,7 +478,7 @@ EndIf
 
 endrem
 	Document.Scintilla.EmptyUndoBuffer()
-end function
+End Function
 
 
 Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
@@ -391,11 +488,11 @@ Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD(ISO_8859_1_To_UTF_8("Datei öffnen"),Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-open",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
 	Local lastpath:String
 	
-	If FileType(Settings.GetValue("LastOpenDir")) <> 2 then 
-		If FileType(FP) <> 2 then lastpath = "/home" else lastpath = FP
-	else 
+	If FileType(Settings.GetValue("LastOpenDir")) <> 2 Then 
+		If FileType(FP) <> 2 Then lastpath = "/home" Else lastpath = FP
+	Else 
 		lastpath = Settings.GetValue("LastOpenDir")
-	end if 
+	End If 
 
 	If lastpath <> "" dialog.SetCurrentFolder(lastpath)
 	dialog.SetLocalOnly(True)
@@ -409,7 +506,7 @@ End Function
 Function tb_save_click()
 
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
-	If Document.File <> "" And not Document.hidden Then
+	If Document.File <> "" And Not Document.hidden Then
 
 '		CreateFile(Document.File)
 		Local Stream:TStream = WriteStream(Document.File)
@@ -451,18 +548,18 @@ Function mi_save_under_click()
 	Local FP:String = Filechooserbutton_SavePfad.GetFileName()
 	
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
-	If Document.hidden return
+	If Document.hidden Return
 	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD("Datei speichern",Null,GTK_FILE_CHOOSER_ACTION_SAVE,"gtk-save",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
 	dialog.SetLocalOnly(True)
-	local lastpath:string
+	Local lastpath:String
 	
-	If FileType(Settings.GetValue("LastSaveDir")) <> 2 then 
-		If FileType(FP) <> 2 then lastpath = "/home" else lastpath = FP
-	else
+	If FileType(Settings.GetValue("LastSaveDir")) <> 2 Then 
+		If FileType(FP) <> 2 Then lastpath = "/home" Else lastpath = FP
+	Else
 		lastpath = Settings.GetValue("LastSaveDir")
-	end if
+	End If
 
-	if lastpath <> "" dialog.SetCurrentFolder(lastpath)
+	If lastpath <> "" dialog.SetCurrentFolder(lastpath)
 
 	If Document.File Then Dialog.SetFileName(Document.File)
 
@@ -508,7 +605,7 @@ End Function
 
 Function mi_compile_click()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
-	If Document.File <> "" and not Document.hidden Then
+	If Document.File <> "" And Not Document.hidden Then
 		Local argnum:Byte = 2
 		Local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
 		If Not quickbuild.GetActive() = True Then
@@ -538,7 +635,7 @@ End Function
 
 Function tb_run_click()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
-	If Document.File <> "" and not document.hidden Then
+	If Document.File <> "" And Not document.hidden Then
 		Local argnum:Byte = 3
 		'local argnum:byte = 2
 		Local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
@@ -618,16 +715,16 @@ End Function
 		If TProcLib.Running() Then
 			Scream("Bitte beenden Sie zuerst den in der Konsole laufenden Prozess")
 			Return
-		End if
-		local smModServers:String[] = parseCmdProps(ModuleServers)
+		End If
+		Local smModServers:String[] = parseCmdProps(ModuleServers)
 		Local smArgs:String[4+smModServers.Length]
 		smArgs[0] = "-u"
 		smArgs[1] = Username
 		smArgs[2] = "-p"
 		smArgs[3] = Password
-		for local i:int = 0 to smModServers.Length - 1
+		For Local i:Int = 0 To smModServers.Length - 1
 			smArgs[4+i] = smModServers[i]	
-		next
+		Next
 		Notebook.SetCurrentPage(1)
 		TProcLib.Say("Synchronisiere Module")
 		TProcLib.CreateProcess(bmxpath + "/bin/syncmods", smArgs)
@@ -641,18 +738,18 @@ End Function
 	
 	Function closeLoginWindowNoDestroy:Byte()
 		frmLogin.Hide()
-		Return true
-	end Function
+		Return True
+	End Function
 	
-	Function closeLoginWindow:byte()
+	Function closeLoginWindow:Byte()
 		Local txtUser:GtkEntry = GtkEntry.CreateFromHandle(Application.GetWidget("txtUser"))
 		Local txtPass:GtkEntry = GtkEntry.CreateFromHandle(Application.GetWidget("txtPassword"))
 		Settings.SetValue("SyncMods.Username", txtUser.GetText())
 		frmLogin.Hide()
-		If Settings.GetValue("SyncMods.Servers") = "" then Settings.SetValue("SyncMods.Servers", "pub brl")
+		If Settings.GetValue("SyncMods.Servers") = "" Then Settings.SetValue("SyncMods.Servers", "pub brl")
 		doSyncMods(Settings.GetValue("SyncMods.Username"), txtPass.GetText(), Settings.GetValue("SyncMods.Servers"))
-		Return true
-	end function
+		Return True
+	End Function
 'foldend
 'foldstart 'Command-line DIALOG
 	Function parseCmdProps:String[](cmdprops:String)
@@ -692,9 +789,9 @@ End Function
 		frmCmdOpts.Show()
 	End Function
 
-	Function closePropsWindowNoDestroy:byte()
+	Function closePropsWindowNoDestroy:Byte()
 		frmCmdOpts.Hide()
-		Return true
+		Return True
 	End Function
 	
 	Function closePropsWindow:Byte()
@@ -747,27 +844,27 @@ End Function
 		'Recentlist aktivieren/deaktivieren
 		Local RO:Byte = Byte(Settings.GetValue("RecentList_On"))
 		CheckButton_RecentList.SetActive(RO)		
-		If RO then
+		If RO Then
 			SpinButton_RecentList_Size.SetSensitive(True)
 			Button_Recentlist_History.SetSensitive(True)
-		else
+		Else
 			SpinButton_RecentList_Size.SetSensitive(False)
 			Button_Recentlist_History.SetSensitive(False)
-		end if
+		End If
 			
 		'RecentList_size laden in Spinbutton
-		SpinButton_RecentList_Size.SetValue(int(Settings.GetValue("RecentList_Size")))
+		SpinButton_RecentList_Size.SetValue(Int(Settings.GetValue("RecentList_Size")))
 			
 		'Standardpfade aktivieren/deaktivieren
 		Local FO:Byte = Byte(Settings.GetValue("Favorit_On"))
 		CheckButton_favorits.SetActive(FO)
-		If FO then
+		If FO Then
 			Filechooserbutton_LoadPfad.SetSensitive(True)
 			Filechooserbutton_SavePfad.SetSensitive(True)
-		else
+		Else
 			Filechooserbutton_LoadPfad.SetSensitive(False)
 			Filechooserbutton_SavePfad.SetSensitive(False)
-		end if
+		End If
 			
 		'Standard Pfad(SPEICHERN) in ChooserButton laden
 		Filechooserbutton_SavePfad.SetFileName(Settings.GetValue("FavoritSave"))
@@ -793,7 +890,7 @@ End Function
 
 		'RecentList_size aus Spinbutton lesen und speichern
 		Local SpinButton_RecentList_Size:GtkSpinButton= GtkSpinButton.CreateFromHandle(Application.GetWidget("sb_options_recentlist_size"))
-			Settings.SetValue("RecentList_Size",int(SpinButton_RecentList_Size.GetValue()))
+			Settings.SetValue("RecentList_Size",Int(SpinButton_RecentList_Size.GetValue()))
 		
 		'Sollen Standard Pfade benutzt werden?
 		Local CheckButton_favorits:GtkCheckButton = GtkCheckButton.CreateCBFromHandle(Application.GetWidget("cb_options_favorits"))
@@ -834,15 +931,15 @@ End Function
 	Function button_options_styleeditor()
 		frmOptions.Hide()
 		frmSkinScintilla.show()
-	end Function
+	End Function
 
 	Function button_options_abort()
 		frmOptions.Hide()
 	End Function
 
-	Function closeOptionsWindowNoDestroy:byte()
+	Function closeOptionsWindowNoDestroy:Byte()
 		frmOptions.Hide()
-		Return true
+		Return True
 	End Function
 
 	'Functionen über Widgets
@@ -853,14 +950,14 @@ End Function
 		Local Button_Recentlist_History:GtkButton = GtkButton.CreateFromHandle(Application.GetWidget("button_options_recentlist_history"))
 		
 			Local RO:Byte =CheckButton_RecentList.GetActive()
-			If RO then
+			If RO Then
 				SpinButton_RecentList_Size.SetSensitive(True)
 				Button_Recentlist_History.SetSensitive(True)
-			else
+			Else
 				SpinButton_RecentList_Size.SetSensitive(False)
 				Button_Recentlist_History.SetSensitive(False)
-			end if
-	end Function
+			End If
+	End Function
 
 	Function button_options_favorits()
 		Local CheckButton_favorits:GtkCheckButton = GtkCheckButton.CreateCBFromHandle(Application.GetWidget("cb_options_favorits"))
@@ -868,14 +965,14 @@ End Function
 		Local Filechooserbutton_SavePfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_save"))
 
 			Local RO:Byte =CheckButton_favorits.GetActive()
-			If RO then
+			If RO Then
 				Filechooserbutton_LoadPfad.SetSensitive(True)
 				Filechooserbutton_SavePfad.SetSensitive(True)
-			else
+			Else
 				Filechooserbutton_LoadPfad.SetSensitive(False)
 				Filechooserbutton_SavePfad.SetSensitive(False)
-			end if
-	end Function
+			End If
+	End Function
 
 	Function Options_Load_by_first_Start()
 		Local CheckButton_favorits:GtkCheckButton = GtkCheckButton.CreateCBFromHandle(Application.GetWidget("cb_options_favorits"))
@@ -883,20 +980,20 @@ End Function
 		Local Filechooserbutton_SavePfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_save"))
 
 			Local RO:Byte = Byte(Settings.GetValue("Favorit_On"))
-			If RO then
+			If RO Then
 				Settings.DelSetting("LastOpenDir")
 				Settings.DelSetting("LastSaveDir")
 				Settings.SaveAllSettings()
-			end if		
-	end function
+			End If		
+	End Function
 
 'foldend
 
 'foldstart 'Style-Maker
 
-	Function closeSkinWindowNoDestroy:byte()
+	Function closeSkinWindowNoDestroy:Byte()
 		frmSkinScintilla.Hide()
-		Return true
+		Return True
 	End Function
 
 	'Functionen über Widgets
@@ -910,7 +1007,7 @@ End Function
 			SetupScintilla(Style,VScintilla)
 			VScintilla.SignalConnect("sci-notify",DoScintillaEvents2)
 
-	end function
+	End Function
 
 'foldend
 
@@ -920,32 +1017,32 @@ End Function
 
 'foldstart 'Kompiliereinstellungen + Processkill
 Function RebuildModules()
-	local bmkArgs:String[2]
+	Local bmkArgs:String[2]
 	bmkArgs[0] = "makemods"
 	bmkArgs[1] = "-a"
-	if TProcLib.Running() then
+	If TProcLib.Running() Then
 		Scream "Bitte beenden Sie zuerst den momentan in der Konsole laufenden Prozess"
-	end if
+	End If
 	Notebook.SetCurrentPage(1)
 	TProcLib.Say("Starte das Kompilieren aller Module...")
 	TProcLib.CreateProcess(bmxpath+"/bin/bmk",bmkArgs)
 End Function
 Function BuildModules()
-	local bmkArgs:String[1]
+	Local bmkArgs:String[1]
 	bmkArgs[0] = "makemods"
-	if TProcLib.Running() then
+	If TProcLib.Running() Then
 		Scream "Bitte beenden Sie zuerst den momentan in der Konsole laufenden Prozess"
-	end if
+	End If
 	Notebook.SetCurrentPage(1)
 	TProcLib.Say("Starte das Kompilieren geänderter Module...")
 	TProcLib.CreateProcess(bmxpath+"/bin/bmk",bmkArgs)
-end function
-function killApp()
+End Function
+Function killApp()
 	TProcLib.SendSignal(SIGKILL)
-end function
-function termApp()
+End Function
+Function termApp()
 	TProcLib.SendSignal(SIGTERM)
-end function
+End Function
 'foldend
 
 'foldstart 'HelpBrowser
@@ -964,31 +1061,31 @@ Function HelpBrowser_goHome()
 End Function
 Function HelpBrowser_stopLoad()
 	HelpBrowser.stopLoad()
-end function
+End Function
 Function HelpBrowser_Reload()
 	HelpBrowser.reload()
-end function
+End Function
 Function HelpBrowser_linkMessage()
 	HelpBrowserLabel.SetText(HelpBrowser.GetLinkMessage())
-end function
+End Function
 Function HelpBrowser_JSStatus()
 	HelpBrowserLabel.SetText(HelpBrowser.GetJSStatus())
-end function
-Function HelpBrowser_progressChanged(embed:byte ptr, StatusCur:int, StatusMax:int, data:byte ptr)
-	HelpBrowserProgress.SetSensitive(true)
+End Function
+Function HelpBrowser_progressChanged(embed:Byte Ptr, StatusCur:Int, StatusMax:Int, data:Byte Ptr)
+	HelpBrowserProgress.SetSensitive(True)
 	HelpBrowserLabel.SetText("Lade... ")
-	If StatusMax < 1 then
+	If StatusMax < 1 Then
 		HelpBrowserProgress.Pulse()
-	else
-		HelpBrowserProgress.SetFraction(float(StatusCur)/float(statusMax))
-	endif
-end function
-function HelpBrowser_ready()
+	Else
+		HelpBrowserProgress.SetFraction(Float(StatusCur)/Float(statusMax))
+	EndIf
+End Function
+Function HelpBrowser_ready()
 	HelpBrowserProgress.SetFraction(0)
-	HelpBrowserProgress.SetSensitive(false)
+	HelpBrowserProgress.SetSensitive(False)
 	HelpBrowserLabel.SetText("Bereit")
-end function
-rem
+End Function
+Rem
 Function HelpBrowser_loadFile(File:String)
 	local stream:GtkHtmlStream = HelpBrowser.BeginContent("text/html; charset=iso-8859-1")
 	local filestream:TStream = ReadStream(File)
@@ -1053,91 +1150,91 @@ end rem
 'foldend
 
 'foldstart 'RecentList
-Function AddToRecentList(item:string)
-	If recentlist.contains(item) then
+Function AddToRecentList(item:String)
+	If recentlist.contains(item) Then
 		recentlist.remove(item)
-	endif
+	EndIf
 	recentlist.addfirst(item)
-	if settings.getvalue("RecentList_Size") = "" then settings.setvalue("RecentList_Size","10")
-	while recentlist.count() >= int(settings.getvalue("RecentList_Size"))
+	If settings.getvalue("RecentList_Size") = "" Then settings.setvalue("RecentList_Size","10")
+	While recentlist.count() >= Int(settings.getvalue("RecentList_Size"))
 		recentlist.removelast()
-	wend
+	Wend
 	UpdateRecentList()
 End Function
 Function UpdateRecentList()
-	local recentmenu:GtkMenu = GtkMenu.CreateFromHandle(Application.GetWidget("last_files_menu"))
+	Local recentmenu:GtkMenu = GtkMenu.CreateFromHandle(Application.GetWidget("last_files_menu"))
 	recentmenu.foreach(DeleteRecentItem,recentmenu.Handle)
-	local i:int = 1
-	for local recentitem:string = eachin recentlist
-		local tmpitem:GtkMenuItem = GtkMenuItem.CreateWithLabel(i + ". " + stripdir(recentitem))
+	Local i:Int = 1
+	For Local recentitem:String = EachIn recentlist
+		Local tmpitem:GtkMenuItem = GtkMenuItem.CreateWithLabel(i + ". " + StripDir(recentitem))
 		tmpitem.show()
 		tmpitem.SignalConnect("activate", RecentListItemClicked)
 		recentmenu.append(tmpitem)
 		i:+1
-	next
-	if recentlist.count()>0 enablerecentitem()
-end function
-function deleterecentitem(widget:byte ptr, data:byte ptr)
-	local tmpwidget:GtkWidget = New GtkWidget
+	Next
+	If recentlist.count()>0 enablerecentitem()
+End Function
+Function deleterecentitem(widget:Byte Ptr, data:Byte Ptr)
+	Local tmpwidget:GtkWidget = New GtkWidget
 	tmpwidget.Handle = widget
-	local tmpmenu:GtkMenu = GtkMenu.CreateFromHandle(Data)
+	Local tmpmenu:GtkMenu = GtkMenu.CreateFromHandle(Data)
 	tmpmenu.Remove(tmpwidget)
-end function
-function SaveRecentList()
-	local rstream:TStream = WriteStream("cfg/recent.lst")
-	if rstream = null then
+End Function
+Function SaveRecentList()
+	Local rstream:TStream = WriteStream("cfg/recent.lst")
+	If rstream = Null Then
 		Scream("Konnte cfg/recent.lst nicht öffnen")
-	endif
-	for local rentry:string = eachin recentlist
+	EndIf
+	For Local rentry:String = EachIn recentlist
 		rstream.WriteLine(rentry)
-	next
+	Next
 	CloseStream(rstream)
-end function
-function loadrecentlist()
-	local rstream:TStream = ReadStream("cfg/recent.lst")
-	if rstream = null then
-		print "(IDE.bmx) Warning: Couldn´t load cfg/recent.lst"
+End Function
+Function loadrecentlist()
+	Local rstream:TStream = ReadStream("cfg/recent.lst")
+	If rstream = Null Then
+		Print "(IDE.bmx) Warning: Couldn´t load cfg/recent.lst"
 		DisableRecentItem()
-		return
-	endif
-	while not rstream.eof()
-		local actline:string = rstream.ReadLine()
+		Return
+	EndIf
+	While Not rstream.eof()
+		Local actline:String = rstream.ReadLine()
 		recentlist.addLast(actline)
-	wend
-	if recentlist.count() = 0 then
+	Wend
+	If recentlist.count() = 0 Then
 		disablerecentitem()
-	else
+	Else
 		updaterecentlist()
-	endif
-	if settings.getvalue("RecentList_Size") = "" then settings.setvalue("RecentList_Size","10")
-	while recentlist.count() >= int(settings.getvalue("RecentList_Size"))
+	EndIf
+	If settings.getvalue("RecentList_Size") = "" Then settings.setvalue("RecentList_Size","10")
+	While recentlist.count() >= Int(settings.getvalue("RecentList_Size"))
 		recentlist.removelast()
-	wend
-end function
-function disablerecentitem()
-	local recentmenu:GtkMenuItem = GtkMenuItem.CreateFromHandle(Application.GetWidget("last_files_item"))
-	recentmenu.SetSensitive(false)
-end function
-function enablerecentitem()
-	local recentmenu:GtkMenuItem = GtkMenuItem.CreateFromHandle(Application.GetWidget("last_files_item"))
-	recentmenu.SetSensitive(true)
-end function
-function RecentListItemClicked(menuitem:byte ptr)
-	local tempitem:GtkMenuItem = GtkMenuItem.CreateFromHandle(menuitem)
+	Wend
+End Function
+Function disablerecentitem()
+	Local recentmenu:GtkMenuItem = GtkMenuItem.CreateFromHandle(Application.GetWidget("last_files_item"))
+	recentmenu.SetSensitive(False)
+End Function
+Function enablerecentitem()
+	Local recentmenu:GtkMenuItem = GtkMenuItem.CreateFromHandle(Application.GetWidget("last_files_item"))
+	recentmenu.SetSensitive(True)
+End Function
+Function RecentListItemClicked(menuitem:Byte Ptr)
+	Local tempitem:GtkMenuItem = GtkMenuItem.CreateFromHandle(menuitem)
 	tempitem.foreach(RecentListItemClicked2)
-end function
-function RecentListItemClicked2(label:byte ptr)
-	local templabel:GtkLabel = GtkLabel.CreateFromHandle(label)
-	local text:string = templabel.gettext()
-	local tmpindex:int = instr(text, ".")
-	if tmpindex = 0 then
-		print "(IDE.bmx) Warning: Couldn´t find . in label text"
-		return
-	endif
-	local tmpstr:String = mid(text,0,tmpindex)
-	local theindex:int = int(tmpstr)-1
-	local realfile:String = string(recentlist.ValueAtIndex(theindex))
+End Function
+Function RecentListItemClicked2(label:Byte Ptr)
+	Local templabel:GtkLabel = GtkLabel.CreateFromHandle(label)
+	Local text:String = templabel.gettext()
+	Local tmpindex:Int = Instr(text, ".")
+	If tmpindex = 0 Then
+		Print "(IDE.bmx) Warning: Couldn´t find . in label text"
+		Return
+	EndIf
+	Local tmpstr:String = Mid(text,0,tmpindex)
+	Local theindex:Int = Int(tmpstr)-1
+	Local realfile:String = String(recentlist.ValueAtIndex(theindex))
 	IDEOpenFile(realfile)
-end function
+End Function
 'foldend
 

@@ -1,0 +1,37 @@
+#!/bin/bash
+echo "docmods: Compiling docmymod.bmx"
+../../bin/bmk makeapp docmymod.bmx > docmods.log
+retval=$?
+if [ $retval -ne 0 ]; then
+	echo "docmods: bmk returned $retval, exiting"
+	echo "docmods: For details look at docmods.log"
+fi
+echo "docmods: ChModding docmymod u+x"
+chmod u+x docmymod >> docmods.log
+retval=$?
+if [ $retval -ne 0 ]; then
+	echo "docmods: chmod returned $retval, exiting"
+	echo "docmods: For details look at docmods.log"
+fi
+echo "docmods: Documenting gtk.binding"
+sleep 1
+echo $(pwd)/binding.mod/binding.bmx | ./docmymod
+retval=$?
+if [ $retval -ne 0 ]; then
+	echo "docmods: docmymod returned $retval, exiting"
+fi
+echo "docmods: Documenting gtk.oop"
+sleep 1
+echo $(pwd)/oop.mod/oop.bmx | ./docmymod
+retval=$?
+if [ $retval -ne 0 ]; then
+        echo "docmods: docmymod returned $retval, exiting"
+fi
+echo "docmods: Documenting gtk.scintilla"
+sleep 1
+echo $(pwd)/scintilla.mod/scintilla.bmx | ./docmymod
+retval=$?
+if [ $retval -ne 0 ]; then
+        echo "docmods: docmymod returned $retval, exiting"
+fi
+echo "docmods: All finished"

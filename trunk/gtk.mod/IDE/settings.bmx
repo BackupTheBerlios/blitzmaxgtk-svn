@@ -14,6 +14,7 @@ Rem
 	along with the BlitzMax GTK-modules; if not, write to the Free Software
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 End Rem
+Strict
 Import BRL.Linkedlist
 Import BRL.Filesystem
 Import BRL.Retro
@@ -54,7 +55,8 @@ Type TSettings
 		
 		'Check Setting allready exist
 		Local NE:Byte = False
-		For Local TSet:TSetting = EachIn SettingsList
+		Local TSet:TSetting
+		For TSet:TSetting = EachIn SettingsList
 			If TSet.Name = Name Then
 				NE=True
 				Exit
