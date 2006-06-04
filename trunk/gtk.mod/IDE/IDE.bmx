@@ -1134,13 +1134,22 @@ End Function
 		Local cbBGColor:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("cbBGColor"))
 		Local fb_Stylemaker:GtkFontButton = GtkFontButton.CreateFromHandle(Application.GetWidget("fb_Stylemaker"))
 		
+		Local VStyle:TStyle = New TStyle
+		
+		
 		Local R,G,B
 			cbBGColor.GetColorInt(Varptr(R),Varptr(G),Varptr(B))
 		
-		Local FontArt:String fb_Stylemaker.GetFontFamily()
+		Local FontArt:String = fb_Stylemaker.GetFontFamily()
+			VStyle.Font_Default.Name = "!"+FontArt
+			VStyle.Font_Comment.Name = "!"+FontArt
+			VStyle.Font_Number.Name = "!"+FontArt
+			VStyle.Font_Keyword.Name = "!"+FontArt
+			VStyle.Font_String.Name = "!"+FontArt
+			VStyle.Font_Identifier.Name = "!"+FontArt
+			VStyle.Font_Operator.Name = "!"+FontArt
+			VStyle.Font_Error.Name = "!"+FontArt
 		
-		
-		Local VStyle:TStyle = New TStyle
 		VStyle.BGColor = MakeColorString(R,G,B)
 		'VStyle.Font_Comment.Name = SSchrift
 		
