@@ -396,8 +396,9 @@ Function STrim:String(ToTrim:String)
 	For Local i:Int = 1 To Len(ToTrim)
 		Local actch:String = Mid(ToTrim,i,1)
 		If Not ((Asc(actch)>=Asc("0") And Asc(actch)<=Asc("9")) Or (Asc(actch)>=Asc("A") And Asc(actch)<=Asc("Z")) Or (actch = "_") Or (Asc(actch)>=Asc("a") And Asc(actch)<=Asc("z"))) Then
-			ToTrim =Mid(ToTrim,0,i-1) +Mid(ToTrim,i+1)
+			ToTrim = Mid(ToTrim,0,i-1) +Mid(ToTrim,i+1)
 			If i > 0 i:-1
+			If Len(ToTrim) < 1 Return ""
 		Else
 			Exit
 		EndIf
@@ -405,8 +406,9 @@ Function STrim:String(ToTrim:String)
 	For Local i:Int = Len(ToTrim) To 1 Step -1
 		Local actch:String = Mid(ToTrim,i,1)
 		If Not ((Asc(actch)>=Asc("0") And Asc(actch)<=Asc("9")) Or (Asc(actch)>=Asc("A") And Asc(actch)<=Asc("Z")) Or (actch = "_") Or (Asc(actch)>=Asc("a") And Asc(actch)<=Asc("z"))) Then
-			ToTrim =Mid(ToTrim,0,i-1) +Mid(ToTrim,i+1)
-			If i > 0 i:+1
+print "i: " + i + ", Len(ToTrim): " + Len(ToTrim) + ", ToTrim: " + ToTrim
+			ToTrim = Mid(ToTrim,0,i-1) +Mid(ToTrim,i+1)
+'			If i > 0 i:+1
 		Else
 			Exit
 		EndIf
