@@ -1,17 +1,17 @@
 Scintilla_TabWidth:2
-BlitzMax_Pfad:/home/philipp/bmx
+BlitzMax_Pfad:/home/bigmichi/Programme/BlitzMax/mod/gtk.mod/IDE
 DebugBuild:1
 SyncMods.Username:nobody
-Scintilla_KeywordsFile:/home/philipp/bmx/doc/bmxmods/commands.txt
+Scintilla_KeywordsFile:/home/bigmichi/Programme/BlitzMax/doc/bmxmods/commands.txt
 SyncMods.Username:Sektor333
 SyncMods.Servers:pub brl
 QuickBuild:1
-HelpBrowser_URL:/home/philipp/bmx/doc/index.html
+HelpBrowser_URL:/home/bigmichi/Programme/BlitzMax/doc/index.html
 LastOpenDir:/home/bigmichi/Programme/BlitzMax/mod/gtk.mod/IDE
 RecentList_Size:10
 RecentList_On:1
 Favorit_On:0
-FavoritSave:/home/philipp/bmx/mod/gtk.mod/IDE
-FavoritLoad:/home/philipp/bmx/mod/gtk.mod/IDE
+FavoritSave:/home/bigmichi/Programme/BlitzMax/mod/gtk.mod/IDE
+FavoritLoad:/home/bigmichi/Programme/BlitzMax/mod/gtk.mod/IDE
 /home/bigmichi/Programme/BlitzMax/mod/gtk.mod/IDE/IDE.bmx_have_foldinfo:yes
 /home/bigmichi/Programme/BlitzMax/mod/gtk.mod/IDE/IDE.bmx_foldinfo:0,17,54,261,267,314,561,809,829,870,920,1167,1219,1249,1353

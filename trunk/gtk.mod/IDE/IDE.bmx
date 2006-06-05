@@ -406,7 +406,7 @@ Function STrim:String(ToTrim:String)
 	For Local i:Int = Len(ToTrim) To 1 Step -1
 		Local actch:String = Mid(ToTrim,i,1)
 		If Not ((Asc(actch)>=Asc("0") And Asc(actch)<=Asc("9")) Or (Asc(actch)>=Asc("A") And Asc(actch)<=Asc("Z")) Or (actch = "_") Or (Asc(actch)>=Asc("a") And Asc(actch)<=Asc("z"))) Then
-print "i: " + i + ", Len(ToTrim): " + Len(ToTrim) + ", ToTrim: " + ToTrim
+'Print "i: " + i + ", Len(ToTrim): " + Len(ToTrim) + ", ToTrim: " + ToTrim
 			ToTrim = Mid(ToTrim,0,i-1) +Mid(ToTrim,i+1)
 '			If i > 0 i:+1
 		Else
@@ -1121,7 +1121,6 @@ End Function
 		
 		Local VStyle:TStyle = New TStyle
 		VStyle.Load("test")
-		
 		Local Frame_Vorschau:GtkFrame = GtkFrame.CreateFromHandle(Application.GetWidget("frame_style_vorschau"))
 		VScintilla = GtkScintilla.Create()
 			VScintilla.SetSizeRequest(700,500)
@@ -1132,15 +1131,66 @@ End Function
 
 	End Function
 
-	Function StyleMaker_SetStyle()
-		Local cbBGColor:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("cbBGColor"))
+	Function StyleMaker_SetStyle:TStyle()
+		Local cb_StyleMaker_BG_Color:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("cb_StyleMaker_BG_Color"))
+		Local cb_StyleMaker_Default_Color:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("cb_StyleMaker_Default_Color"))
+		Local cb_StyleMaker_Comment_Color:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("cb_StyleMaker_Comment_Color"))
+		Local cb_StyleMaker_Number_Color:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("cb_StyleMaker_Number_Color"))
+		Local cb_StyleMaker_Keyword_Color:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("cb_StyleMaker_Keyword_Color"))
+		Local cb_StyleMaker_String_Color:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("cb_StyleMaker_String_Color"))
+		Local cb_StyleMaker_Identifier_Color:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("cb_StyleMaker_Identifier_Color"))
+		Local cb_StyleMaker_Operator_Color:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("cb_StyleMaker_Operator_Color"))
 		Local fb_Stylemaker:GtkFontButton = GtkFontButton.CreateFromHandle(Application.GetWidget("fb_Stylemaker"))
 		
 		Local VStyle:TStyle = New TStyle
 		
 		
 		Local R,G,B
-			cbBGColor.GetColorInt(Varptr(R),Varptr(G),Varptr(B))
+			cb_StyleMaker_BG_Color.GetColorInt(Varptr(R),Varptr(G),Varptr(B))
+			VStyle.BGColor = MakeColorString(R,G,B)
+			
+			cb_StyleMaker_Default_Color.GetColorInt(Varptr(R),Varptr(G),Varptr(B))
+			VStyle.Font_Default.Color = MakeColorString(R,G,B)
+			VStyle.Font_Default.R = R
+			VStyle.Font_Default.G = G
+			VStyle.Font_Default.B = B
+						
+			cb_StyleMaker_Comment_Color.GetColorInt(Varptr(R),Varptr(G),Varptr(B))
+			VStyle.Font_Comment.Color = MakeColorString(R,G,B)
+			VStyle.Font_Comment.R = R
+			VStyle.Font_Comment.G = G
+			VStyle.Font_Comment.B = B
+			
+			cb_StyleMaker_Number_Color.GetColorInt(Varptr(R),Varptr(G),Varptr(B))
+			VStyle.Font_Number.Color = MakeColorString(R,G,B)
+			VStyle.Font_Number.R = R
+			VStyle.Font_Number.G = G
+			VStyle.Font_Number.B = B
+			
+			cb_StyleMaker_Keyword_Color.GetColorInt(Varptr(R),Varptr(G),Varptr(B))
+			VStyle.Font_Keyword.Color = MakeColorString(R,G,B)
+			VStyle.Font_Keyword.R = R
+			VStyle.Font_Keyword.G = G
+			VStyle.Font_Keyword.B = B
+			
+			cb_StyleMaker_String_Color.GetColorInt(Varptr(R),Varptr(G),Varptr(B))
+			VStyle.Font_String.Color = MakeColorString(R,G,B)
+			VStyle.Font_String.R = R
+			VStyle.Font_String.G = G
+			VStyle.Font_String.B = B
+			
+			cb_StyleMaker_Identifier_Color.GetColorInt(Varptr(R),Varptr(G),Varptr(B))
+			VStyle.Font_Identifier.Color = MakeColorString(R,G,B)
+			VStyle.Font_Identifier.R = R
+			VStyle.Font_Identifier.G = G
+			VStyle.Font_Identifier.B = B
+			
+			cb_StyleMaker_Operator_Color.GetColorInt(Varptr(R),Varptr(G),Varptr(B))
+			VStyle.Font_Operator.Color = MakeColorString(R,G,B)
+			VStyle.Font_Operator.R = R
+			VStyle.Font_Operator.G = G
+			VStyle.Font_Operator.B = B
+					
 		
 		Local FontArt:String = fb_Stylemaker.GetFontFamily()
 			VStyle.Font_Default.Name = "!"+FontArt
@@ -1152,12 +1202,40 @@ End Function
 			VStyle.Font_Operator.Name = "!"+FontArt
 			VStyle.Font_Error.Name = "!"+FontArt
 		
-		VStyle.BGColor = MakeColorString(R,G,B)
-		'VStyle.Font_Comment.Name = SSchrift
-		
+
 		
 		
 		SetupScintilla(VStyle,VScintilla)
+		Return VStyle
+	End Function
+
+	Function frmSkinScintilla_show()
+		Local cb_StyleMaker_Styles:GtkComboBox = GtkComboBox.CreateFromHandle(Application.GetWidget("cb_StyleMaker_Styles"))
+		VScintilla.ClearAll()
+			VScintilla.AppendText("Strict 'Dies ist ein Kommentar~nRem~n")
+			VScintilla.AppendText("Framework GTK.OOP~nEnd Rem~n")
+			VScintilla.AppendText("Type TTest~n")
+			VScintilla.AppendText("	Field A:String = "+Chr(34)+"Dies ist ein String"+Chr(34)+"~n")
+			VScintilla.AppendText("	Field B:Int = 205~n")
+			VScintilla.AppendText("End Type~n")
+			
+		
+	End Function
+
+	Function button_StyleMaker_Laden()
+		Local entry_StyleMaker_Save_Load:GtkEntry = GtkEntry.CreateFromHandle(Application.GetWidget("entry_StyleMaker_Save_Load"))
+		Local LoadStr:String = entry_StyleMaker_Save_Load.GetText()
+		If Len(Trim(LoadStr)) > 0 then
+		
+		End If
+	End Function
+
+	Function button_StyleMaker_Speichern()
+		Local entry_StyleMaker_Save_Load:GtkEntry = GtkEntry.CreateFromHandle(Application.GetWidget("entry_StyleMaker_Save_Load"))
+		Local SaveStr:String = entry_StyleMaker_Save_Load.GetText()
+		If Len(Trim(SaveStr)) > 0 then
+			StyleMaker_SetStyle().Save(SaveStr)
+		End If
 	End Function
 
 'foldend
