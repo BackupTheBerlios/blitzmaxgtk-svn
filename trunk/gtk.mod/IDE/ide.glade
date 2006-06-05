@@ -1618,6 +1618,26 @@
 			  <property name="visible">True</property>
 
 			  <child>
+			    <widget class="GtkEntry" id="entry_options_style">
+			      <property name="width_request">128</property>
+			      <property name="height_request">32</property>
+			      <property name="visible">True</property>
+			      <property name="can_focus">True</property>
+			      <property name="editable">True</property>
+			      <property name="visibility">True</property>
+			      <property name="max_length">0</property>
+			      <property name="text" translatable="yes"></property>
+			      <property name="has_frame">True</property>
+			      <property name="invisible_char">●</property>
+			      <property name="activates_default">False</property>
+			    </widget>
+			    <packing>
+			      <property name="x">160</property>
+			      <property name="y">0</property>
+			    </packing>
+			  </child>
+
+			  <child>
 			    <widget class="GtkLabel" id="label59">
 			      <property name="width_request">160</property>
 			      <property name="height_request">31</property>
@@ -1644,24 +1664,8 @@
 			  </child>
 
 			  <child>
-			    <widget class="GtkComboBox" id="combobox1">
-			      <property name="width_request">160</property>
-			      <property name="height_request">32</property>
-			      <property name="visible">True</property>
-			      <property name="items" translatable="yes">Standard
-Classic</property>
-			      <property name="add_tearoffs">False</property>
-			      <property name="focus_on_click">True</property>
-			    </widget>
-			    <packing>
-			      <property name="x">168</property>
-			      <property name="y">0</property>
-			    </packing>
-			  </child>
-
-			  <child>
 			    <widget class="GtkButton" id="button8">
-			      <property name="width_request">120</property>
+			      <property name="width_request">88</property>
 			      <property name="height_request">32</property>
 			      <property name="visible">True</property>
 			      <property name="can_focus">True</property>
@@ -1672,7 +1676,25 @@ Classic</property>
 			      <signal name="clicked" handler="bb_button_options_styleeditor" last_modification_time="Sun, 28 May 2006 14:29:05 GMT"/>
 			    </widget>
 			    <packing>
-			      <property name="x">336</property>
+			      <property name="x">368</property>
+			      <property name="y">0</property>
+			    </packing>
+			  </child>
+
+			  <child>
+			    <widget class="GtkButton" id="button14">
+			      <property name="width_request">80</property>
+			      <property name="height_request">32</property>
+			      <property name="visible">True</property>
+			      <property name="can_focus">True</property>
+			      <property name="label">gtk-open</property>
+			      <property name="use_stock">True</property>
+			      <property name="relief">GTK_RELIEF_NORMAL</property>
+			      <property name="focus_on_click">True</property>
+			      <signal name="clicked" handler="bb_options_style_laden" last_modification_time="Mon, 05 Jun 2006 10:44:57 GMT"/>
+			    </widget>
+			    <packing>
+			      <property name="x">288</property>
 			      <property name="y">0</property>
 			    </packing>
 			  </child>
