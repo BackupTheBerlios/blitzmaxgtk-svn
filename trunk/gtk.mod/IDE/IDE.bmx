@@ -73,8 +73,10 @@ Glade.Init()
 Global Settings:TSettings = New TSettings
 Settings.LoadAllSettings()
 Global Style:TStyle = New TStyle
-Style.Load("test")
-
+Local SSTyle:String = Settings.GetValue("Style")
+If Len(Trim(SStyle)) > 0 Then
+	Style.Load(SStyle)
+End If
 
 'Note: If is handled specially
 Global AddTabList:TList = New TList
@@ -1022,6 +1024,11 @@ End Function
 		'Standard Pfad(LADEN) aus ChooserButton lesen und speichern
 		Local Filechooserbutton_LoadPfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_load"))
 			Settings.SetValue("FavoritLoad",Filechooserbutton_LoadPfad.GetFileName())
+
+		'Sandard Style speichern
+		Local entry_options_style:GtkEntry = GtkEntry.CreateFromHandle(Application.GetWidget("entry_options_style"))
+		Local SStyle:String = entry_options_style.GetText()
+		If Len(Trim(SStyle)) > 0 Then Settings.SetValue("Style",SStyle)
 
 	Rem 'Hintergrund und Margin von Scintilla
 		Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
