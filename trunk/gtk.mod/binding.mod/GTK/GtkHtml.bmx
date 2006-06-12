@@ -1,5 +1,5 @@
 extern
-	function gtk_html_get_type:byte ptr()
+	Function gtk_html_get_type:Byte ptr()
 	function gtk_html_new:byte ptr()
 	function gtk_html_set_editor_api(gtkhtml:byte ptr, gtkhtmleditorapi:byte ptr, data:byte ptr)
 	function gtk_html_set_iframe_parent(gtkhtml:byte ptr, parent:byte ptr, htmlobject:byte ptr)

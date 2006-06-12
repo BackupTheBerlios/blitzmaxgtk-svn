@@ -200,7 +200,7 @@ Include "GTK/GtkObject/GtkCellRenderer/GtkCellRendererText/GtkCellRendererText.b
 Include "GTK/GtkObject/GtkCellRenderer/GtkCellRendererText/GtkCellRendererCombo/GtkCellRendererCombo.bmx"
 Include "GTK/GtkObject/GtkCellRenderer/GtkCellRendererPixbuf/GtkCellRendererPixbuf.bmx"
 'Include "GTK/GtkObject/GtkCellRenderer/GtkCellRendererProgress/GtkCellRendererProgress.bmx"
-'Include "GTK/GtkObject/GtkCellRenderer/GtkCellRendererToggle/GtkCellRendererToggle.bmx"
+Include "GTK/GtkObject/GtkCellRenderer/GtkCellRendererToggle/GtkCellRendererToggle.bmx"
 'Include "GTK/GtkObject/GtkFileFilter/GtkFileFilter.bmx"
 'Include "GTK/GtkObject/GtkItemFactory/GtkItemFactory.bmx"
 'Include "GTK/GtkObject/GtkTooltips/GtkTooltips.bmx"

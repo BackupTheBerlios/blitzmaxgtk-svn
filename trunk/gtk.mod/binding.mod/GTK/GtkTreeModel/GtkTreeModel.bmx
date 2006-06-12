@@ -69,4 +69,5 @@ Extern
 	Function gtk_tree_model_row_has_child_toggled(tree_model:Byte Ptr,path:Byte Ptr,iter:Byte Ptr)="gtk_tree_model_row_has_child_toggled"
 	Function gtk_tree_model_row_deleted(tree_model:Byte Ptr,path:Byte Ptr)="gtk_tree_model_row_deleted"
 	Function gtk_tree_model_rows_reordered(tree_model:Byte Ptr,path:Byte Ptr,iter:Byte Ptr,new_order:Byte Ptr)="gtk_tree_model_rows_reordered"
+	Function gtk_tree_model_get_type:Byte ptr()
 End Extern

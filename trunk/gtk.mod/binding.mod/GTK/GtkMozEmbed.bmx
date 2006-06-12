@@ -16,7 +16,7 @@ Rem
 End Rem
 
 Extern
-	function gtk_moz_embed_get_type:byte ptr()
+	Function gtk_moz_embed_get_type:Byte Ptr()
 	function gtk_moz_embed_new:byte ptr()
 	function gtk_moz_embed_set_comp_path(aPath:byte ptr)
 	function gtk_moz_embed_load_url(embed:byte ptr, url:byte ptr)

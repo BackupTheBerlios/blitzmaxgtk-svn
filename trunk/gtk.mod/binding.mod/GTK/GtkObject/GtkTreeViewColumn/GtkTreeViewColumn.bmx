@@ -22,6 +22,7 @@ Extern
 	Function gtk_tree_view_column_clear(tree_column:Byte Ptr)="gtk_tree_view_column_clear"
 	Function gtk_tree_view_column_get_cell_renderers:Byte Ptr(tree_column:Byte Ptr)="gtk_tree_view_column_get_cell_renderers"
 	Function gtk_tree_view_column_add_attribute(tree_column:Byte Ptr,cell_renderer:Byte Ptr,attribute:Byte Ptr,column:Int)="gtk_tree_view_column_add_attribute"
+	Function gtk_tree_view_column_set_attributes(tree_column:Byte Ptr, cell_renderer:Byte Ptr, key:Byte Ptr, val:Byte Ptr, term:Byte Ptr=Null)
 	Function gtk_tree_view_column_set_cell_data_func(tree_column:Byte Ptr,cell_renderer:Byte Ptr,func:Byte Ptr,func_data:Byte Ptr,destroy:Byte)="gtk_tree_view_column_set_cell_data_func"
 	Function gtk_tree_view_column_clear_attributes(tree_column:Byte Ptr,cell_renderer:Byte Ptr)="gtk_tree_view_column_clear_attributes"
 	Function gtk_tree_view_column_set_spacing(tree_column:Byte Ptr,spacing:Int)="gtk_tree_view_column_set_spacing"

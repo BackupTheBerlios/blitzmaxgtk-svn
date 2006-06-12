@@ -21,5 +21,7 @@ Extern
 	Function vte_terminal_get_type:Byte Ptr()="vte_terminal_get_type"
 	Function g_convert:Byte Ptr(InputString:Byte Ptr,length:Int,to_codeset:Byte Ptr,from_codeset:Byte Ptr,bytes_read:Byte Ptr,bytes_written:Byte Ptr,error:Byte Ptr)
 	function g_value_init(Value:byte ptr,GType:int)
-	function g_free(tstring:byte ptr)
+	Function g_free(tstring:Byte Ptr)
+	Function g_object_unref(obj:Byte Ptr)
+	Function g_object_set(obj:Byte Ptr, key:Byte Ptr, val:Byte Ptr, term:Byte Ptr=Null)
 End Extern

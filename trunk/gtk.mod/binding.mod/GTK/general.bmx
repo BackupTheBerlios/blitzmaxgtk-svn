@@ -39,10 +39,10 @@ Extern
 	Function gtk_grab_get_current:Byte Ptr()="gtk_grab_get_current"
 	Function gtk_grab_remove(widget:Byte Ptr)="gtk_grab_remove"
 	'Function gtk_init_add
-	function gtk_menu_item_get_type:byte ptr()
-	function gtk_item_get_type:byte ptr()
-	function gtk_menu_get_type:byte ptr()
-	function gtk_menu_shell_get_type:byte ptr()
+	Function gtk_menu_item_get_type:Byte ptr()
+	Function gtk_item_get_type:Byte ptr()
+	Function gtk_menu_get_type:Byte ptr()
+	Function gtk_menu_shell_get_type:Byte Ptr()
 	
 	
 	Function pango_font_description_from_string:Byte Ptr(Str:Byte Ptr)
@@ -89,10 +89,12 @@ Const PANGO_ELLIPSIZE_NONE:Int = 0
 const PANGO_ELLIPSIZE_START:int = 1
 const PANGO_ELLIPSIZE_MIDDLE:int = 2
 const PANGO_ELLIPSIZE_END:int = 3
-rem
-type GtkTreeIter
-	field stamp:int
-	field user_data:byte ptr, user_data2:byte ptr, user_data3:byte ptr
-end type
-end rem
+
+'Standard Type GtkTreeIter
+Type GtkTreeIterB
+	Field stamp:Int
+	Field user_data:Byte Ptr
+	Field user_data2:Byte Ptr
+	Field user_data3:Byte Ptr
+End Type
 

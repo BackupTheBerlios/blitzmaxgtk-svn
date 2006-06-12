@@ -57,5 +57,5 @@ Extern
 	'Function gtk_label_set_use_underline(label:Byte Ptr,setting:gboolean)="gtk_label_set_use_underline"
 	'Function gtk_label_set_single_line_mode(label:Byte Ptr,single_line_mode:gboolean)="gtk_label_set_single_line_mode"
 	'Function gtk_label_set_angle(label:Byte Ptr,angle:gdouble)="gtk_label_set_angle"
-	Function gtk_label_get_type:Byte Ptr()
+	Function gtk_label_get_type:Long()
 End Extern

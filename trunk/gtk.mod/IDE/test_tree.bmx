@@ -1,5 +1,8 @@
 Framework GTK.Binding
 Import GTK.OOP
+Import BRL.Random
+
+strict
 
 GTKUtil.Init()
 
@@ -14,76 +17,62 @@ Const AUTHOR_COLUMN:Int = 1
 Const CHECKED_COLUMN:Int = 2
 Const N_COLUMNS:Int = 3
 
-Local store:Byte Ptr ' GtkTreeStore
-Local tree:Byte Ptr ' GtkWidget
-Local column:Byte Ptr ' GtkTreeViewColumn
-Local renderer:Byte Ptr ' GtkCellRenderer
+Local store:GtkTreeStore
+Local tree:GtkTreeView
+Local column:GtkTreeViewColumn
+Local renderer:GtkCellRenderer
 
 Local typearr:Int[N_COLUMNS]
 typearr[0] = G_TYPE_STRING
 typearr[1] = G_TYPE_STRING
 typearr[2] = G_TYPE_BOOLEAN
-store = gtk_tree_store_newv(N_COLUMNS, typearr)
-Type GtkTreeIter
-	Field stamp:Int
-	Field user_data:Byte Ptr
-	Field user_data2:Byte Ptr
-	Field user_data3:Byte Ptr
-End Type
+store = GtkTreeStore.Create(typearr)
 
-Extern
-	Function gtk_tree_store_append_i(store:Byte Ptr, iter:Byte ptr, parent:Byte Ptr)="gtk_tree_store_append"
-	Function gtk_tree_store_set_value_i(store:Byte Ptr, iter:Byte Ptr, col:Int, val:Byte Ptr)="gtk_tree_store_set_value" 
-	Function malloc:Byte Ptr(size:Int)
-End Extern
-Local iter:GtkTreeIter = New GtkTreeIter
-Print iter.stamp
-gtk_tree_store_append_i(store, iter, Null)
-Print iter.stamp
-Print String.fromcstring(iter.user_data)
-Print String.fromcstring(iter.user_data2)
-Print String.fromcstring(iter.user_data3)
-gtk_tree_store_set_value_i(store, Varptr iter, TITLE_COLUMN, "Die Kunst des Shitfucks".ToCString())
-Print iter.stamp
-gtk_tree_store_set_value_i(store, Varptr iter, AUTHOR_COLUMN, "Master of the universe".ToCString())
-gtk_tree_store_set_value_i(store, Varptr iter, CHECKED_COLUMN, Byte Ptr(1))
-Extern
-	Function gtk_tree_model_get_type:Byte Ptr()
-	Function g_object_unref(obj:Byte Ptr)
-	Function g_type_check_instance_cast_l:Byte Ptr(b:Byte Ptr, a:Long)="g_type_check_instance_cast"
-	Function g_object_set(obj:Byte Ptr, name:Byte Ptr, val:Byte Ptr, dat:Byte Ptr)
-	Function gtk_tree_view_column_new:Byte Ptr()
-	Function gtk_tree_view_column_set_attributes(tree_column:Byte Ptr, cell_renderer:Byte Ptr, key:Byte Ptr, value:Byte Ptr, terminator:Byte Ptr)
-	Function gtk_tree_view_get_type:Byte Ptr()
-End extern
-tree = gtk_tree_view_new_with_model(g_type_check_instance_cast(store,gtk_tree_model_get_type()))
-g_object_unref(g_type_check_instance_cast_l(store,G_TYPE_OBJECT))
+Local iter:GtkTreeIter = store.Append()
+iter.setvalue(TITLE_COLUMN,"Die Kunst des Shitfucks".ToCString())
+iter.setvalue(AUTHOR_COLUMN,"Master of the universe".ToCString())
+iter.setvalue(CHECKED_COLUMN,Byte Ptr(1))
+SeedRnd MilliSecs()
+Local iter2:GtkTreeIter
+For Local i:Int = 0 To 5
+	iter2 = store.Append(iter)
+	iter2.setvalue(TITLE_COLUMN, ("Band " + (i+1)).ToCString())
+	iter2.setvalue(CHECKED_COLUMN,Byte Ptr(Int(Rand(0,1))))
+Next
+iter = store.Append(iter2)
+iter.setvalue(TITLE_COLUMN,"Epilog".ToCString())
+iter.setvalue(CHECKED_COLUMN,Byte Ptr(Int(Rand(0,1))))
+iter = store.Append(iter2)
+iter.setvalue(TITLE_COLUMN,"Greetings".TOCString())
+iter.setvalue(CHECKED_COLUMN,Byte Ptr(Int(Rand(0,1))))
 
-renderer = gtk_cell_renderer_text_new()
-g_object_set(g_type_check_instance_cast_l(renderer, G_TYPE_OBJECT), "foreground".ToCString(), "red".ToCString(), Null)
-column = gtk_tree_view_column_new()
-gtk_tree_view_column_set_title(column, "Author".ToCString())
-gtk_tree_view_column_pack_start(column, renderer, 1)
-gtk_tree_view_column_set_attributes(column, renderer, "text".ToCString(), Byte Ptr(AUTHOR_COLUMN), Null);
-gtk_tree_view_append_column(g_type_check_instance_cast(tree, gtk_tree_view_get_type()), column)
+tree = GtkTreeView.CreateWithModel(store)
+store.Unref()
 
-renderer = gtk_cell_renderer_text_new()
-column = gtk_tree_view_column_new()
-gtk_tree_view_column_set_title(column, "Title".ToCString())
-gtk_tree_view_column_pack_start(column, renderer, 1)
-gtk_tree_view_column_set_attributes(column, renderer, "text".ToCString(), Byte Ptr(TITLE_COLUMN), Null);
-gtk_tree_view_append_column(g_type_check_instance_cast(tree, gtk_tree_view_get_type()), column)
+renderer = GtkCellRendererText.Create()
+renderer.SetString("foreground", "red")
+column = GtkTreeViewColumn.Create()
+column.SetTitle("Title")
+column.PackStart(renderer)
+column.SetAttribute(renderer, "text", Byte Ptr(TITLE_COLUMN))
+tree.AppendColumn(column)
 
-renderer = gtk_cell_renderer_text_new()
-column = gtk_tree_view_column_new()
-gtk_tree_view_column_set_title(column, "Checked out".ToCString())
-gtk_tree_view_column_pack_start(column, renderer, 1)
-gtk_tree_view_column_set_attributes(column, renderer, "text".ToCString(), Byte Ptr(CHECKED_COLUMN), Null);
-gtk_tree_view_append_column(g_type_check_instance_cast(tree, gtk_tree_view_get_type()), column)
+renderer = GtkCellRendererText.Create()
+column = GtkTreeViewColumn.Create()
+column.SetTitle("Author")
+column.PackStart(renderer)
+column.SetAttribute(renderer, "text", Byte Ptr(AUTHOR_COLUMN))
+tree.AppendColumn(column)
 
-Local treeview:GtkWidget = GtkWidget.CreateWidgetFromHandle(tree)
-treeview.Show()
-twindow.Add(treeview)
+renderer = GtkCellRendererToggle.Create()
+column = GtkTreeViewColumn.Create()
+column.SetTitle("Checked out")
+column.PackStart(renderer)
+column.SetAttribute(renderer, "active", Byte Ptr(CHECKED_COLUMN))
+tree.AppendColumn(column)
+tree.Show()
+
+twindow.Add(tree)
 ' End EXAMPLE
 
 GTKUtil.Main()

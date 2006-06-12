@@ -90,5 +90,6 @@ Extern
 	'Function gtk_tree_view_set_destroy_count_func(tree_view:Byte Ptr,func:GtkTreeDestroyCountFunc,data:gpointer,destroy:GtkDestroyNotify)="gtk_tree_view_set_destroy_count_func"
 	'Function :gboolean((GtkTreeModel *model:*GtkTreeViewRowSeparatorFunc),iter:Byte Ptr,data);:gpointer)=""
 	'Function gtk_tree_view_get_row_separator_func:GtkTreeViewRowSeparatorFunc(tree_view:Byte Ptr)="gtk_tree_view_get_row_separator_func"
-	'Function gtk_tree_view_set_row_separator_func(tree_view:Byte Ptr,func:GtkTreeViewRowSeparatorFunc,data:gpointer,destroy:GtkDestroyNotify)="gtk_tree_view_set_row_separator_func"
+	'Function gtk_tree_view_set_row_separator_func(tree_view:Byte Ptr,func:GtkTreeViewRowSeparatorFunc,data:gpointer,Destroy:GtkDestroyNotify)="gtk_tree_view_set_row_separator_func"
+	Function gtk_tree_view_get_type:Long()
 End Extern

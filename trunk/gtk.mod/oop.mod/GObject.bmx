@@ -20,4 +20,37 @@ Type GObject
 	Method SignalConnect:Long(Signal:String,TFunction:Byte Ptr,Data:Byte Ptr=Null,DestroyData:Byte Ptr=Null,ConnectFlags:Byte=0)
 		Return g_signal_connect_data(Handle,Signal.ToCString(),TFunction,Data,DestroyData,ConnectFlags)
 	End Method
+	
+	Method Unref()
+		g_object_unref(Handle)
+	End Method
+
+	Method Set(key:String, value:Byte Ptr)
+		g_object_set(Handle, key.toCString(), value)
+	End Method
+	
+	Method SetString(key:String, value:String)
+		g_object_set(Handle, key.toCString(), value.ToCString())
+	End Method
+	
+	Method SetShort(key:String, value:Short)
+		g_object_set(Handle, key.ToCString(), Byte Ptr(value))
+	End Method
+	
+	Method SetInt(key:String, value:Int)
+		g_object_set(Handle, key.toCString(), Byte Ptr(value))
+	End Method
+	
+	Method SetLong(key:String, value:Long)
+		g_object_set(Handle, key.ToCString(), Varptr value)
+	End Method
+	
+	Method SetFloat(key:String, value:Float)
+		g_object_set(Handle, key.toCString(), Varptr value)
+	End Method
+
+	Method SetDouble(key:String, value:Double)
+		g_object_set(Handle, key.ToCString(), Varptr value)
+	End Method
 End Type
+

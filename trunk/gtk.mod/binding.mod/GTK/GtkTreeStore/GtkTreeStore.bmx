@@ -18,6 +18,7 @@ Extern
 	Function gtk_tree_store_newv:Byte Ptr(n_columns:Int,types:Byte Ptr)="gtk_tree_store_newv"
 	Function gtk_tree_store_set_column_types(tree_store:Byte Ptr,n_columns:Int,types:Byte Ptr)="gtk_tree_store_set_column_types"
 	Function gtk_tree_store_set_value(tree_store:Byte Ptr,iter:Byte Ptr,column:Int,value:Byte Ptr)="gtk_tree_store_set_value"
+	Function gtk_tree_store_set(tree_store:Byte Ptr,iter:Byte Ptr,column:Int,value:Byte Ptr,tend:Int=-1)
 	Function gtk_tree_store_set_valist(tree_store:Byte Ptr,iter:Byte Ptr,var_args:Byte Ptr)="gtk_tree_store_set_valist"
 	Function gtk_tree_store_remove:Byte(tree_store:Byte Ptr,iter:Byte Ptr)="gtk_tree_store_remove"
 	Function gtk_tree_store_insert(tree_store:Byte Ptr,iter:Byte Ptr,parent:Byte Ptr,position:Int)="gtk_tree_store_insert"
