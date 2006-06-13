@@ -1488,7 +1488,9 @@ end rem
 'foldend
 
 'foldstart 'RecentList
-Function GetRecentFilename
+Function GetRecentFilename:String()
+	If FileType("
+End Function
 Function AddToRecentList(item:String)
 	If recentlist.contains(item) Then
 		recentlist.remove(item)

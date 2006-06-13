@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=GTK BlitzMax-IDE
+Name[de]=GTK-BlitzMax-IDE
+Comment=Develop BlitzMax-applications with the GTK BlitzMax-IDE
+Comment[de]=Entwickeln Sie BlitzMax-Programme mit der GTK-BlitzMax-IDE
+TryExec=gtkmaxide
+Exec=gtkmaxide
+Icon=gtkmaxide.png
+Type=Application
+Categories=GNOME;GTK;Application;Development;
+StartupNotify=false
+X-Ubuntu-Gettext-Domain=gtkmaxide
