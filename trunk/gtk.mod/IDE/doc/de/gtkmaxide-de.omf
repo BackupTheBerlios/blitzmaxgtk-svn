@@ -23,7 +23,7 @@
 			Benutzerhandbuch
 		</type>
 		<format mime="text/xml" dtd="-//OASIS/DTD DocBoook XML V4.1.2//EN"/>
-		<identifier url="file:/usr/share/help/gnome/bmxide/bmxide-de.xml"/>
+		<identifier url="file:/usr/share/help/gnome/gtkmaxide/gtkmaxide-de.xml"/>
 		<language code="de"/>
 		<relation seriesid="7bf4f09a-f974-11da-85a7-e29bd0ed9ff6"/>
 		<rights type="GNU FDL" license.version="1.1" holder="Philipp Kerling"/>

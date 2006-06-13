@@ -1488,6 +1488,7 @@ end rem
 'foldend
 
 'foldstart 'RecentList
+Function GetRecentFilename
 Function AddToRecentList(item:String)
 	If recentlist.contains(item) Then
 		recentlist.remove(item)
@@ -1519,9 +1520,10 @@ Function deleterecentitem(widget:Byte Ptr, data:Byte Ptr)
 	tmpmenu.Remove(tmpwidget)
 End Function
 Function SaveRecentList()
-	Local rstream:TStream = WriteStream("cfg/recent.lst")
+	local recentfile:String = GetRecentFilename()
+	Local rstream:TStream = WriteStream(recentfile)
 	If rstream = Null Then
-		Scream("Konnte cfg/recent.lst nicht öffnen")
+		Scream("Konnte " + recentfile + " nicht öffnen")
 	EndIf
 	For Local rentry:String = EachIn recentlist
 		rstream.WriteLine(rentry)
@@ -1529,9 +1531,10 @@ Function SaveRecentList()
 	CloseStream(rstream)
 End Function
 Function loadrecentlist()
-	Local rstream:TStream = ReadStream("cfg/recent.lst")
+	local recentfile:String = GetRecentFilename()
+	Local rstream:TStream = ReadStream(recentfile)
 	If rstream = Null Then
-		Print "(IDE.bmx) Warning: Couldn´t load cfg/recent.lst"
+		Print "(IDE.bmx) Warning: Couldn´t load " + recentfile
 		DisableRecentItem()
 		Return
 	EndIf
