@@ -8,6 +8,7 @@ install:
 	cp -f ../ide.glade /usr/share/$(pkgname)
 	cp -f ../idelogo.png /usr/share/pixmaps/$(pkgname).png
 	cp -f ../idelogo.xcf /usr/share/pixmaps/$(pkgname).xcf
+	cp -f ../idelogo.png /usr/share/$(pkgname)
 	cp -f ../$(pkgname).desktop /usr/share/applications
 
 uninstall:

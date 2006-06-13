@@ -20,8 +20,8 @@ Strict
 ' IDE
 Framework GTK.OOP
 Import GTK.Scintilla
-Import BRL.MaxUtil
 Import BRL.StandardIO
+Import Pub.StdC
 Import "settings.bmx"
 Import "style.bmx"
 Import "gettext.bmx"
@@ -182,10 +182,23 @@ End Function
 'foldend
 'TProcLib.Init(T_emp)
 
-Global BmxPath:String = BlitzMaxPath()
+Global BmxPath:String = Settings.GetValue("BlitzMax_Pfad")
+If BmxPath = "" Or filetype(BmxPath) <> FILETYPE_DIR Then
+	Scream("Bitte setzen Sie den BlitzMax-Pfad")
+endif
 
 Global frmMain:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmMain"))
-frmMain.SetIconFromFile("idelogo.png")
+local iconpath:String = ""
+If FileType("idelogo.png") = FILETYPE_FILE then
+    iconpath="idelogo.png"
+else
+    if filetype("/usr/share/pixmaps/gtkmaxide.png") = FILETYPE_FILE then
+        iconpath="/usr/share/pixmaps/gtkmaxide.png"
+    else
+       	Print "(IDE.bmx) WARNING: Couldn´t find idelogo.png or gtkmaxide.png"
+	endif
+endif				
+if iconpath<>"" then frmMain.SetIconFromFile(iconpath)
 Options_Load_by_first_Start()
 
 Global frmOptions:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmOptions"))
@@ -1489,7 +1502,10 @@ end rem
 
 'foldstart 'RecentList
 Function GetRecentFilename:String()
-	If FileType("
+	If FileType(realpath(getenv_("HOME")+"/.gtkmaxide")) <> FILETYPE_DIR Then
+		CreateDir(realpath(getenv_("HOME")+"/.gtkmaxide"))
+	EndIf
+	Return realpath(getenv_("HOME")+"/.gtkmaxide/recent.lst")
 End Function
 Function AddToRecentList(item:String)
 	If recentlist.contains(item) Then
@@ -1525,7 +1541,7 @@ Function SaveRecentList()
 	local recentfile:String = GetRecentFilename()
 	Local rstream:TStream = WriteStream(recentfile)
 	If rstream = Null Then
-		Scream("Konnte " + recentfile + " nicht öffnen")
+		Scream("Konnte " + recentfile + " nicht zum Schreiben öffnen")
 	EndIf
 	For Local rentry:String = EachIn recentlist
 		rstream.WriteLine(rentry)

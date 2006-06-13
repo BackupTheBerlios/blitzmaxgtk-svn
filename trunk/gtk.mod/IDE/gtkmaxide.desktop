@@ -9,5 +9,5 @@ Exec=gtkmaxide
 Icon=gtkmaxide.png
 Type=Application
 Categories=GNOME;GTK;Application;Development;
-StartupNotify=false
+StartupNotify=true
 X-Ubuntu-Gettext-Domain=gtkmaxide

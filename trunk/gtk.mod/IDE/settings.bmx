@@ -18,7 +18,7 @@ Strict
 Import BRL.Linkedlist
 Import BRL.Filesystem
 Import BRL.Retro
-
+Import Pub.StdC
 Type TSetting
 	Field Name:String
 	Field Value:String
@@ -27,10 +27,17 @@ End Type
 Type TSettings
 	Global Settingslist:TList = New TList
 	
+	Method GetFilename:String()
+		If FileType(RealPath(getenv_("HOME")+"/.gtkmaxide")) = 0 then
+			createdir(RealPath(getenv_("HOME")+"/.gtkmaxide"))
+		endif
+		Return RealPath(getenv_("HOME")+"/.gtkmaxide/settings.set")
+	End Method
+	
 	Method SaveAllSettings()
-		DeleteFile("cfg/settings.set")
-		CreateFile("cfg/settings.set")
-		Local SaveFile:TStream = OpenStream("cfg/settings.set")
+		DeleteFile(Self.GetFilename())
+		CreateFile(Self.GetFilename())
+		Local SaveFile:TStream = OpenStream(Self.GetFilename())
 		For Local TSet:TSetting = EachIn SettingsList
 			SaveFile.WriteLine(TSet.Name+":"+TSet.Value)	
 		Next 
@@ -38,7 +45,11 @@ Type TSettings
 	End Method
 
 	Method LoadAllSettings()
-		Local LoadFile:TStream = OpenFile("cfg/settings.set")
+		Local LoadFile:TStream = OpenFile(Self.GetFilename())
+		If LoadFile=Null THen
+			Print "(settings.bmx) " + Self.GetFilename() + " could not be opened, using default settings"
+			return 
+		endif
 		While Not Eof(LoadFile)
 			Local RL:String = ReadLine(LoadFile)
 			Local LName:String = Left(RL, Instr(RL,":")-1)
