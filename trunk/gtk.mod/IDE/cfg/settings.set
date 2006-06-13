@@ -7,7 +7,7 @@ SyncMods.Username:Sektor333
 SyncMods.Servers:pub brl
 QuickBuild:1
 HelpBrowser_URL:/home/philipp/bmx/doc/index.html
-LastOpenDir:/home/philipp/bmx/mod/gtk.mod/binding.mod/GTK/GtkObject/GtkWidget/GtkContainer/GtkTreeView
+LastOpenDir:/home/philipp/bmx/mod/gtk.mod/IDE
 RecentList_Size:10
 RecentList_On:1
 Favorit_On:0
@@ -16,4 +16,4 @@ FavoritLoad:/home/philipp/bmx/mod/gtk.mod/IDE
 /home/bigmichi/Programme/BlitzMax/mod/gtk.mod/IDE/IDE.bmx_have_foldinfo:yes
 /home/bigmichi/Programme/BlitzMax/mod/gtk.mod/IDE/IDE.bmx_foldinfo:0,17,54,261,267,314,561,809,829,870,920,1167,1219,1249,1353
 Style:asd
-LastSaveDir:/home/philipp/bmx/mod/gtk.mod/IDE
+LastSaveDir:/home/philipp/bmx/mod/gtk.mod/oop.mod

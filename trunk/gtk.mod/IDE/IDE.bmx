@@ -24,6 +24,7 @@ Import BRL.MaxUtil
 Import BRL.StandardIO
 Import "settings.bmx"
 Import "style.bmx"
+Import "gettext.bmx"
 
 ?win32
 Import "procwin32.bmx"
@@ -67,7 +68,8 @@ Global DocumentList:TList = New TList
 
 
 ' Initialization stuff
-'foldstart
+'FoldStart
+GetText.Init("gtkbmxide", RealPath(CurrentDir()+"/lang"), "UTF-8")
 GTKUtil.Init()
 Glade.Init()
 Global Settings:TSettings = New TSettings
@@ -105,7 +107,7 @@ RemoveTabList.addLast("end if")
 Global KeywordList:TList = New TList
 Global RealKeywordList:TList = New TList
 If Settings.GetValue("Scintilla_KeywordsFile")="" Then
-	Scream("Keywords-Datei nicht festgelegt")
+	Scream(_("Keywords-Datei nicht festgelegt"))
 Else
 	Local KeyWordsFile:TStream = ReadStream(Settings.GetValue("Scintilla_KeywordsFile"))
 	If KeyWordsFile = Null Then

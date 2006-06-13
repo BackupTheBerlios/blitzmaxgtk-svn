@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE omf PUBLIC "-//OMF//DTD Scrollkeeper OMF Variant V1.0//EN" "http://scrollkeeper.sourceforge.net/dtds/scrollkeeper-omf-1.0/scrollkeeper-omf.dtd">
+<omf>
+	<resource>
+		<creator>
+			k.philipp@googlemail.com (Philipp Kerling)
+		</creator>
+		<maintainer>
+			k.philipp@googlemail.com (Philipp Kerling)
+		</maintainer>
+		<title>
+			BlitzMaxIDE-Handbuch
+		</title>
+		<date>
+			2006-11-06
+		</date>
+		<version identifier="0.0.1" date="2006-11-06" description="First version"/>
+		<subject category="GNOME|Development"/>
+		<description>
+			Benutzerhandbuch der GTK-BlitzMax-IDE
+		</description>
+		<type>
+			Benutzerhandbuch
+		</type>
+		<format mime="text/xml" dtd="-//OASIS/DTD DocBoook XML V4.1.2//EN"/>
+		<identifier url=""/>
+		<language code="de"/>
+		<relation seriesid="7bf4f09a-f974-11da-85a7-e29bd0ed9ff6"/>
+		<rights type="GNU FDL" license.version="1.1" holder="Philipp Kerling"/>
+	</resource>
+</omf>
