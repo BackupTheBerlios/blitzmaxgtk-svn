@@ -983,10 +983,10 @@ End Function
 	end rem
 
 		'BlitzMax Pfad in ChooserButtonladen
-		Filechooserbutton_Scintilla_BM_Pfad.SetFileName(Settings.GetValue("BlitzMax_Pfad"))
+		If(Settings.GetValue("BlitzMax_Pfad")<>"" then Filechooserbutton_Scintilla_BM_Pfad.SetFileName(Settings.GetValue("BlitzMax_Pfad"))
 		
 		'Keywords in ChooserButton laden
-		Filechooserbutton_Scintilla_KeyWordsList.SetFileName(Settings.GetValue("Scintilla_KeywordsFile"))
+		If(Settings.GetValue("Scintilla_KeywordsFile")<>"" then Filechooserbutton_Scintilla_KeyWordsList.SetFileName(Settings.GetValue("Scintilla_KeywordsFile"))
 			
 		'Recentlist aktivieren/deaktivieren
 		Local RO:Byte = Byte(Settings.GetValue("RecentList_On"))
