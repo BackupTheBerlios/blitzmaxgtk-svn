@@ -1,6 +1,6 @@
-pkgname=bmxide
-xmlname=bmxide-de.xml
-omfname=bmxide-de.omf
+pkgname=gtkmaxide
+xmlname=$(pkgname)-de.xml
+omfname=$(pkgname)-de.omf
 
 all:
 	scrollkeeper-preinstall -n file:/usr/share/help/gnome/$(pkgname)/$(xmlname) $(omfname).in $(omfname)

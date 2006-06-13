@@ -69,7 +69,7 @@ Global DocumentList:TList = New TList
 
 ' Initialization stuff
 'FoldStart
-GetText.Init("gtkbmxide", RealPath(CurrentDir()+"/lang"), "UTF-8")
+GetText.Init("gtkmaxide", "/usr/share/locale", "UTF-8")
 GTKUtil.Init()
 Glade.Init()
 Global Settings:TSettings = New TSettings
@@ -132,8 +132,19 @@ Else
 EndIf
 
 
-' Loading interface
-Global Application:GladeXML = GladeXML.Create("ide.glade")
+' Glade-Datei suchen, dabei lokale Version bevorzugen
+local gladefile:String
+If FileType("ide.glade") <> 0 then
+	gladefile="ide.glade"
+else
+	if filetype("/usr/share/gtkmaxide/ide.glade") <> 0then
+		gladefile="/usr/share/gtkmaxide/ide.glade"
+	else
+		Scream("Interface konnte nicht gefunden werden!")
+		end
+	endif
+endif
+Global Application:GladeXML = GladeXML.Create(gladefile)
 Application.ConnectSignals()
 
 Global ActualHelpBrowserPath:String = ""
