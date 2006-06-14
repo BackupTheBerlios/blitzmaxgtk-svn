@@ -17,6 +17,7 @@ Const AUTHOR_COLUMN:Int = 1
 Const CHECKED_COLUMN:Int = 2
 Const N_COLUMNS:Int = 3
 
+
 Local store:GtkTreeStore
 Local tree:GtkTreeView
 Local column:GtkTreeViewColumn
@@ -41,6 +42,7 @@ For Local i:Int = 0 To 5
 Next
 iter = store.Append(iter2)
 iter.setvalue(TITLE_COLUMN,"Epilog".ToCString())
+iter.setvalue(AUTHOR_COLUMN,"asdasdasdasd".ToCString())
 iter.setvalue(CHECKED_COLUMN,Byte Ptr(Int(Rand(0,1))))
 iter = store.Append(iter2)
 iter.setvalue(TITLE_COLUMN,"Greetings".TOCString())
