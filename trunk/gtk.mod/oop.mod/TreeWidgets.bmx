@@ -59,6 +59,12 @@ Type GtkTreeView Extends GtkContainer
 		tempview.Handle = gtk_tree_view_new()
 		Return tempview
 	End Function
+	
+	Function CreateFromHandle:GtkTreeView(Handle:Byte ptr)
+		Local tempstore:GtkTreeView = New GtkTreeView
+		  tempstore.Handle = Handle
+		Return tempstore
+	End Function
 
 	Function CreateWithModel:GtkTreeView(model:GtkTreeModel)
 		Local tempview:GtkTreeView = New GtkTreeView

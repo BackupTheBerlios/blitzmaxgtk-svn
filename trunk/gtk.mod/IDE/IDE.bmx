@@ -212,6 +212,17 @@ Global frmCmdOpts:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("
 
 Global frmLogin:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmLogin"))
 Global recentList:TList = New TList
+
+Global TvHome:GtkETree = New GtkETree
+TvHome.Tree = GtkTreeView.CreateFromHandle(Application.GetWidget("tvHOME"))
+TvHome.addStoreColumn(G_TYPE_STRING)
+TvHome.Init()
+TvHome.addViewColumn(0,"Hilfe")
+TvHome.tree.Show()
+
+Local UG:GtkETreeIter = TvHome.NewItem()
+UG.SetString("UserGuide")
+
 InitHelpBrowser()
 Extern
 	Function gtk_label_set_justify(label:Byte Ptr, justify:Int)
