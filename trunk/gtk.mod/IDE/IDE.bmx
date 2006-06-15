@@ -53,7 +53,7 @@ Print "to redistribute it under certain conditions; see COPYING"
 Print "for details."
 'foldend
 
-'foldstart 'Alles Laden und Hauptschleife starten
+'foldstart 'Alles Laden und Hauptschleife starten as
 
 Type TDocument
 	Field Name:String
