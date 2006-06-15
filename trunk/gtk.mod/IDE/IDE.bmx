@@ -111,7 +111,7 @@ If Settings.GetValue("Scintilla_KeywordsFile")="" Then
 Else
 	Local KeyWordsFile:TStream = ReadStream(Settings.GetValue("Scintilla_KeywordsFile"))
 	If KeyWordsFile = Null Then
-		Scream("Konnte Keywords-Datei nicht öffnen")
+		Scream("Konnte Keywords-Datei nicht ï¿½fnen")
 	Else
 		While Not KeyWordsFile.EOF()
 			Local ALine:String = KeyWordsFile.ReadLine()
@@ -195,7 +195,7 @@ else
     if filetype("/usr/share/pixmaps/gtkmaxide.png") = FILETYPE_FILE then
         iconpath="/usr/share/pixmaps/gtkmaxide.png"
     else
-       	Print "(IDE.bmx) WARNING: Couldn´t find idelogo.png or gtkmaxide.png"
+       	Print "(IDE.bmx) WARNING: Couldnt find idelogo.png or gtkmaxide.png"
 	endif
 endif				
 if iconpath<>"" then frmMain.SetIconFromFile(iconpath)
@@ -632,7 +632,7 @@ Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 	Local Filechooserbutton_LoadPfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_load"))
 	Local FP:String = Filechooserbutton_LoadPfad.GetFileName()
 	
-	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD(ISO_8859_1_To_UTF_8("Datei öffnen"),Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-open",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
+	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD(ISO_8859_1_To_UTF_8("Datei ï¿½fnen"),Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-open",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
 	Local lastpath:String
 	
 	If FileType(Settings.GetValue("LastOpenDir")) <> 2 Then 
@@ -837,7 +837,7 @@ End Function
 
 'foldend
 
-'foldstart 'Kontextmenü
+'foldstart 'Kontextmen
 Function ShowInfo()
 	Local AboutWindow:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmAbout"))
 	AboutWindow.Show()
@@ -951,7 +951,7 @@ End Function
 'foldstart 'Optionen DIALOG
 
 	Function MIEinstellungenClick()
-		'Ladefenster öffnen
+		'Ladefenster ï¿½fnen
 		frmOptions.show()
 	End Function
 
@@ -969,7 +969,7 @@ End Function
 		Local Filechooserbutton_SavePfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_save"))
 
 
-	Rem 'Hintergrund für Scintilla
+	Rem 'Hintergrund fr Scintilla
 		Local ColorButton_Scintilla_BG:GtkColorButton = GtkColorButton.CreateFromHandle(Application.GetWidget("colorbutton_Scintilla_BG"))
 			ColorButton_Scintilla_BG.setColorInt(ExtractR(Settings.GetValue("Scintilla_BGColor")),ExtractG(Settings.GetValue("Scintilla_BGColor")),ExtractB(Settings.GetValue("Scintilla_BGColor")))
 	end rem
@@ -1094,7 +1094,7 @@ End Function
 		Return True
 	End Function
 
-	'Functionen über Widgets
+	'Functionen ber Widgets
 	
 	Function button_options_history()
 		Local CheckButton_RecentList:GtkCheckButton = GtkCheckButton.CreateCBFromHandle(Application.GetWidget("cb_options_recentlist"))
@@ -1148,7 +1148,7 @@ End Function
 		Return True
 	End Function
 
-	'Functionen über Widgets
+	'Functionen ber Widgets
 	
 	Function Stylemaker_by_first_Start()
 		
@@ -1385,7 +1385,7 @@ Function BuildModules()
 		Scream "Bitte beenden Sie zuerst den momentan in der Konsole laufenden Prozess"
 	End If
 	Notebook.SetCurrentPage(1)
-	TProcLib.Say("Starte das Kompilieren geänderter Module...")
+	TProcLib.Say("Starte das Kompilieren geï¿½derter Module...")
 	TProcLib.CreateProcess(bmxpath+"/bin/bmk",bmkArgs)
 End Function
 Function killApp()
@@ -1541,7 +1541,7 @@ Function SaveRecentList()
 	local recentfile:String = GetRecentFilename()
 	Local rstream:TStream = WriteStream(recentfile)
 	If rstream = Null Then
-		Scream("Konnte " + recentfile + " nicht zum Schreiben öffnen")
+		Scream("Konnte " + recentfile + " nicht zum Schreiben ï¿½fnen")
 	EndIf
 	For Local rentry:String = EachIn recentlist
 		rstream.WriteLine(rentry)
@@ -1552,7 +1552,7 @@ Function loadrecentlist()
 	local recentfile:String = GetRecentFilename()
 	Local rstream:TStream = ReadStream(recentfile)
 	If rstream = Null Then
-		Print "(IDE.bmx) Warning: Couldn´t load " + recentfile
+		Print "(IDE.bmx) Warning: Couldnt load " + recentfile
 		DisableRecentItem()
 		Return
 	EndIf
@@ -1587,7 +1587,7 @@ Function RecentListItemClicked2(label:Byte Ptr)
 	Local text:String = templabel.gettext()
 	Local tmpindex:Int = Instr(text, ".")
 	If tmpindex = 0 Then
-		Print "(IDE.bmx) Warning: Couldn´t find . in label text"
+		Print "(IDE.bmx) Warning: Couldnt find . in label text"
 		Return
 	EndIf
 	Local tmpstr:String = Mid(text,0,tmpindex)

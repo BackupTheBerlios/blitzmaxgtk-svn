@@ -2,6 +2,7 @@ Framework GTK.Binding
 Import GTK.OOP
 Import BRL.Random
 Import BRL.linkedlist
+Import brl.filesystem
 Strict
 
 Type MI
@@ -9,11 +10,11 @@ Type MI
 	Field Text:String
 	Field Option:Byte
 	
-	Method SetString(Pos:Int,Text:String)
+	Method SetString(Text:String="",Pos:Int=0)
 		iter.setvalue(Pos,Text.ToCString())
 	End Method 
 	
-	Method SetByte(Pos:Int,B:Byte)
+	Method SetByte(B:Byte=False,Pos:Int=0)
 		iter.setvalue(Pos,Byte Ptr(B))
 	End Method
 	
@@ -39,7 +40,7 @@ Type MTV
 			Local column:GtkTreeViewColumn
 			Local renderer:GtkCellRenderer
 			renderer = GtkCellRendererText.Create()
-			renderer.SetString("foreground", "red")
+			renderer.SetString("foreground", "black")
 			column = GtkTreeViewColumn.Create()
 			column.SetTitle(Title)
 			column.PackStart(renderer)
@@ -65,21 +66,20 @@ GTKUtil.Init()
 
 Global GTV:MTV = New MTV
 GTV.addStore(G_TYPE_STRING)
-GTV.addStore(G_TYPE_STRING)
-GTV.addStore(G_TYPE_BOOLEAN)
-GTV.addColumn(0,"Spalte1")
-GTV.addColumn(1,"Spalte2")
-GTV.addColumn(2,"Spalte3")
+GTV.addColumn(0,"Hilfe")
 
-Local My:MI = GTV.NewItem()
-My.SetString(0,"Test")
-My.SetString(1,"asdf")
-My.SetByte(2,True)
 
-Local My2:MI = GTV.NewItem(My)
-My2.SetString(0,"Test")
-My2.SetString(1,"asdf")
-My2.SetByte(2,True)
+Local UG:MI = GTV.NewItem()
+UG.SetString("UserGuide")
+ImportLinks(UG,"/home/bigmichi/Programme/BlitzMax/doc/bmxuser/navbar.html")
+
+Local LG:MI = GTV.NewItem()
+LG.SetString("Language")
+ImportLinks(LG,"/home/bigmichi/Programme/BlitzMax/doc/bmxlang/navbar.html")
+
+Local Mods:MI = GTV.NewItem()
+Mods.SetString("Modules")
+ImportLinks(Mods,"/home/bigmichi/Programme/BlitzMax/doc/bmxmods/navbar.html")
 
 Local twindow:GtkWindow = GtkWindow.Create()
 twindow.Show()
@@ -92,5 +92,57 @@ GTKUtil.Main()
 
 Function close()
 	End
+End Function
+
+
+
+Function ImportLinks(root:MI,path$)
+	Local	stream:TStream
+	Local	c$,l$,p,q,a$,n$,cat
+	Local	node:MI
+	
+	stream=ReadFile(path)
+	If Not stream Return
+	path=ExtractDir(path)
+	node=root
+	While Not Eof(stream)
+		c=ReadLine(stream)
+		If c="" Continue
+
+		l=c.ToLower()
+		l=l.Replace(Chr(34),"'")
+		p=l.Find("<a")
+		If p=-1 Continue
+		a$=""
+		q=l.find("href=",p)+1
+		If q
+			If l[q+4]=39	'"'"
+				p=q+5
+				q=l.find("'",p)
+			Else
+				p=q+4
+				q=l.find(" ",p)
+			EndIf
+			If q>p 
+				a$=path+"/"+c[p..q]
+			EndIf
+		EndIf
+		p=c.Find(">",q)+1
+		If p And c[p]=60 p=c.Find(">",p)+1
+		q=c.Find("<",p)
+		If q<=p Continue
+		n$=c[p..q]
+		'Print n$
+		
+		If l.find("onclick=toggle")<>-1
+			node=GTV.NewItem(root)
+			node.SetString(n$)
+		Else
+			GTV.NewItem(node).SetString(n$)
+		EndIf
+		
+		
+	Wend
+	stream.Close
 End Function
 
