@@ -214,19 +214,17 @@ Global frmLogin:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("fr
 Global recentList:TList = New TList
 
 Global TvHome:GtkETree = New GtkETree
-TvHome.Tree = GtkTreeView.CreateFromHandle(Application.GetWidget("tvHOME"))
 TvHome.addStoreColumn(G_TYPE_STRING)
 TvHome.Init()
+TvHome.Tree.Destroy()
+TvHome.Tree = GtkTreeView.CreateFromHandle(Application.GetWidget("tvHOME"))
+TvHome.Tree.SetModel(TvHome.Store)
 TvHome.addViewColumn(0,"Hilfe")
-TvHome.tree.Show()
 
 Local UG:GtkETreeIter = TvHome.NewItem()
 UG.SetString("UserGuide")
 
 InitHelpBrowser()
-Extern
-	Function gtk_label_set_justify(label:Byte Ptr, justify:Int)
-End Extern
 
 Function InitHelpBrowser()
 	Local helpvbox:GtkVBox = GtkVBox.CreateFromHandle(Application.GetWidget("HelpVBox"))

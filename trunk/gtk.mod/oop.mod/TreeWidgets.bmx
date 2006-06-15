@@ -72,6 +72,14 @@ Type GtkTreeView Extends GtkContainer
 		Return tempview
 	End function
 
+	Method SetModel(model:GtkTreeModel)
+		gtk_tree_view_set_model(Handle, model.Handle)
+	End Method
+	
+	Method GetModel:Byte ptr()
+		Return gtk_tree_view_get_model(Handle)
+	End method
+
 	Method AppendColumn(column:GtkTreeViewColumn)
 		gtk_tree_view_append_column(Handle, column.Handle)
 	End method

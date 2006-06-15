@@ -26,7 +26,7 @@ Type GtkETree
 	Method Init()
 		Store = GtkTreeStore.Create(TypeArr)
 		Tree = GtkTreeView.CreateWithModel(Store)
-		Store.Unref()
+'		Store.Unref()
 	End Method
 			
 	Method addViewColumn(Pos:Int,Title:String)
