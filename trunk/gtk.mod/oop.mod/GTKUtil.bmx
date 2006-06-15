@@ -16,7 +16,7 @@ Rem
 End Rem
 Type GTKUtil
 	Function Init()
-		gtk_init(Null)
+		gtk_init(Null, Null)
 	End Function
 
 	Function Main()
@@ -29,7 +29,7 @@ Type GTKUtil
 
 	function SingleIteration()
 		while gtk_events_pending()
-			gtk_main_iteration();
+			gtk_main_iteration()
 		wend
 	end function
 End Type

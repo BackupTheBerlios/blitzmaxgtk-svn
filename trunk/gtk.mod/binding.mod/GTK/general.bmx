@@ -19,7 +19,7 @@ Extern
 	Function gtk_disable_setlocale()="gtk_disable_setlocale"
 	'Function gtk_get_default_language
 	Function gtk_parse_args:Byte Ptr(argc:Byte Ptr)="gtk_parse_args"
-	Function gtk_init(argc:Byte Ptr)="gtk_init"
+	Function gtk_init(argc:Byte Ptr, argv:Byte ptr)="gtk_init"
 	Function gtk_init_check:Byte(argc:Byte Ptr)="gtk_init_check"
 	'Function gtk_init_with_args
 	'Function gtk_get_option_group
