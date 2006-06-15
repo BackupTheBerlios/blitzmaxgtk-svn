@@ -624,7 +624,7 @@
 	<widget class="GtkHPaned" id="hpaned1">
 	  <property name="visible">True</property>
 	  <property name="can_focus">True</property>
-	  <property name="position">625</property>
+	  <property name="position">600</property>
 
 	  <child>
 	    <widget class="GtkNotebook" id="notebook3">

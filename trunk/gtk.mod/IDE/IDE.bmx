@@ -213,16 +213,84 @@ Global frmCmdOpts:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("
 Global frmLogin:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmLogin"))
 Global recentList:TList = New TList
 
+Local Doc_Pfad:String = Left(settings.getvalue("HelpBrowser_URL"),Len(settings.getvalue("HelpBrowser_URL"))-10)
 Global TvHome:GtkETree = New GtkETree
 TvHome.addStoreColumn(G_TYPE_STRING)
 TvHome.Init()
-TvHome.Tree.Destroy()
+'TvHome.Tree.Destroy()
 TvHome.Tree = GtkTreeView.CreateFromHandle(Application.GetWidget("tvHOME"))
 TvHome.Tree.SetModel(TvHome.Store)
 TvHome.addViewColumn(0,"Hilfe")
 
-Local UG:GtkETreeIter = TvHome.NewItem()
-UG.SetString("UserGuide")
+Local tvUserGuide:GtkETreeIter = TvHome.NewItem()
+tvUserGuide.SetString("Sprache")
+ImportLinks(TvHome,tvUserGuide,Doc_Pfad+"bmxuser/navbar.html")
+
+Local tvLanguage:GtkETreeIter = TvHome.NewItem()
+tvLanguage.SetString("Benutzerhandbuch")
+ImportLinks(TvHome,tvLanguage,Doc_Pfad+"bmxlang/navbar.html")
+
+Local tvModules:GtkETreeIter = TvHome.NewItem()
+tvModules.SetString("Module")
+ImportLinks(TvHome,tvModules,Doc_Pfad+"bmxmods/navbar.html")
+
+
+Function ImportLinks(GTV:GtkETree,root:GtkETreeIter,path$)
+	Local	stream:TStream
+	Local	c$,l$,p,q,a$,n$,cat
+	Local	node:GtkETreeIter
+	
+	stream=ReadFile(path)
+	If Not stream Return
+	path=ExtractDir(path)
+	node=root
+	While Not Eof(stream)
+		c=ReadLine(stream)
+		If c="" Continue
+
+		l=c.ToLower()
+		l=l.Replace(Chr(34),"'")
+		p=l.Find("<a")
+		If p=-1 Continue
+		a$=""
+		q=l.find("href=",p)+1
+		If q
+			If l[q+4]=39	'"'"
+				p=q+5
+				q=l.find("'",p)
+			Else
+				p=q+4
+				q=l.find(" ",p)
+			EndIf
+			If q>p 
+				a$=path+"/"+c[p..q]
+			EndIf
+		EndIf
+		p=c.Find(">",q)+1
+		If p And c[p]=60 p=c.Find(">",p)+1
+		q=c.Find("<",p)
+		If q<=p Continue
+		n$=c[p..q]
+		'Print n$
+		
+		If l.find("onclick=toggle")<>-1
+			node=GTV.NewItem(root)
+			node.SetString(n$)
+		Else
+			GTV.NewItem(node).SetString(n$)
+		EndIf
+		
+		
+	Wend
+	stream.Close
+End Function
+
+
+
+
+
+
+
 
 InitHelpBrowser()
 
