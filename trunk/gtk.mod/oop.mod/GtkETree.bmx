@@ -24,10 +24,10 @@ Type GtkETree
 	End Method 
 	
 	Method Init()
+		Store = GtkTreeStore.Create(TypeArr)
 		Tree = GtkTreeView.CreateWithModel(Store)
-		Store = GtkTreeStore.Create(TypeArr)	
 		Store.Unref()
-	End method
+	End Method
 			
 	Method addViewColumn(Pos:Int,Title:String)
 		Local column:GtkTreeViewColumn
@@ -37,7 +37,7 @@ Type GtkETree
 		column.SetTitle(Title)
 		column.PackStart(renderer)
 
-		column.SetAttribute(renderer, "text", Varptr Pos)
+		column.SetAttribute(renderer, "text", Byte Ptr(Pos))
 		tree.AppendColumn(column)
 	End Method
 	
