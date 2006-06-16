@@ -23,7 +23,7 @@ Import BRL.GLGraphics
 ?
 Import BRL.MaxUtil
 Import BRL.System
-Import Pub.Resource
+Import "resource.bmx"
 
 ' Types and consts
 'foldstart
