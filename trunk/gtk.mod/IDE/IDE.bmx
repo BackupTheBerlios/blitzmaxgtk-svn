@@ -1518,18 +1518,19 @@ Function HelpBrowser_ready()
 	HelpBrowserProgress.SetSensitive(False)
 	HelpBrowserLabel.SetText("Bereit")
 End Function
-Extern
-	Function IDE_malloc:Byte Ptr(size:Int)="malloc"
-	Function IDE_free(mem:Byte Ptr)="free"
-End extern
 Function HelpBrowser_treeViewClicked(treeview:Byte Ptr, path:Byte Ptr, column:Byte Ptr, user_data:Byte Ptr)
-	Local iter:GtkTreeIter
+	Local iter:GtkTreeIterB
 	gtk_tree_model_get_iter(TvHome.Store.Handle, iter, path)
-	Local CUrl:Byte Ptr = IDE_malloc(1024)
-	gtk_tree_model_get(TvHome.Store.Handle, iter,  0, CUrl, -1)
-	Local URL:String = String.FromCString(CURL)
-	Print URL
-	IDE_free(CUrl)
+	Local tmpURL:Byte Ptr = MemAlloc(1024)
+	gtk_tree_model_get(TvHome.Store.Handle, iter,  1, Varptr tmpURL, -1)
+	Local URL:String = String.FromCString(tmpURL)
+	MemFree(tmpURL)
+	rem
+	For Local i:Int = 0 To 1023
+		If tmpURL[i] = 0 Then Exit
+		URL :+ Chr$(i)
+	Next
+	End Rem
 	Print "URL: " + URL
 	Notebook.SetCurrentPage(0)
 	Local tmpdir:String = RealPath(CurrentDir())
