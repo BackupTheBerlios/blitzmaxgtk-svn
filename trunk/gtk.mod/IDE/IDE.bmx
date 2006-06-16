@@ -215,11 +215,13 @@ Global recentList:TList = New TList
 
 Local Doc_Pfad:String = Left(settings.getvalue("HelpBrowser_URL"),Len(settings.getvalue("HelpBrowser_URL"))-10)
 Global TvHome:GtkETree = New GtkETree
-TvHome.addStoreColumn(G_TYPE_STRING)
+TvHome.addStoreColumn(G_TYPE_STRING) ' Title
+TvHome.addStoreColumn(G_TYPE_STRING) ' URL
 TvHome.Init()
-'TvHome.Tree.Destroy()
+TvHome.Tree.Destroy()
 TvHome.Tree = GtkTreeView.CreateFromHandle(Application.GetWidget("tvHOME"))
 TvHome.Tree.SetModel(TvHome.Store)
+TvHome.Tree.SignalConnect("row-activated", HelpBrowser_TreeViewClicked)
 TvHome.addViewColumn(0,"Hilfe")
 
 Local tvUserGuide:GtkETreeIter = TvHome.NewItem()
@@ -276,8 +278,11 @@ Function ImportLinks(GTV:GtkETree,root:GtkETreeIter,path$)
 		If l.find("onclick=toggle")<>-1
 			node=GTV.NewItem(root)
 			node.SetString(n$)
+			node.SetString(a$,1)
 		Else
-			GTV.NewItem(node).SetString(n$)
+			Local subnode:GtkETreeIter = GTV.NewItem(node)
+			subnode.SetString(n$)
+			subnode.SetString(a$,1)
 		EndIf
 		
 		
@@ -1512,6 +1517,25 @@ Function HelpBrowser_ready()
 	HelpBrowserProgress.SetFraction(0)
 	HelpBrowserProgress.SetSensitive(False)
 	HelpBrowserLabel.SetText("Bereit")
+End Function
+Extern
+	Function IDE_malloc:Byte Ptr(size:Int)="malloc"
+	Function IDE_free(mem:Byte Ptr)="free"
+End extern
+Function HelpBrowser_treeViewClicked(treeview:Byte Ptr, path:Byte Ptr, column:Byte Ptr, user_data:Byte Ptr)
+	Local iter:GtkTreeIter
+	gtk_tree_model_get_iter(TvHome.Store.Handle, iter, path)
+	Local CUrl:Byte Ptr = IDE_malloc(1024)
+	gtk_tree_model_get(TvHome.Store.Handle, iter,  0, CUrl, -1)
+	Local URL:String = String.FromCString(CURL)
+	Print URL
+	IDE_free(CUrl)
+	Print "URL: " + URL
+	Notebook.SetCurrentPage(0)
+	Local tmpdir:String = RealPath(CurrentDir())
+	ChangeDir RealPath(bmxpath+"/doc/bmxmods")
+	HelpBrowser.LoadURL("file://" + RealPath(Url))
+	ChangeDir tmpdir
 End Function
 Rem
 Function HelpBrowser_loadFile(File:String)

@@ -45,6 +45,7 @@ Extern
 	Function gtk_tree_row_reference_reordered(proxy:Byte Ptr,path:Byte Ptr,iter:Byte Ptr,new_order:Byte Ptr)="gtk_tree_row_reference_reordered"
 	Function gtk_tree_iter_copy:Byte Ptr(iter:Byte Ptr)="gtk_tree_iter_copy"
 	Function gtk_tree_iter_free(iter:Byte Ptr)="gtk_tree_iter_free"
+	Function gtk_tree_model_get(tree_model:Byte Ptr, iter:Byte Ptr, column:Int, wheretostore:Byte Ptr, tend=-1)
 	Function gtk_tree_model_get_flags:Byte Ptr(tree_model:Byte Ptr)="gtk_tree_model_get_flags"
 	Function gtk_tree_model_get_n_columns:Int(tree_model:Byte Ptr)="gtk_tree_model_get_n_columns"
 	Function gtk_tree_model_get_column_type:Byte Ptr(tree_model:Byte Ptr,index_:Int)="gtk_tree_model_get_column_type"
