@@ -6,7 +6,7 @@ pkgname=gtkmaxide
 all: update mo
 
 update:	../IDE.bmx ../ide.glade
-	EXTRACT=. ./intltool-update de
+	INTLTOOL_EXTRACT=./intltool-extract ./intltool-update de
 
 mo:	de.po
 	msgfmt -c -v -o de.gmo de.po

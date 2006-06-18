@@ -107,11 +107,11 @@ RemoveTabList.addLast("end if")
 Global KeywordList:TList = New TList
 Global RealKeywordList:TList = New TList
 If Settings.GetValue("Scintilla_KeywordsFile")="" Then
-	Scream(_("Keywords-Datei nicht festgelegt"))
+	Scream(_("Keywords-file not defined"))
 Else
 	Local KeyWordsFile:TStream = ReadStream(Settings.GetValue("Scintilla_KeywordsFile"))
 	If KeyWordsFile = Null Then
-		Scream("Konnte Keywords-Datei nicht ï¿½fnen")
+		Scream(_("Couldn´t open keywords-file"))
 	Else
 		While Not KeyWordsFile.EOF()
 			Local ALine:String = KeyWordsFile.ReadLine()
@@ -140,7 +140,7 @@ else
 	if filetype("/usr/share/gtkmaxide/ide.glade") <> 0then
 		gladefile="/usr/share/gtkmaxide/ide.glade"
 	else
-		Scream("Interface konnte nicht gefunden werden!")
+		Scream(_("Couldn´t find glade interface in either current directory or /usr/share/gtkmaxide. Exiting."))
 		end
 	endif
 endif
@@ -182,10 +182,15 @@ End Function
 'foldend
 'TProcLib.Init(T_emp)
 
-Global BmxPath:String = Settings.GetValue("BlitzMax_Pfad")
-If BmxPath = "" Or filetype(BmxPath) <> FILETYPE_DIR Then
-	Scream("Bitte setzen Sie den BlitzMax-Pfad")
-endif
+Global BmxPath:String = Settings.GetValue("BlitzMax_Path")
+checkbmxpath()
+Function CheckBmxPath:byte()
+	If BmxPath = "" Or filetype(BmxPath) <> FILETYPE_DIR Then
+		Scream(_("Please set the BlitzMax-path in the options dialogue"))
+		Return false
+	EndIf
+	Return true
+End Function
 
 Global frmMain:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmMain"))
 local iconpath:String = ""
@@ -195,7 +200,7 @@ else
     if filetype("/usr/share/pixmaps/gtkmaxide.png") = FILETYPE_FILE then
         iconpath="/usr/share/pixmaps/gtkmaxide.png"
     else
-       	Print "(IDE.bmx) WARNING: Couldnt find idelogo.png or gtkmaxide.png"
+       	Print "(IDE.bmx) " + _("WARNING: Couldn´t find idelogo.png or gtkmaxide.png")
 	endif
 endif				
 if iconpath<>"" then frmMain.SetIconFromFile(iconpath)
@@ -222,18 +227,18 @@ TvHome.Tree.Destroy()
 TvHome.Tree = GtkTreeView.CreateFromHandle(Application.GetWidget("tvHOME"))
 TvHome.Tree.SetModel(TvHome.Store)
 TvHome.Tree.SignalConnect("row-activated", HelpBrowser_TreeViewClicked)
-TvHome.addViewColumn(0,"Hilfe")
+TvHome.addViewColumn(0,_("Help"))
 
 Local tvUserGuide:GtkETreeIter = TvHome.NewItem()
-tvUserGuide.SetString("Sprache")
+tvUserGuide.SetString(_("Language"))
 ImportLinks(TvHome,tvUserGuide,Doc_Pfad+"bmxuser/navbar.html")
 
 Local tvLanguage:GtkETreeIter = TvHome.NewItem()
-tvLanguage.SetString("Benutzerhandbuch")
+tvLanguage.SetString(_("User´s guide"))
 ImportLinks(TvHome,tvLanguage,Doc_Pfad+"bmxlang/navbar.html")
 
 Local tvModules:GtkETreeIter = TvHome.NewItem()
-tvModules.SetString("Module")
+tvModules.SetString(_("Modules"))
 ImportLinks(TvHome,tvModules,Doc_Pfad+"bmxmods/navbar.html")
 
 
@@ -330,7 +335,7 @@ Function InitHelpBrowser()
 
 	statusbox.show()
 	If (Settings.GetValue("HelpBrowser_URL") = "" Or FileType(settings.getvalue("HelpBrowser_URL"))=0) And FileType(bmxpath + "/doc/index.html")=0 Then
-		HelpBrowser.RenderData("<html><head><title>Fehler!</title></head><body><h1>Hilfe-URL nicht festgelegt und die Hilfedatei wurde nicht am Standardpfad (" + bmxpath + "/doc/index.html" + ") gefunden.</h1></body></html>", "file:///error", "text/html")
+		HelpBrowser.RenderData("<html><head><title>" + _("Fehler!") + "</title></head><body><h1>" + composemsg(_("The help file is either not set or not found on the default location (%1)"), bmxpath+"/doc/index.html") + "</h1></body></html>", "file:///error", "text/html")
 		Return
 	End If
 	If FileType(settings.getvalue("HelpBrowser_URL")) = 0 Then
@@ -343,6 +348,11 @@ End Function
 
 'foldstart 
 
+
+Function ComposeMsg:String(InputString:String, SedWith:String)
+	InputString.Replace("%1", SedWith)
+	Return InputString
+End function
 
 loadrecentlist()
 ' Set status of debug-/quick-build-mode
@@ -379,7 +389,7 @@ End Function
 Function AddNBPage()
 	Local TempScintilla:GtkScintilla = GtkScintilla.Create()
 	TempScintilla.SetSizeRequest(700,500)
-	Local TempLabel:GtkLabel = GtkLabel.Create("Unbenannt")
+	Local TempLabel:GtkLabel = GtkLabel.Create(_("Unnamed"))
 
 	Local LabelHBox:GtkHBox = GtkHBox.Create()
 		TempLabel.show()
@@ -401,7 +411,7 @@ Function AddNBPage()
 
 	Notebook.AppendPage(TempScintilla,LabelHBox)
 	Local Document:TDocument = New TDocument
-	Document.Name = "Unbenannt"
+	Document.Name = _("Unnamed")
 	Document.File = ""
 	Document.Label = TempLabel
 	Document.Scintilla = TempScintilla
@@ -675,7 +685,8 @@ End Function
 Function IDEOpenFile(File:String)
 	Local Stream:TStream = ReadStream(File)
 	If Stream=Null Then
-		Scream "Datei konnte nicht geladen werden"
+		Scream _("Couldn´t open file")
+		Return
 	EndIf
 	AddToRecentList(File)
 	AddNBPage()
@@ -714,7 +725,7 @@ Function OpenClick(Widget:Byte Ptr,AdditionalData:Byte Ptr,GdkEvent:Byte Ptr)
 	Local Filechooserbutton_LoadPfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fb_options_load"))
 	Local FP:String = Filechooserbutton_LoadPfad.GetFileName()
 	
-	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD(ISO_8859_1_To_UTF_8("Datei ï¿½fnen"),Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-open",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
+	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD(ISO_8859_1_To_UTF_8(_("Open file")),Null,GTK_FILE_CHOOSER_ACTION_OPEN,"gtk-open",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
 	Local lastpath:String
 	
 	If FileType(Settings.GetValue("LastOpenDir")) <> 2 Then 
@@ -741,7 +752,8 @@ Function tb_save_click()
 		Local Stream:TStream = WriteStream(Document.File)
 
 		If Stream=Null Then
-			Scream "Datei konnte nicht gespeichert werden"
+			Scream _("Couldn´t open file for writing")
+			return
 		EndIf
 		AddToRecentList(Document.file)
 		Local foldinfo:String = ""
@@ -778,7 +790,7 @@ Function mi_save_under_click()
 	
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
 	If Document.hidden Return
-	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD("Datei speichern",Null,GTK_FILE_CHOOSER_ACTION_SAVE,"gtk-save",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
+	Local dialog:GtkFileChooserDialog = GtkFileChooserDialog.CreateFCD(_("Save file"),Null,GTK_FILE_CHOOSER_ACTION_SAVE,"gtk-save",GTK_RESPONSE_OK,"gtk-cancel",GTK_RESPONSE_CANCEL)
 	dialog.SetLocalOnly(True)
 	Local lastpath:String
 	
@@ -798,7 +810,8 @@ Function mi_save_under_click()
 		Local Stream:TStream = WriteStream(dialog.GetFilename())
 
 		If Stream=Null Then
-			Scream "Datei konnte nicht gespeichert werden"
+			Scream _("Couldn´t open file for writing")
+			return
 		EndIf
 		AddToRecentList(dialog.GetFilename())
 		Document.File = Dialog.GetFileName()
@@ -835,6 +848,7 @@ End Function
 Function mi_compile_click()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
 	If Document.File <> "" And Not Document.hidden Then
+		If Not CheckBmxPath() Return
 		Local argnum:Byte = 2
 		Local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
 		If Not quickbuild.GetActive() = True Then
@@ -857,7 +871,7 @@ Function mi_compile_click()
 		EndIf
 		Targs[argnum] = StripExt(Document.File)
 		Notebook.SetCurrentPage(1)
-		TProcLib.Say("Kompiliere " + Document.File)
+		TProcLib.Say(ComposeMsg(_("Compiling %1"), Document.File))
 		TProcLib.CreateProcess(bmxpath + "/bin/bmk",targs)
 	End If
 End Function
@@ -865,6 +879,7 @@ End Function
 Function tb_run_click()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
 	If Document.File <> "" And Not document.hidden Then
+		If Not CheckBmxPath() return
 		Local argnum:Byte = 3
 		'local argnum:byte = 2
 		Local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
@@ -898,13 +913,14 @@ Function tb_run_click()
 		Next
 		'Targs[argnum] = StripExt(Document.File)
 		Notebook.SetCurrentPage(1)
-		TProcLib.Say("Kompiliere und starte " + Document.File)
+		TProcLib.Say(ComposeMsg(_("Compiling and starting %1"), Document.File))
 		TProcLib.CreateProcess(bmxpath + "/bin/bmk",targs)
 	End If
 End Function
 
 Function Undo()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	If Document.Hidden Or Document.Scintilla = Null return
 	If Document.Scintilla.CanUndo() Then
 		Document.Scintilla.Undo()
 	End If
@@ -912,6 +928,7 @@ End Function
 
 Function Redo()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	If Document.Hidden Or Document.Scintilla = Null return
 	If Document.Scintilla.CanRedo() Then 
 		Document.Scintilla.Redo()
 	End If
@@ -926,14 +943,17 @@ Function ShowInfo()
 End Function
 Function Cut()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	if Document.Hidden Or Document.Scintilla = Null return
 	Document.Scintilla.Cut()
 End Function
 Function Copy()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	if Document.Hidden Or Document.Scintilla = Null return
 	Document.Scintilla.Copy()
 End Function
 Function Paste()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
+	if Document.Hidden Or Document.Scintilla = Null return
 	Document.Scintilla.Paste()
 End Function
 'foldend
@@ -941,8 +961,9 @@ End Function
 'foldstart 'DIALOGE
 'foldstart 'Module Syncronisieren DIALOG
 	Function doSyncMods(Username:String, Password:String, ModuleServers:String)
+		If Not CheckBmxPath() Return
 		If TProcLib.Running() Then
-			Scream("Bitte beenden Sie zuerst den in der Konsole laufenden Prozess")
+			Scream(_("Please stop the currently running operation first"))
 			Return
 		End If
 		Local smModServers:String[] = parseCmdProps(ModuleServers)
@@ -955,7 +976,7 @@ End Function
 			smArgs[4+i] = smModServers[i]	
 		Next
 		Notebook.SetCurrentPage(1)
-		TProcLib.Say("Synchronisiere Module")
+		TProcLib.Say("Synchronizing modules")
 		TProcLib.CreateProcess(bmxpath + "/bin/syncmods", smArgs)
 	End Function
 		
@@ -1065,7 +1086,7 @@ End Function
 	end rem
 
 		'BlitzMax Pfad in ChooserButtonladen
-		If(Settings.GetValue("BlitzMax_Pfad"))>"" then Filechooserbutton_Scintilla_BM_Pfad.SetFileName(Settings.GetValue("BlitzMax_Pfad"))
+		If(Settings.GetValue("BlitzMax_Path"))>"" then Filechooserbutton_Scintilla_BM_Pfad.SetFileName(Settings.GetValue("BlitzMax_Path"))
 		
 		'Keywords in ChooserButton laden
 		If(Settings.GetValue("Scintilla_KeywordsFile"))<>"" then Filechooserbutton_Scintilla_KeyWordsList.SetFileName(Settings.GetValue("Scintilla_KeywordsFile"))
@@ -1107,7 +1128,7 @@ End Function
 
 		'BlitzMax Pfad aus ChooserButton lesen und speichern
 		Local Filechooserbutton_Scintilla_BM_Pfad:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fc_options_bmpfad"))
-			Settings.SetValue("BlitzMax_Pfad",Filechooserbutton_Scintilla_BM_Pfad.GetFileName())
+			Settings.SetValue("BlitzMax_Path",Filechooserbutton_Scintilla_BM_Pfad.GetFileName())
 			
 		'Keywords aus ChooserButton lesen und speichern
 		Local Filechooserbutton_Scintilla_KeyWordsList:GtkFileChooserButton = GtkFileChooserButton.CreateFCBFromHandle(Application.GetWidget("fc_options_keywords"))
@@ -1354,10 +1375,10 @@ End Function
 	Function frmSkinScintilla_show()
 		Local cb_StyleMaker_Styles:GtkComboBox = GtkComboBox.CreateFromHandle(Application.GetWidget("cb_StyleMaker_Styles"))
 		VScintilla.ClearAll()
-			VScintilla.AppendText("Strict 'Dies ist ein Kommentar~nRem~n")
+			VScintilla.AppendText(_("Strict 'This is a comment~nRem~n")) ' For use in the style preview widget
 			VScintilla.AppendText("Framework GTK.OOP~nEnd Rem~n")
 			VScintilla.AppendText("Type TTest~n")
-			VScintilla.AppendText("	Field A:String = "+Chr(34)+"Dies ist ein String"+Chr(34)+"~n")
+			VScintilla.AppendText(_("	Field A:String = ~qThis is a string~q~n")) ' For use in the style preview widget
 			VScintilla.AppendText("	Field B:Int = 205~n")
 			VScintilla.AppendText("End Type~n")
 			
@@ -1398,7 +1419,7 @@ End Function
 
 'foldstart 'Allgemeine sachen
 Function Scream(What:String)
-	Local TMR:Byte Ptr= gtk_message_dialog_new(Null,0,GTK_MESSAGE_WARNING,GTK_BUTTONS_OK,"Warnung".ToCString())
+	Local TMR:Byte Ptr= gtk_message_dialog_new(Null,0,GTK_MESSAGE_WARNING,GTK_BUTTONS_OK,_("Warning").ToCString())
 	gtk_message_dialog_format_secondary_text(TMR,ISO_8859_1_To_UTF_8(What).ToCString())
 	gtk_dialog_run(TMR)
 	gtk_widget_destroy(TMR)
@@ -1450,24 +1471,26 @@ End Function
 
 'foldstart 'Kompiliereinstellungen + Processkill
 Function RebuildModules()
+	If Not CheckBmxPath() return
 	Local bmkArgs:String[2]
 	bmkArgs[0] = "makemods"
 	bmkArgs[1] = "-a"
 	If TProcLib.Running() Then
-		Scream "Bitte beenden Sie zuerst den momentan in der Konsole laufenden Prozess"
+		Scream _("Please stop the currently running operation first")
 	End If
 	Notebook.SetCurrentPage(1)
-	TProcLib.Say("Starte das Kompilieren aller Module...")
+	TProcLib.Say(_("Compiling all modules"))
 	TProcLib.CreateProcess(bmxpath+"/bin/bmk",bmkArgs)
 End Function
 Function BuildModules()
+	If Not CheckBmxPath() return
 	Local bmkArgs:String[1]
 	bmkArgs[0] = "makemods"
 	If TProcLib.Running() Then
-		Scream "Bitte beenden Sie zuerst den momentan in der Konsole laufenden Prozess"
+		Scream _("Please stop the currently running operation first")
 	End If
 	Notebook.SetCurrentPage(1)
-	TProcLib.Say("Starte das Kompilieren geï¿½derter Module...")
+	TProcLib.Say(_("Compiling changed modules"))
 	TProcLib.CreateProcess(bmxpath+"/bin/bmk",bmkArgs)
 End Function
 Function killApp()
@@ -1506,7 +1529,7 @@ Function HelpBrowser_JSStatus()
 End Function
 Function HelpBrowser_progressChanged(embed:Byte Ptr, StatusCur:Int, StatusMax:Int, data:Byte Ptr)
 	HelpBrowserProgress.SetSensitive(True)
-	HelpBrowserLabel.SetText("Lade... ")
+	HelpBrowserLabel.SetText(_("Loading... "))
 	If StatusMax < 1 Then
 		HelpBrowserProgress.Pulse()
 	Else
@@ -1516,7 +1539,7 @@ End Function
 Function HelpBrowser_ready()
 	HelpBrowserProgress.SetFraction(0)
 	HelpBrowserProgress.SetSensitive(False)
-	HelpBrowserLabel.SetText("Bereit")
+	HelpBrowserLabel.SetText(_("Ready"))
 End Function
 Function HelpBrowser_treeViewClicked(treeview:Byte Ptr, path:Byte Ptr, column:Byte Ptr, user_data:Byte Ptr)
 	Local iter:GtkTreeIterB
@@ -1524,7 +1547,7 @@ Function HelpBrowser_treeViewClicked(treeview:Byte Ptr, path:Byte Ptr, column:By
 	Local tmpURL:Byte Ptr = MemAlloc(1024)
 	gtk_tree_model_get(TvHome.Store.Handle, iter,  1, Varptr tmpURL, -1)
 	Local URL:String = String.FromCString(tmpURL)
-	MemFree(tmpURL)
+	'MemFree(tmpURL)
 	rem
 	For Local i:Int = 0 To 1023
 		If tmpURL[i] = 0 Then Exit
@@ -1636,14 +1659,14 @@ End Function
 Function deleterecentitem(widget:Byte Ptr, data:Byte Ptr)
 	Local tmpwidget:GtkWidget = New GtkWidget
 	tmpwidget.Handle = widget
-	Local tmpmenu:GtkMenu = GtkMenu.CreateFromHandle(Data)
+	Local tmpmenu:GtkMenuItem = GtkMenuItem.CreateFromHandle(Data)
 	tmpmenu.Remove(tmpwidget)
 End Function
 Function SaveRecentList()
 	local recentfile:String = GetRecentFilename()
 	Local rstream:TStream = WriteStream(recentfile)
 	If rstream = Null Then
-		Scream("Konnte " + recentfile + " nicht zum Schreiben ï¿½fnen")
+		Scream(ComposeMSG(_("Couldn´t open %1 for writing"), recentfile))
 	EndIf
 	For Local rentry:String = EachIn recentlist
 		rstream.WriteLine(rentry)
@@ -1654,7 +1677,7 @@ Function loadrecentlist()
 	local recentfile:String = GetRecentFilename()
 	Local rstream:TStream = ReadStream(recentfile)
 	If rstream = Null Then
-		Print "(IDE.bmx) Warning: Couldnt load " + recentfile
+		Print "(IDE.bmx) " + ComposeMsg(_("Warning: Couldn´t open %1"), recentfile)
 		DisableRecentItem()
 		Return
 	EndIf

@@ -200,10 +200,27 @@ sub extract {
 sub convert {
 
     ## Reading the file
+	# Convert bmx-files to UTF-8
+	my $tmpfilename = "$SRCDIR_ARG/$FILE";
+	print "Tmpfilename: $tmpfilename, gettexttype: $gettext_type\n";
+	if ($gettext_type eq "blitzmax") {
+		print "iconving...\n";
+		print "cmd: iconv --from-code=ISO-8859-1 --to-code=UTF-8 $SRCDIR_ARG/$FILE\n";
+		open(TMP, "iconv --from-code=ISO-8859-1 --to-code=UTF-8 $SRCDIR_ARG/$FILE |") or die ("iconv failed: $? $!");
+		open(OUT, ">$SRCDIR_ARG/$FILE.intltool-tmp") or die "Couldn't open $SRCDIR_ARG/$FILE.intltool-tmp";
+		while (<TMP>) {
+			print OUT;
+		}
+		close(OUT) or die "Couldn't close OUT: $? $!";
+		close(TMP) or die "Couldn't close TMP: $? $!";
+		$tmpfilename = "$SRCDIR_ARG/$FILE.intltool-tmp";
+	}
     {
+	print "Tmpfilename: $tmpfilename\n";
 	local (*IN);
 	local $/; #slurp mode
-	open (IN, "<$SRCDIR_ARG/$FILE") || die "can't open $SRCDIR_ARG/$FILE: $!";
+#	open (IN, "<$SRCDIR_ARG/$FILE") || die "can't open $SRCDIR_ARG/$FILE: $!";
+	open (IN, "<$tmpfilename")      || die "can't open $tmpfilename: $!";
 	$input = <IN>;
     }
 
@@ -294,9 +311,13 @@ sub type_blitzmax {
 					if (not $is_string) {
 						# Check whether string was marked translatable
 						my $things_before_string = substr($line, 0, $stringstart - 1);
-						if ($things_before_string =~ /^.*[^a-zA-Z0-9_]_.*\(.*$/) {
+						if ($things_before_string =~ /.*[^a-zA-Z0-9_]_\s*\(\s*$/) {
 							my $string = substr($line, $stringstart, $i - $stringstart);
 							$messages{$string} = [];
+							# Search for a comment
+							if ($line =~ /^.*'(.*)$/) {
+								$comments{$string} = $1;
+							}
 						}
 					} else {
 					# String has begun

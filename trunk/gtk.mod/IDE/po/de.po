@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-14 13:40+0200\n"
+"POT-Creation-Date: 2006-06-17 14:00+0200\n"
 "PO-Revision-Date:2006-06-11 21:22+0200\n"
 "Last-Translator: Philipp Kerling <k.philipp@googlemail.com>\n"
 "Language-Team: coding-industry <webmaster@coding-industry.de>\n"
@@ -65,256 +65,378 @@ msgid "BlitzPortal"
 msgstr ""
 
 #: ../ide.glade.h:13
-msgid "Comment Farbe"
+msgid "Code"
 msgstr ""
 
 #: ../ide.glade.h:14
-msgid "Datei auswählen"
+msgid "Comment Farbe"
 msgstr ""
 
 #: ../ide.glade.h:15
-msgid "Default Farbe"
+msgid "Datei auswählen"
 msgstr ""
 
 #: ../ide.glade.h:16
-msgid "Die letzen"
+msgid "Debug"
 msgstr ""
 
 #: ../ide.glade.h:17
-msgid "Editor anpassen"
+msgid "Default Farbe"
 msgstr ""
 
 #: ../ide.glade.h:18
-msgid "Editor-Farben"
+msgid "Die letzen"
 msgstr ""
 
 #: ../ide.glade.h:19
-msgid "Einstellungen"
+msgid "Editor anpassen"
 msgstr ""
 
 #: ../ide.glade.h:20
-msgid "Einstellungen - Achtung: Funktionslos"
+msgid "Editor-Farben"
 msgstr ""
 
 #: ../ide.glade.h:21
-msgid "Entwickler-Version"
+msgid "Einstellungen"
 msgstr ""
 
 #: ../ide.glade.h:22
-msgid "Geänderte _Module kompilieren"
+msgid "Einstellungen - Achtung: Funktionslos"
 msgstr ""
 
 #: ../ide.glade.h:23
-msgid "Hier können Sie Einstellungen vornehmen"
+msgid "Entwickler-Version"
 msgstr ""
 
 #: ../ide.glade.h:24
-msgid "Hintergrundfarbe"
+msgid "Geänderte _Module kompilieren"
 msgstr ""
 
 #: ../ide.glade.h:25
-msgid "History löschen"
+msgid "Hier können Sie Einstellungen vornehmen"
 msgstr ""
 
 #: ../ide.glade.h:26
-msgid "Identifier Farbe"
+msgid "Hintergrundfarbe"
 msgstr ""
 
 #: ../ide.glade.h:27
-msgid "Keyword Farbe"
+msgid "History löschen"
 msgstr ""
 
 #: ../ide.glade.h:28
-msgid "Killt das Programm"
+msgid "Home"
 msgstr ""
 
 #: ../ide.glade.h:29
-msgid "Kommandozeilen-Optionen"
+msgid "Identifier Farbe"
 msgstr ""
 
 #: ../ide.glade.h:30
-msgid "Kompiliert alle BlitzMax-Module"
+msgid "Keyword Farbe"
 msgstr ""
 
 #: ../ide.glade.h:31
-msgid "Module _synchronisieren"
+msgid "Killt das Programm"
 msgstr ""
 
 #: ../ide.glade.h:32
-msgid "Module abgleichen - Authentifizierung"
+msgid "Kommandozeilen-Optionen"
 msgstr ""
 
 #: ../ide.glade.h:33
-msgid "Number Farbe"
+msgid "Kompiliert alle BlitzMax-Module"
 msgstr ""
 
 #: ../ide.glade.h:34
-msgid "Operator Farbe"
+msgid "Module _synchronisieren"
 msgstr ""
 
 #: ../ide.glade.h:35
-msgid "Ordner auswählen"
+msgid "Module abgleichen - Authentifizierung"
 msgstr ""
 
 #: ../ide.glade.h:36
-msgid "Sagt dem Programm, dass es sich beenden soll"
+msgid "Number Farbe"
 msgstr ""
 
 #: ../ide.glade.h:37
+msgid "Operator Farbe"
+msgstr ""
+
+#: ../ide.glade.h:38
+msgid "Ordner auswählen"
+msgstr ""
+
+#: ../ide.glade.h:39
+msgid "Sagt dem Programm, dass es sich beenden soll"
+msgstr ""
+
+#: ../ide.glade.h:40
 msgid ""
 "Schrifart der Zeilen-\n"
 "nummern-Spalte"
 msgstr ""
 
-#: ../ide.glade.h:39
+#: ../ide.glade.h:42
 msgid "Schrifart im Editor"
 msgstr ""
 
-#: ../ide.glade.h:40
+#: ../ide.glade.h:43
 msgid "Schriftarten"
 msgstr ""
 
-#: ../ide.glade.h:41
+#: ../ide.glade.h:44
 msgid "Sonder-Farben"
 msgstr ""
 
-#: ../ide.glade.h:42
+#: ../ide.glade.h:45
 msgid "Speichern/Laden"
 msgstr ""
 
-#: ../ide.glade.h:43
+#: ../ide.glade.h:46
 msgid "Standardpfade beim Start wiederherstellen"
 msgstr ""
 
-#: ../ide.glade.h:44
+#: ../ide.glade.h:47
 msgid "Start-_Parameter"
 msgstr ""
 
-#: ../ide.glade.h:45
+#: ../ide.glade.h:48
 msgid "String Farbe"
 msgstr ""
 
-#: ../ide.glade.h:46
+#: ../ide.glade.h:49
 msgid "Style"
 msgstr ""
 
-#: ../ide.glade.h:47
+#: ../ide.glade.h:50
 msgid "Style-Editor"
 msgstr ""
 
-#: ../ide.glade.h:48
+#: ../ide.glade.h:51
 msgid "Style-Manager"
 msgstr ""
 
-#: ../ide.glade.h:49
+#: ../ide.glade.h:52
 msgid "Synchronisiert dei Pub- und BRL-Module mit den BlitzMax-Servern"
 msgstr ""
 
-#: ../ide.glade.h:50
+#: ../ide.glade.h:53
 msgid "T_erminieren"
 msgstr ""
 
-#: ../ide.glade.h:51
+#: ../ide.glade.h:54
 msgid "Verlauf der geöffneten Dateien anzeigen"
 msgstr ""
 
-#: ../ide.glade.h:52
+#: ../ide.glade.h:55
 msgid "Vorschau"
 msgstr ""
 
-#: ../ide.glade.h:53
+#: ../ide.glade.h:56
 msgid "Wieder öffnen..."
 msgstr ""
 
-#: ../ide.glade.h:54
+#: ../ide.glade.h:57
 msgid "Wählen Sie ein Style aus"
 msgstr ""
 
-#: ../ide.glade.h:55
+#: ../ide.glade.h:58
 msgid "_Bearbeiten"
 msgstr ""
 
-#: ../ide.glade.h:56
+#: ../ide.glade.h:59
 msgid "_Benutzername"
 msgstr ""
 
-#: ../ide.glade.h:57
+#: ../ide.glade.h:60
 msgid "_BlitzMax"
 msgstr ""
 
-#: ../ide.glade.h:58
+#: ../ide.glade.h:61
 msgid "_Datei"
 msgstr ""
 
-#: ../ide.glade.h:59
+#: ../ide.glade.h:62
 msgid "_Debug-Modus"
 msgstr ""
 
-#: ../ide.glade.h:60
+#: ../ide.glade.h:63
 msgid "_Hilfe"
 msgstr ""
 
-#: ../ide.glade.h:61
+#: ../ide.glade.h:64
 msgid "_Info"
 msgstr ""
 
-#: ../ide.glade.h:62
+#: ../ide.glade.h:65
 msgid "_Killen"
 msgstr ""
 
-#: ../ide.glade.h:63
+#: ../ide.glade.h:66
 msgid "_Kommandozeilen-Parameter für Programme"
 msgstr ""
 
-#: ../ide.glade.h:64
+#: ../ide.glade.h:67
 msgid "_Module abgleichen"
 msgstr ""
 
-#: ../ide.glade.h:65
+#: ../ide.glade.h:68
 msgid "_Passwort"
 msgstr ""
 
-#: ../ide.glade.h:66
+#: ../ide.glade.h:69
 msgid "_Programm"
 msgstr ""
 
-#: ../ide.glade.h:67
+#: ../ide.glade.h:70
 msgid "_Schnelles Erstellen"
 msgstr ""
 
-#: ../ide.glade.h:68
+#: ../ide.glade.h:71
 msgid "_Startseite"
 msgstr ""
 
-#: ../ide.glade.h:69
+#: ../ide.glade.h:72
 msgid "_Terminal"
 msgstr ""
 
-#: ../ide.glade.h:70
+#: ../ide.glade.h:73
 msgid "_Terminieren"
 msgstr ""
 
-#: ../ide.glade.h:71
+#: ../ide.glade.h:74
 msgid "geöffneten Dateien speichern"
 msgstr ""
 
 #. TRANSLATORS: Replace this string with your names, one name per line.
-#: ../ide.glade.h:73
+#: ../ide.glade.h:76
 msgid "translator-credits"
 msgstr ""
 
-#: ../ide.glade.h:74
+#: ../ide.glade.h:77
 msgid "Ändert die Commandline-Parameter"
 msgstr ""
 
-#: ../IDE.bmx.h:1
-msgid "Keywords-Datei nicht festgelegt"
-msgstr ""
-
+#. For use in the style preview widget
 #: ../IDE.bmx.h:2
-msgid "a"
+msgid "\tField A:String = ~qThis is a string~q~n"
+msgstr "\tField A:String = ~qDas ist ein String~q~n"
+
+#: ../IDE.bmx.h:4
+#, no-c-format
+msgid "Compiling %1"
+msgstr "Kompiliere %1"
+
+#: ../IDE.bmx.h:5
+msgid "Compiling all modules"
+msgstr "Kompiliere alle Module"
+
+#: ../IDE.bmx.h:7
+#, no-c-format
+msgid "Compiling and starting %1"
+msgstr "Kompiliere und starte %1"
+
+#: ../IDE.bmx.h:8
+msgid "Compiling changed modules"
+msgstr "Kompiliere geänderte Module"
+
+#: ../IDE.bmx.h:9
+msgid ""
+"Couldn´t find glade interface in either current directory or /usr/share/"
+"gtkmaxide. Exiting."
 msgstr ""
 
-#: ../IDE.bmx.h:3
-msgid "z"
+#: ../IDE.bmx.h:11
+#, no-c-format
+msgid "Couldn´t open %1 for writing"
+msgstr ""
+
+#: ../IDE.bmx.h:12
+msgid "Couldn´t open file"
+msgstr ""
+
+#: ../IDE.bmx.h:13
+msgid "Couldn´t open file for writing"
+msgstr ""
+
+#: ../IDE.bmx.h:14
+msgid "Couldn´t open keywords-file"
+msgstr ""
+
+#: ../IDE.bmx.h:15
+msgid "Fehler!"
+msgstr ""
+
+#: ../IDE.bmx.h:16
+msgid "Help"
+msgstr ""
+
+#: ../IDE.bmx.h:17
+msgid "Keywords-file not defined"
+msgstr ""
+
+#: ../IDE.bmx.h:18
+msgid "Language"
+msgstr ""
+
+#: ../IDE.bmx.h:19
+msgid "Loading... "
+msgstr ""
+
+#: ../IDE.bmx.h:20
+msgid "Modules"
+msgstr ""
+
+#: ../IDE.bmx.h:21
+msgid "Open file"
+msgstr ""
+
+#: ../IDE.bmx.h:22
+msgid "Please set the BlitzMax-path in the options dialogue"
+msgstr ""
+
+#: ../IDE.bmx.h:23
+msgid "Please stop the currently running operation first"
+msgstr ""
+
+#: ../IDE.bmx.h:24
+msgid "Ready"
+msgstr ""
+
+#: ../IDE.bmx.h:25
+msgid "Save file"
+msgstr ""
+
+#. For use in the style preview widget
+#: ../IDE.bmx.h:27
+msgid "Strict 'This is a comment~nRem~n"
+msgstr ""
+
+#: ../IDE.bmx.h:29
+#, no-c-format
+msgid ""
+"The help file is either not set or not found on the default location (%1)"
+msgstr ""
+
+#: ../IDE.bmx.h:30
+msgid "Unnamed"
+msgstr ""
+
+#: ../IDE.bmx.h:31
+msgid "User´s guide"
+msgstr "Benutzerhandbuch"
+
+#: ../IDE.bmx.h:32
+msgid "WARNING: Couldn´t find idelogo.png or gtkmaxide.png"
+msgstr ""
+
+#: ../IDE.bmx.h:33
+msgid "Warning"
+msgstr ""
+
+#: ../IDE.bmx.h:35
+#, no-c-format
+msgid "Warning: Couldn´t open %1"
 msgstr ""

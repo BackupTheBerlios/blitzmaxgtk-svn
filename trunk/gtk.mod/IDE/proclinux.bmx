@@ -70,7 +70,7 @@ Type TProcLib Extends TProcShape
 	End Function
 
 	Function Say(Text:String)
-		local fText:String = chr$(10) + chr$(13) + _ISO_8859_1_To_UTF_8(Text) + chr$(10) + chr$(13)
+		local fText:String = chr$(10) + chr$(13) + Text + chr$(10) + chr$(13)
 		vte_terminal_feed(_widget.Handle,fText.ToCString(),len(fText))
 	End Function
 	

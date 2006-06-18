@@ -287,7 +287,7 @@ sub TextFile_DetermineEncoding ($)
 {
     my $gettext_code="ASCII"; # All files are ASCII by default
     my $filetype=`file $_ | cut -d ' ' -f 2`;
-
+	print "FIle: $_, Encoding: ";
     if ($? eq "0")
     {
 	if ($filetype =~ /^(ISO|UTF)/)
@@ -299,7 +299,7 @@ sub TextFile_DetermineEncoding ($)
 	    $gettext_code="UTF-8"; # We asume that .glade and other .xml files are UTF-8
 	}
     }
-
+	print $gettext_code . "\n";
     return $gettext_code;
 }
 
