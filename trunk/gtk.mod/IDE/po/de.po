@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-17 14:00+0200\n"
+"POT-Creation-Date: 2006-06-18 09:13+0200\n"
 "PO-Revision-Date:2006-06-11 21:22+0200\n"
 "Last-Translator: Philipp Kerling <k.philipp@googlemail.com>\n"
 "Language-Team: coding-industry <webmaster@coding-industry.de>\n"
@@ -17,87 +17,90 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../ide.glade.h:1
-msgid "(c) 2005-2006 Michael Sytko und Philipp Kerling"
-msgstr ""
+#, fuzzy
+msgid "(Re)compiles all BlitzMax-modules"
+msgstr "Kompiliere alle Module"
 
 #: ../ide.glade.h:2
-msgid "Alle Module neu _kompilieren"
+msgid "(c) 2005-2006 Michael Sytko and Philipp Kerling"
 msgstr ""
 
 #: ../ide.glade.h:3
-msgid "Allgemeines"
+msgid "Background color"
 msgstr ""
 
 #: ../ide.glade.h:4
-msgid "BMax-Editor"
-msgstr "Gtk-BlitzMax-IDE"
-
-#: ../ide.glade.h:5
-msgid "Befehlsdatei:"
-msgstr ""
-
-#: ../ide.glade.h:6
-msgid "Beim Laden:"
-msgstr ""
-
-#: ../ide.glade.h:7
-msgid "Beim Speichern:"
-msgstr ""
-
-#: ../ide.glade.h:8
-msgid "Benötigte Einstellungen"
-msgstr ""
-
-#: ../ide.glade.h:9
 msgid "BlitzMax-IDE 0.2"
 msgstr ""
 
-#: ../ide.glade.h:10
+#: ../ide.glade.h:5
 msgid "BlitzMax-IDE Homepage"
 msgstr ""
 
-#: ../ide.glade.h:11
+#: ../ide.glade.h:6
 msgid "BlitzMax:"
 msgstr ""
 
-#: ../ide.glade.h:12
+#: ../ide.glade.h:7
 msgid "BlitzPortal"
 msgstr ""
 
-#: ../ide.glade.h:13
+#: ../ide.glade.h:8
+msgid "Changes the commandline-parameters"
+msgstr ""
+
+#: ../ide.glade.h:9
 msgid "Code"
 msgstr ""
 
-#: ../ide.glade.h:14
-msgid "Comment Farbe"
+#: ../ide.glade.h:10
+msgid "Commandline-_Parameters"
 msgstr ""
+
+#: ../ide.glade.h:11
+msgid "Commandline-parameters"
+msgstr ""
+
+#: ../ide.glade.h:12
+msgid "Comment color"
+msgstr ""
+
+#: ../ide.glade.h:13
+#, fuzzy
+msgid "Compile _all modules"
+msgstr "Kompiliere alle Module"
+
+#: ../ide.glade.h:14
+#, fuzzy
+msgid "Compile _changed modules"
+msgstr "Kompiliere geänderte Module"
 
 #: ../ide.glade.h:15
-msgid "Datei auswählen"
-msgstr ""
-
-#: ../ide.glade.h:16
 msgid "Debug"
 msgstr ""
 
+#: ../ide.glade.h:16
+msgid "Default _load path:"
+msgstr ""
+
 #: ../ide.glade.h:17
-msgid "Default Farbe"
+msgid "Default _save path:"
 msgstr ""
 
 #: ../ide.glade.h:18
-msgid "Die letzen"
+msgid "Default color"
 msgstr ""
 
 #: ../ide.glade.h:19
-msgid "Editor anpassen"
+msgid "Developer-Edition"
 msgstr ""
 
 #: ../ide.glade.h:20
-msgid "Editor-Farben"
+msgid "Editor-colors"
 msgstr ""
 
 #: ../ide.glade.h:21
-msgid "Einstellungen"
+msgid "Editor-font:"
 msgstr ""
 
 #: ../ide.glade.h:22
@@ -105,11 +108,11 @@ msgid "Einstellungen - Achtung: Funktionslos"
 msgstr ""
 
 #: ../ide.glade.h:23
-msgid "Entwickler-Version"
+msgid "Fonts"
 msgstr ""
 
 #: ../ide.glade.h:24
-msgid "Geänderte _Module kompilieren"
+msgid "Gtk-BlitzMax-IDE"
 msgstr ""
 
 #: ../ide.glade.h:25
@@ -117,206 +120,201 @@ msgid "Hier können Sie Einstellungen vornehmen"
 msgstr ""
 
 #: ../ide.glade.h:26
-msgid "Hintergrundfarbe"
-msgstr ""
-
-#: ../ide.glade.h:27
-msgid "History löschen"
-msgstr ""
-
-#: ../ide.glade.h:28
 msgid "Home"
 msgstr ""
 
+#: ../ide.glade.h:27
+msgid "Identifier color"
+msgstr ""
+
+#: ../ide.glade.h:28
+msgid "Keyword color"
+msgstr ""
+
 #: ../ide.glade.h:29
-msgid "Identifier Farbe"
+msgid "Keywords-file:"
 msgstr ""
 
 #: ../ide.glade.h:30
-msgid "Keyword Farbe"
+msgid "Kills the currently running programme"
 msgstr ""
 
 #: ../ide.glade.h:31
-msgid "Killt das Programm"
+msgid "Linenumber-font:"
 msgstr ""
 
 #: ../ide.glade.h:32
-msgid "Kommandozeilen-Optionen"
+msgid "Number color"
 msgstr ""
 
 #: ../ide.glade.h:33
-msgid "Kompiliert alle BlitzMax-Module"
+msgid "Operator color"
 msgstr ""
 
 #: ../ide.glade.h:34
-msgid "Module _synchronisieren"
-msgstr ""
-
-#: ../ide.glade.h:35
-msgid "Module abgleichen - Authentifizierung"
-msgstr ""
-
-#: ../ide.glade.h:36
-msgid "Number Farbe"
-msgstr ""
-
-#: ../ide.glade.h:37
-msgid "Operator Farbe"
-msgstr ""
-
-#: ../ide.glade.h:38
 msgid "Ordner auswählen"
 msgstr ""
 
+#: ../ide.glade.h:35
+msgid "Please select a style"
+msgstr ""
+
+#: ../ide.glade.h:36
+msgid "Preview"
+msgstr ""
+
+#: ../ide.glade.h:37
+msgid "Recent items..."
+msgstr ""
+
+#: ../ide.glade.h:38
+msgid "Required settings"
+msgstr ""
+
 #: ../ide.glade.h:39
-msgid "Sagt dem Programm, dass es sich beenden soll"
+msgid "Restore default paths at startup"
 msgstr ""
 
 #: ../ide.glade.h:40
-msgid ""
-"Schrifart der Zeilen-\n"
-"nummern-Spalte"
+msgid "Save recent items"
+msgstr ""
+
+#: ../ide.glade.h:41
+msgid "Save the last"
 msgstr ""
 
 #: ../ide.glade.h:42
-msgid "Schrifart im Editor"
+msgid "Select file"
 msgstr ""
 
 #: ../ide.glade.h:43
-msgid "Schriftarten"
+msgid "Select folder"
 msgstr ""
 
 #: ../ide.glade.h:44
-msgid "Sonder-Farben"
+msgid "Settings"
 msgstr ""
 
 #: ../ide.glade.h:45
-msgid "Speichern/Laden"
+msgid "Special colors"
 msgstr ""
 
 #: ../ide.glade.h:46
-msgid "Standardpfade beim Start wiederherstellen"
+msgid "String color"
 msgstr ""
 
 #: ../ide.glade.h:47
-msgid "Start-_Parameter"
-msgstr ""
-
-#: ../ide.glade.h:48
-msgid "String Farbe"
-msgstr ""
-
-#: ../ide.glade.h:49
 msgid "Style"
 msgstr ""
 
-#: ../ide.glade.h:50
+#: ../ide.glade.h:48
 msgid "Style-Editor"
 msgstr ""
 
-#: ../ide.glade.h:51
+#: ../ide.glade.h:49
 msgid "Style-Manager"
 msgstr ""
 
+#: ../ide.glade.h:50
+msgid "Sync modules - Authentication dialogue"
+msgstr ""
+
+#: ../ide.glade.h:51
+msgid "Synchronize the Pub- and BRL-modules with the BlitzMax-servers"
+msgstr ""
+
 #: ../ide.glade.h:52
-msgid "Synchronisiert dei Pub- und BRL-Module mit den BlitzMax-Servern"
+msgid "T_erminate"
 msgstr ""
 
 #: ../ide.glade.h:53
-msgid "T_erminieren"
+msgid "Tells the currently running program to quit"
 msgstr ""
 
 #: ../ide.glade.h:54
-msgid "Verlauf der geöffneten Dateien anzeigen"
+msgid "_About GTK-BlitzMax-IDE"
 msgstr ""
 
 #: ../ide.glade.h:55
-msgid "Vorschau"
-msgstr ""
-
-#: ../ide.glade.h:56
-msgid "Wieder öffnen..."
-msgstr ""
-
-#: ../ide.glade.h:57
-msgid "Wählen Sie ein Style aus"
-msgstr ""
-
-#: ../ide.glade.h:58
-msgid "_Bearbeiten"
-msgstr ""
-
-#: ../ide.glade.h:59
-msgid "_Benutzername"
-msgstr ""
-
-#: ../ide.glade.h:60
 msgid "_BlitzMax"
 msgstr ""
 
+#: ../ide.glade.h:56
+msgid "_Clear history"
+msgstr ""
+
+#: ../ide.glade.h:57
+msgid "_Commandline-parameters for executed programmes"
+msgstr ""
+
+#: ../ide.glade.h:58
+msgid "_Debug build"
+msgstr ""
+
+#: ../ide.glade.h:59
+msgid "_Edit"
+msgstr ""
+
+#: ../ide.glade.h:60
+#, fuzzy
+msgid "_Editor"
+msgstr "Gtk-BlitzMax-IDE"
+
 #: ../ide.glade.h:61
-msgid "_Datei"
+msgid "_File"
 msgstr ""
 
 #: ../ide.glade.h:62
-msgid "_Debug-Modus"
+msgid "_Help"
 msgstr ""
 
 #: ../ide.glade.h:63
-msgid "_Hilfe"
+msgid "_Homepage"
 msgstr ""
 
 #: ../ide.glade.h:64
-msgid "_Info"
+msgid "_Kill"
 msgstr ""
 
 #: ../ide.glade.h:65
-msgid "_Killen"
+msgid "_Password"
 msgstr ""
 
 #: ../ide.glade.h:66
-msgid "_Kommandozeilen-Parameter für Programme"
+msgid "_Programme"
 msgstr ""
 
 #: ../ide.glade.h:67
-msgid "_Module abgleichen"
+msgid "_Quick build"
 msgstr ""
 
 #: ../ide.glade.h:68
-msgid "_Passwort"
+msgid "_Save/Load"
 msgstr ""
 
 #: ../ide.glade.h:69
-msgid "_Programm"
+msgid "_Sync modules"
 msgstr ""
 
 #: ../ide.glade.h:70
-msgid "_Schnelles Erstellen"
-msgstr ""
-
-#: ../ide.glade.h:71
-msgid "_Startseite"
-msgstr ""
-
-#: ../ide.glade.h:72
 msgid "_Terminal"
 msgstr ""
 
-#: ../ide.glade.h:73
-msgid "_Terminieren"
+#: ../ide.glade.h:71
+msgid "_Terminate"
 msgstr ""
 
-#: ../ide.glade.h:74
-msgid "geöffneten Dateien speichern"
+#: ../ide.glade.h:72
+msgid "_Username"
+msgstr ""
+
+#: ../ide.glade.h:73
+msgid "opened files."
 msgstr ""
 
 #. TRANSLATORS: Replace this string with your names, one name per line.
-#: ../ide.glade.h:76
+#: ../ide.glade.h:75
 msgid "translator-credits"
-msgstr ""
-
-#: ../ide.glade.h:77
-msgid "Ändert die Commandline-Parameter"
 msgstr ""
 
 #. For use in the style preview widget

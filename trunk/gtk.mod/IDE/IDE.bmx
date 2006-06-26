@@ -350,7 +350,7 @@ End Function
 
 
 Function ComposeMsg:String(InputString:String, SedWith:String)
-	InputString.Replace("%1", SedWith)
+	InputString.Replace(ISO_8859_1_To_UTF_8("%1"), SedWith)
 	Return InputString
 End function
 
@@ -847,7 +847,9 @@ End Function
 
 Function mi_compile_click()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
-	If Document.File <> "" And Not Document.hidden Then
+	If not Document.hidden Then
+		tb_save_click()
+		If Document.File = "" Then Return
 		If Not CheckBmxPath() Return
 		Local argnum:Byte = 2
 		Local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
@@ -878,8 +880,10 @@ End Function
 
 Function tb_run_click()
 	Local Document:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
-	If Document.File <> "" And Not document.hidden Then
-		If Not CheckBmxPath() return
+	If Not document.hidden Then
+		If Not CheckBmxPath() Return
+		tb_save_click()
+		If document.file = "" Return
 		Local argnum:Byte = 3
 		'local argnum:byte = 2
 		Local quickbuild:GtkCheckMenuItem = GtkCheckMenuItem.CreateFromHandle(Application.GetWidget("mnu_quickbuild"))
