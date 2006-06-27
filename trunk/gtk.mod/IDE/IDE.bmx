@@ -25,6 +25,8 @@ Import Pub.StdC
 Import "settings.bmx"
 Import "style.bmx"
 Import "gettext.bmx"
+Import "codetree.bmx"
+Import "document.bmx"
 
 ?win32
 Import "procwin32.bmx"
@@ -53,18 +55,10 @@ Print "to redistribute it under certain conditions; see COPYING"
 Print "for details."
 'foldend
 
-'foldstart 'Alles Laden und Hauptschleife starten as
-
-Type TDocument
-	Field Name:String
-	Field File:String
-	Field Label:GtkLabel
-	Field Scintilla:GtkScintilla
-	Field Hidden:Byte
-End Type
+'foldstart 'Alles Laden und Hauptschleife starten 
 
 'Create document list
-Global DocumentList:TList = New TList
+DocumentList = New TList
 
 
 ' Initialization stuff
@@ -151,6 +145,8 @@ Global ActualHelpBrowserPath:String = ""
 
 ' Getting the main notebook
 Global Notebook:GtkNotebook = GtkNotebook.CreateFromHandle(Application.GetWidget("notebook3"))
+g_signal_connect_data(Notebook.Handle, "switch-page".ToCstring(), TCodeTree.Update, Null, Null, 1)
+'Notebook.SignalConnect("switch-page", TCodeTree.Update)
 'Global exp_compiler:Byte Ptr = Application.GetWidget("exp_compiler")
 'Global T_emp:GtkContainer = New GtkContainer
 'Global HelpBrowser:GtkHtml
@@ -217,7 +213,7 @@ Global frmCmdOpts:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("
 
 Global frmLogin:GtkWindow = GtkWindow.CreateFromHandle(Application.GetWidget("frmLogin"))
 Global recentList:TList = New TList
-
+TCodeTree.Init(Application, Notebook)
 Local Doc_Pfad:String = Left(settings.getvalue("HelpBrowser_URL"),Len(settings.getvalue("HelpBrowser_URL"))-10)
 Global TvHome:GtkETree = New GtkETree
 TvHome.addStoreColumn(G_TYPE_STRING) ' Title

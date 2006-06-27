@@ -1,4 +1,7 @@
 Strict
+'Framework GTK.Binding
+Import GTK.Binding
+Import BRL.Basic
 
 Extern
 	Function gt_bindtextdomain(package:Byte Ptr, localedir:Byte Ptr)="bindtextdomain"
