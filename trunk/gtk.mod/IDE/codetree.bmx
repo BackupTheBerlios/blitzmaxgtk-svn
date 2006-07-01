@@ -5,10 +5,6 @@ Import GTK.Scintilla
 Import "gettext.bmx"
 Import "document.bmx"
 
-Extern
-	Function gtk_tree_store_clear(store:Byte Ptr)
-End Extern
-
 Type TCodeTree
 	Global TvCode:GtkETree, Notebook:GtkNotebook
 	
@@ -34,10 +30,72 @@ Type TCodeTree
 			gtk_tree_store_clear(TvCode.Store.Handle)
 			Local globals:GtkETreeIter = TvCode.NewItem()
 			globals.SetString(_("Globals"))
+			Local functions:GtkETreeIter = TvCode.NewItem()
+			functions.SetString(_("Functions"))
+			Local types:GtkETreeIter = TvCode.NewItem()
+			types.SetString(_("Types"))
 			Local doc:TDocument = TDocument(DocumentList.ValueAtIndex(Notebook.GetCurrentPage()))
 			For Local i:Int = 0 Until doc.Scintilla.GetLineCount()
 				Local line:String = doc.Scintilla.GetLine(i)
 				line.Trim()
+				If Lower(line).StartsWith("type") Then
+					Local a:Int = line.Find(" ")
+					If a <> -1 Then
+						Local b:Int = line.Find(" ", a+1)
+						If b =  -1 Then b = Len(line)-1
+						Local c:String = Mid(line, a+1, b-a)
+						Local glItem:GtkETreeIter = TvCode.NewItem(types)
+						glItem.SetString(c)
+						For Local l:Int = i Until doc.Scintilla.GetLineCount()
+							Local line:String = doc.Scintilla.GetLine(l)
+							line.Trim()
+							If Lower(line).StartsWith("end type") Or Lower(line).StartsWith("endtype") Then Exit
+							Local res1:Byte = Lower(line).StartsWith("field")
+							Local res2:Byte = Lower(line).StartsWith("global")
+							If res1 Or res2 Then
+								Local a:Int = line.Find(" ")
+								If a <> -1 Then
+									Local b:Int = line.Find(" ", a+1)
+									Local t:Int = line.Find(",", a+1)
+									If t < b And t <>-1 Then b = t
+									t = line.Find("=", a+1)
+									If t < b And t <> -1 Then b = t
+									If b = -1 Then b = Len(line)
+									Local c:String = Mid(line, a+1, b-a)
+									Local gglItem:GtkETreeIter = TvCode.NewItem(glItem)
+									If res1 gglItem.SetString(_("Field") + " " + c) Else gglItem.SetString(_("Global") + " " + c)
+									'glItem.
+								endif									
+							EndIf
+							res1 = Lower(line).StartsWith("function")
+							res2 = Lower(line).StartsWith("method")
+							If res1 Or res2 Then
+								Local a:Int = line.Find(" ")
+								If a <> -1 Then
+									Local b:Int = line.Find(")", a+1)
+									If b <>-1 Then
+										Local c:String = Mid(line, a+1, b-a+1)
+										Local gglItem:GtkETreeIter = TvCode.NewItem(glItem)
+										If res1 gglItem.SetString(_("Function") + " " + c) Else gglItem.SetString(_("Method") + " " + c)
+										'glItem.
+									endif
+								endif
+							endif
+						Next
+					endif
+				endif
+				If Lower(line).StartsWith("function") Then
+					Local a:Int = line.Find(" ")
+					If a <> -1 Then
+						Local b:Int = line.Find(")", a+1)
+						If b <>-1 Then
+							Local c:String = Mid(line, a+1, b-a+1)
+							Local glItem:GtkETreeIter = TvCode.NewItem(functions)
+							glItem.SetString(c)
+							'glItem.
+						endif
+					endif
+				endif
 				If Lower(line).StartsWith("global") Then
 					' 1. Leerzeichen
 					Local a:Int = line.Find(" ")
