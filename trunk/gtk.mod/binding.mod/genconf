@@ -78,6 +78,13 @@ while($line = <IN>)
 				print OUT "Import \"" . $tval . "\"\r\n";
 			}
 		}
+		if ($mozpkg eq "mozilla-gtkmozembed") {
+			print OUT "Import \"-Wl,-rpath\"\n";
+			print OUT "Import \"-Wl,/usr/lib/mozilla\"\n";
+		} else {
+			print OUT "Import \"-Wl,-rpath\"\n";
+			print OUT "Import \"-Wl,/usr/lib/mozilla-firefox\"\n";
+		}	
 		print OUT "'ENDCONFIG\r\n";
 	} else {
 		print OUT $line;
